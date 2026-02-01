@@ -239,6 +239,13 @@ const API = "https://s77-backend1.onrender.com";
 let TOKEN = "";
 let ROLE = "";
 
+// ✅ Validación simple del número (ruleta europea: 0..36)
+function validarNumero(n){
+  if(!Number.isInteger(n)) return { ok:false, msg:"Tenés que ingresar un número entero." };
+  if(n < 0 || n > 36) return { ok:false, msg:"Solo se permiten números del 0 al 36." };
+  return { ok:true, msg:"" };
+}
+
 async function crearUsuario(dias){
   if(ROLE !== "admin"){
     adminOut.innerHTML = "Solo admin puede crear usuarios.";
@@ -316,7 +323,6 @@ async function ingresar(){
     if(ROLE === "admin") adminPanel.classList.remove("hidden");
     else adminPanel.classList.add("hidden");
 
-    // ✅ Al entrar, pedir estado al backend y dibujar
     await cargarEstado();
 
   }catch(e){
@@ -344,14 +350,11 @@ function ocultarAT(){
   });
 }
 
-// ✅ Traer estado del usuario desde backend al loguear
 async function cargarEstado(){
   try{
     const r = await fetch(`${API}/api/state`,{
       method:"GET",
-      headers:{
-        "Authorization": `Bearer ${TOKEN}`
-      }
+      headers:{ "Authorization": `Bearer ${TOKEN}` }
     });
 
     const data = await r.json();
@@ -403,7 +406,6 @@ async function cargarEstado(){
   }
 }
 
-// ✅ Botón REINICIAR: llama al backend y limpia la UI
 async function resetear(){
   if(!TOKEN){
     alert("Tenés que estar logueado.");
@@ -429,12 +431,20 @@ async function resetear(){
   }
 }
 
-// ✅ Listener: manda el número al backend y recibe explosivos + A..T + últimos
 nuevo.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
 
-  const n = parseInt(nuevo.value);
-  if (isNaN(n)) return;
+  if(!TOKEN){
+    alert("Primero tenés que ingresar con usuario y clave.");
+    return;
+  }
+
+  const n = parseInt(nuevo.value, 10);
+  const v = validarNumero(n);
+  if(!v.ok){
+    alert(v.msg);
+    return;
+  }
 
   nuevo.value = "";
 
@@ -455,7 +465,6 @@ nuevo.addEventListener("keydown", async (e) => {
       return;
     }
 
-    // Render casilleros
     casilleros.innerHTML = "";
 
     if (data.historialLen < 17) {
@@ -480,12 +489,10 @@ nuevo.addEventListener("keydown", async (e) => {
       });
     }
 
-    // Explosivos
     explosivos.innerText = (data.explosivos && data.explosivos.length)
       ? data.explosivos.join(" ")
       : "—";
 
-    // A..T
     ocultarAT();
     const elActive = document.getElementById(data.activeId);
     if (elActive) {
@@ -501,7 +508,3 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
-
-
-
-
