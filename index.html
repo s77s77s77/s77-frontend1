@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>SISTEMA PREMIUM S77</title>
+
+<style>
+body{
+  font-family:impact;
+  background:black;
+  color:blue;
+  text-align:center;
+  padding:20px;
+}
+.hidden{display:none;}
+
+.inputs{
+  display:grid;
+  gap:10px;
+  justify-content:center;
+}
+.inputs input{
+  width:70px;
+  height:70px;
+  font-size:34px;
+  font-weight:bold;
+  border:4px solid #444;
+  background:#333;
+  color:white;
+  text-align:center;
+}
+
+.ingreso{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+}
+
+.ingresoInput{
+  width:70px;
+  height:70px;
+  font-size:34px;
+  border:4px solid #1e90ff;
+  background:#1e90ff;
+  color:#ccc;
+  text-align:center;
+}
+
+.label{
+  margin-top:5px;
+  font-weight:bold;
+}
+
+.box{
+  width:260px;
+  min-height:60px;
+  margin:10px auto;
+  border:6px solid #444;
+  font-weight:bold;
+  padding:5px;
+}
+
+.explosivos{background:black;font-size:48px;}
+
+button{
+  padding:10px;
+  background:maroon;
+  color:white;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+}
+
+.abcWrap{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+.abc{
+  width:70px;
+  height:70px;
+  font-size:34px;
+  font-weight:bold;
+  border:4px solid white;
+  background:#0b57ff;
+  color:white;
+  display:none; /* ocultos por defecto */
+  align-items:center;
+  justify-content:center;
+}
+
+/* ====== LOGIN + PANEL ADMIN (USUARIOS CON VENCIMIENTO) ====== */
+.loginBox{
+  display:inline-block;
+  padding:14px 16px;
+  border:2px solid #444;
+  border-radius:10px;
+}
+.loginRow{ margin:8px 0; }
+.loginInput{
+  width:220px;
+  height:36px;
+  font-size:18px;
+  padding:6px 10px;
+  border:2px solid #444;
+  background:#111;
+  color:#fff;
+  border-radius:8px;
+}
+
+.adminPanel{
+  width:340px;
+  margin:18px auto 0;
+  border:2px solid #444;
+  border-radius:10px;
+  padding:12px;
+  text-align:left;
+}
+.adminTitle{ font-weight:bold; margin-bottom:10px; }
+.adminGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.adminGrid input{
+  width:100%;
+  height:34px;
+  font-size:16px;
+  padding:4px 8px;
+  border:2px solid #444;
+  background:#111;
+  color:#fff;
+  border-radius:8px;
+}
+.adminBtns{ display:flex; gap:8px; margin-top:10px; }
+.adminBtns button{ flex:1; padding:10px 0; }
+.adminOut{
+  margin-top:10px;
+  font-size:14px;
+  color:#ddd;
+  word-break:break-word;
+  line-height:1.35;
+}
+.smallNote{
+  margin-top:6px;
+  font-size:12px;
+  color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<h1>SISTEMA PREMIUM S77</h1>
+
+<div id="login" class="loginBox">
+  <div class="loginRow">
+    <input id="usuario" class="loginInput" placeholder="Usuario">
+  </div>
+  <div class="loginRow">
+    <input id="clave" class="loginInput" placeholder="Clave">
+  </div>
+  <div class="loginRow">
+    <button onclick="ingresar()">INGRESAR</button>
+  </div>
+  <p id="err" style="color:red;margin:6px 0 0;"></p>
+</div>
+
+<div id="sistema" class="hidden">
+
+  <div class="inputs" id="casilleros"></div>
+
+  <br>
+
+  <div class="ingreso">
+    <div>
+      <input id="nuevo" class="ingresoInput">
+      <div class="label" style="color:#1e90ff">INGRESO</div>
+    </div>
+  </div>
+
+  <!-- ✅ Botón REINICIAR -->
+  <div style="margin-top:12px;">
+    <button onclick="resetear()">REINICIAR</button>
+  </div>
+
+  <h3 style="color:black">EXPLOSIVOS</h3>
+  <div id="explosivos" class="box explosivos">—</div>
+
+  <!-- A ... T -->
+  <div class="abcWrap">
+    <div id="A" class="abc"></div>
+    <div id="B" class="abc"></div>
+    <div id="C" class="abc"></div>
+    <div id="D" class="abc"></div>
+    <div id="E" class="abc"></div>
+    <div id="F" class="abc"></div>
+    <div id="G" class="abc"></div>
+    <div id="H" class="abc"></div>
+    <div id="I" class="abc"></div>
+    <div id="J" class="abc"></div>
+    <div id="K" class="abc"></div>
+    <div id="L" class="abc"></div>
+    <div id="M" class="abc"></div>
+    <div id="N" class="abc"></div>
+    <div id="O" class="abc"></div>
+    <div id="P" class="abc"></div>
+    <div id="Q" class="abc"></div>
+    <div id="R" class="abc"></div>
+    <div id="S" class="abc"></div>
+    <div id="T" class="abc"></div>
+  </div>
+
+  <!-- ====== PANEL ADMIN: CREAR USUARIOS (CON VENCIMIENTO) ====== -->
+  <div id="adminPanel" class="adminPanel hidden">
+    <div class="adminTitle">CREAR USUARIO (CON VENCIMIENTO)</div>
+
+    <div class="adminGrid">
+      <input id="newUser" placeholder="Usuario">
+      <input id="newPass" placeholder="Clave">
+    </div>
+
+    <div class="adminBtns">
+      <button onclick="crearUsuario(1)">1 DÍA</button>
+      <button onclick="crearUsuario(7)">7 DÍAS</button>
+      <button onclick="crearUsuario(30)">30 DÍAS</button>
+    </div>
+
+    <div id="adminOut" class="adminOut"></div>
+    <div class="smallNote">Se guarda en el servidor (backend).</div>
+  </div>
+
+</div>
+
+<script>
+const API = "https://s77-backend1.onrender.com";
+let TOKEN = "";
+let ROLE = "";
+
+async function crearUsuario(dias){
+  if(ROLE !== "admin"){
+    adminOut.innerHTML = "Solo admin puede crear usuarios.";
+    return;
+  }
+
+  const u=(newUser.value||"").trim();
+  const p=(newPass.value||"").trim();
+
+  if(!u || !p){
+    adminOut.innerHTML = "Falta <b>Usuario</b> y/o <b>Clave</b>.";
+    return;
+  }
+
+  try{
+    const r = await fetch(`${API}/admin/create-user`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization": `Bearer ${TOKEN}`
+      },
+      body: JSON.stringify({ user:u, pass:p, days:dias })
+    });
+
+    const data = await r.json();
+
+    if(!r.ok){
+      adminOut.innerHTML = "Error creando usuario (¿token inválido o no sos admin?)";
+      return;
+    }
+
+    const expDate = new Date(data.exp).toLocaleString();
+
+    adminOut.innerHTML =
+      `✅ Creado/actualizado:<br>`+
+      `<b>Usuario:</b> ${data.user}<br>`+
+      `<b>Clave:</b> ${p}<br>`+
+      `<b>Vence:</b> ${expDate} (${dias} día${dias===1?"":"s"})`;
+
+  }catch(e){
+    adminOut.innerHTML = "No conecta con el servidor. ¿Está prendido el backend?";
+  }
+}
+
+async function ingresar(){
+  const u=(usuario.value||"").trim();
+  const p=(clave.value||"").trim();
+
+  if(!u || !p){
+    err.innerText="Completa usuario y clave";
+    return;
+  }
+
+  try{
+    const r = await fetch(`${API}/auth/login`,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ user:u, pass:p })
+    });
+
+    const data = await r.json();
+
+    if(!r.ok){
+      err.innerText="Usuario/clave inválidos o vencidos";
+      return;
+    }
+
+    TOKEN = data.token;
+    ROLE = data.role;
+
+    err.innerText="";
+    login.classList.add("hidden");
+    sistema.classList.remove("hidden");
+
+    if(ROLE === "admin") adminPanel.classList.remove("hidden");
+    else adminPanel.classList.add("hidden");
+
+    // ✅ Al entrar, pedir estado al backend y dibujar
+    await cargarEstado();
+
+  }catch(e){
+    err.innerText="No conecta con el servidor. ¿Está prendido el backend?";
+  }
+}
+
+function renderInicial(){
+  casilleros.innerHTML="";
+  casilleros.style.gridTemplateColumns="repeat(4,70px)";
+  for(let i=0;i<16;i++){
+    let c=document.createElement("input");
+    c.disabled=true;
+    casilleros.appendChild(c);
+  }
+}
+
+function ocultarAT(){
+  const ids = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.style.display="none";
+    el.textContent="";
+  });
+}
+
+// ✅ Traer estado del usuario desde backend al loguear
+async function cargarEstado(){
+  try{
+    const r = await fetch(`${API}/api/state`,{
+      method:"GET",
+      headers:{
+        "Authorization": `Bearer ${TOKEN}`
+      }
+    });
+
+    const data = await r.json();
+
+    if(!r.ok){
+      renderInicial();
+      ocultarAT();
+      explosivos.innerText = "—";
+      return;
+    }
+
+    casilleros.innerHTML="";
+
+    if(data.historialLen < 17){
+      casilleros.style.gridTemplateColumns="repeat(4,70px)";
+      data.ultimos16.forEach(v=>{
+        const c=document.createElement("input");
+        c.disabled=true; c.value=v;
+        casilleros.appendChild(c);
+      });
+
+      if(data.historialLen === 0){
+        renderInicial();
+      }
+    }else{
+      casilleros.style.gridTemplateColumns="repeat(5,70px)";
+      data.ultimos5.forEach(v=>{
+        const c=document.createElement("input");
+        c.disabled=true; c.value=v;
+        casilleros.appendChild(c);
+      });
+    }
+
+    explosivos.innerText = (data.explosivos && data.explosivos.length)
+      ? data.explosivos.join(" ")
+      : "—";
+
+    ocultarAT();
+    const elActive = document.getElementById(data.activeId);
+    if(elActive){
+      elActive.style.display="flex";
+      elActive.textContent = String(data.activeMult);
+    }
+
+  }catch(e){
+    renderInicial();
+    ocultarAT();
+    explosivos.innerText = "—";
+  }
+}
+
+// ✅ Botón REINICIAR: llama al backend y limpia la UI
+async function resetear(){
+  if(!TOKEN){
+    alert("Tenés que estar logueado.");
+    return;
+  }
+
+  if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
+
+  try{
+    const r = await fetch(`${API}/api/reset`,{
+      method:"POST",
+      headers:{ "Authorization": `Bearer ${TOKEN}` }
+    });
+
+    if(!r.ok){
+      alert("No se pudo reiniciar.");
+      return;
+    }
+
+    await cargarEstado();
+  }catch(e){
+    alert("No conecta con el backend.");
+  }
+}
+
+// ✅ Listener: manda el número al backend y recibe explosivos + A..T + últimos
+nuevo.addEventListener("keydown", async (e) => {
+  if (e.key !== "Enter") return;
+
+  const n = parseInt(nuevo.value);
+  if (isNaN(n)) return;
+
+  nuevo.value = "";
+
+  try {
+    const r = await fetch(`${API}/api/enter`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${TOKEN}`
+      },
+      body: JSON.stringify({ n })
+    });
+
+    const data = await r.json();
+
+    if (!r.ok) {
+      alert("No autorizado o error del servidor.");
+      return;
+    }
+
+    // Render casilleros
+    casilleros.innerHTML = "";
+
+    if (data.historialLen < 17) {
+      casilleros.style.gridTemplateColumns = "repeat(4,70px)";
+      data.ultimos16.forEach(v => {
+        const c = document.createElement("input");
+        c.disabled = true;
+        c.value = v;
+        casilleros.appendChild(c);
+      });
+
+      if(data.historialLen === 0){
+        renderInicial();
+      }
+    } else {
+      casilleros.style.gridTemplateColumns = "repeat(5,70px)";
+      data.ultimos5.forEach(v => {
+        const c = document.createElement("input");
+        c.disabled = true;
+        c.value = v;
+        casilleros.appendChild(c);
+      });
+    }
+
+    // Explosivos
+    explosivos.innerText = (data.explosivos && data.explosivos.length)
+      ? data.explosivos.join(" ")
+      : "—";
+
+    // A..T
+    ocultarAT();
+    const elActive = document.getElementById(data.activeId);
+    if (elActive) {
+      elActive.style.display = "flex";
+      elActive.textContent = String(data.activeMult);
+    }
+
+  } catch (err) {
+    alert("No conecta con el backend. ¿Está prendido?");
+  }
+});
+</script>
+
+</body>
+</html>
+
+
+
+
