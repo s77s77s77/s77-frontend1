@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
+
+<!-- ✅ Iconos para Android/Chrome -->
+<link rel="icon" type="image/png" href="./icon-192.png">
 
 <title>SISTEMA PREMIUM S77</title>
 
@@ -242,6 +245,11 @@ button{
 const API = "https://s77-backend1.onrender.com";
 let TOKEN = "";
 let ROLE = "";
+
+/* ✅ Registrar Service Worker (ayuda a que Chrome muestre "Instalar") */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").catch(()=>{});
+}
 
 // ✅ Validación simple del número (ruleta europea: 0..36)
 function validarNumero(n){
@@ -512,4 +520,3 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
-
