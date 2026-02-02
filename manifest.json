@@ -1,6 +1,6 @@
 {
-  "name": "Sistema Premium S77",
-  "short_name": "S77",
+  "name": "S77 FULL",
+  "short_name": "S77 FULL",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -11,3 +11,4 @@
     { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
+
