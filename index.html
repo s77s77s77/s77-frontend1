@@ -82,13 +82,13 @@ body{
 .aciertoBox{
   width:120px;
   height:70px;
-  font-size:54px;          /* ✅ más grande */
+  font-size:54px;
   font-weight:bold;
   border:4px solid #0b57ff;
   background:#0b57ff;
   color:#ffd700;
   text-align:center;
-  display:none;            /* ✅ oculto por defecto */
+  display:none;
   align-items:center;
   justify-content:center;
   border-radius:8px;
@@ -97,7 +97,7 @@ body{
   margin-top:5px;
   font-weight:bold;
   color:#0b57ff;
-  display:none;            /* ✅ oculto por defecto */
+  display:none;
 }
 
 /* ✅ GANANCIA (amarillo) */
@@ -121,10 +121,11 @@ body{
   color:#ffd400;
 }
 
-.aciertoGananciaCol{
+/* ✅ NUEVO: ACIERTO + GANANCIA lado a lado */
+.aciertoGananciaRow{
   display:flex;
-  flex-direction:column;
   gap:10px;
+  align-items:flex-start;
 }
 
 .box{
@@ -275,7 +276,8 @@ button{
       <div class="totalLabel">TOTAL</div>
     </div>
 
-    <div class="aciertoGananciaCol">
+    <!-- ✅ ACIERTO + GANANCIA lado a lado -->
+    <div class="aciertoGananciaRow">
       <div>
         <div id="aciertoBox" class="aciertoBox">0</div>
         <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
@@ -596,7 +598,6 @@ async function cargarEstado(){
 
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
-    // ✅ al cargar estado, ACIERTO no se muestra
     renderAcierto(false, 0);
 
   }catch(e){
@@ -666,7 +667,7 @@ nuevo.addEventListener("keydown", async (e) => {
     const r = await fetch(`${API}/api/enter`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type":"application/json",
         "Authorization": `Bearer ${TOKEN}`
       },
       body: JSON.stringify({ n })
