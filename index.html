@@ -94,6 +94,19 @@ body{
 /* ✅ Aviso “2 repetidos en últimos 12” */
 .explosivos.warnRepeats{ background:red !important; }
 
+/* ✅ REPUESTO (fucsia, solo visible cuando ROJO) */
+.repuesto{
+  background:#ff00ff;
+  color:#fff;
+  font-size:48px;
+  display:none;
+}
+.repuestoTitle{
+  color:#ff00ff;
+  margin-top:10px;
+  display:none;
+}
+
 button{
   padding:10px;
   background:maroon;
@@ -227,6 +240,10 @@ button{
   <h3 style="color:black">EXPLOSIVOS</h3>
   <div id="explosivos" class="box explosivos">—</div>
 
+  <!-- ✅ REPUESTO (solo visible si EXPLOSIVOS está ROJO) -->
+  <h3 id="repuestoTitle" class="repuestoTitle">REPUESTO</h3>
+  <div id="repuesto" class="box repuesto">—</div>
+
   <!-- A ... T -->
   <div class="abcWrap">
     <div id="A" class="abc"></div>
@@ -286,6 +303,23 @@ if ("serviceWorker" in navigator) {
 function setTotalFichas(v){
   const n = Number(v);
   totalFichas.textContent = Number.isFinite(n) ? String(Math.round(n)) : "0";
+}
+
+// ✅ REPUESTO: mostrar/ocultar (solo si está ROJO)
+function renderRepuesto(arr, isRed){
+  const title = document.getElementById("repuestoTitle");
+  const box = document.getElementById("repuesto");
+  if(!title || !box) return;
+
+  if(isRed && Array.isArray(arr) && arr.length){
+    title.style.display = "block";
+    box.style.display = "block";
+    box.textContent = arr.join(" ");
+  }else{
+    title.style.display = "none";
+    box.style.display = "none";
+    box.textContent = "—";
+  }
 }
 
 // ✅ Validación simple del número (ruleta europea: 0..36)
@@ -471,6 +505,7 @@ async function cargarEstado(){
       syncPausaConteoConColor();
       lastExplosivosSet = new Set();
       setTotalFichas(0);
+      renderRepuesto([], false);
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
       return;
@@ -510,6 +545,9 @@ async function cargarEstado(){
     setExplosivosWarning(!!data.warnRepeats);
     syncPausaConteoConColor();
 
+    // ✅ REPUESTO visible SOLO si warnRepeats=true
+    renderRepuesto(data.repuesto, !!data.warnRepeats);
+
     // ✅ TOTAL desde backend
     setTotalFichas(data.fichasTotal);
 
@@ -523,6 +561,7 @@ async function cargarEstado(){
     syncPausaConteoConColor();
     lastExplosivosSet = new Set();
     setTotalFichas(0);
+    renderRepuesto([], false);
     if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
     else ocultarAT();
   }
@@ -550,6 +589,7 @@ async function resetear(){
     setExplosivosWarning(false);
     syncPausaConteoConColor();
     setTotalFichas(0);
+    renderRepuesto([], false);
 
     await cargarEstado();
   }catch(e){
@@ -571,9 +611,6 @@ nuevo.addEventListener("keydown", async (e) => {
     alert(v.msg);
     return;
   }
-
-  // ACIERTO (se usa igual para saber si el backend va a apagar el rojo)
-  const acierto = lastExplosivosSet.has(n);
 
   nuevo.value = "";
 
@@ -624,9 +661,12 @@ nuevo.addEventListener("keydown", async (e) => {
       ? data.explosivos.join(" ")
       : "—";
 
-    // ✅ ROJO 100% desde backend (si hubo acierto, el backend ya lo manda en false)
+    // ✅ ROJO 100% desde backend
     setExplosivosWarning(!!data.warnRepeats);
     syncPausaConteoConColor();
+
+    // ✅ REPUESTO visible SOLO si warnRepeats=true
+    renderRepuesto(data.repuesto, !!data.warnRepeats);
 
     // ✅ TOTAL desde backend
     setTotalFichas(data.fichasTotal);
