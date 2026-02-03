@@ -5,8 +5,6 @@
 
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
-
-<!-- ✅ Iconos para Android/Chrome -->
 <link rel="icon" type="image/png" href="./icon-192.png">
 
 <title>SISTEMA S77 FULL</title>
@@ -80,17 +78,17 @@ body{
   color:#0b8f3a;
 }
 
-/* ✅ ACIERTO (azul con números amarillos) */
+/* ✅ ACIERTO (azul) - SOLO VISIBLE cuando hay acierto válido */
 .aciertoBox{
   width:120px;
   height:70px;
-  font-size:44px;          /* ✅ más grande */
+  font-size:54px;          /* ✅ más grande */
   font-weight:bold;
   border:4px solid #0b57ff;
   background:#0b57ff;
-  color:#ffd700;           /* ✅ amarillo */
+  color:#ffd700;
   text-align:center;
-  display:flex;
+  display:none;            /* ✅ oculto por defecto */
   align-items:center;
   justify-content:center;
   border-radius:8px;
@@ -99,17 +97,18 @@ body{
   margin-top:5px;
   font-weight:bold;
   color:#0b57ff;
+  display:none;            /* ✅ oculto por defecto */
 }
 
-/* ✅ GANANCIA (amarillo con letra azul) */
+/* ✅ GANANCIA (amarillo) */
 .gananciaBox{
   width:120px;
   height:70px;
   font-size:38px;
   font-weight:bold;
   border:4px solid #ffd400;
-  background:#ffd400;      /* ✅ amarillo */
-  color:#0b57ff;           /* ✅ azul */
+  background:#ffd400;
+  color:#0b57ff;
   text-align:center;
   display:flex;
   align-items:center;
@@ -122,7 +121,6 @@ body{
   color:#ffd400;
 }
 
-/* contenedor columna ACIERTO + GANANCIA */
 .aciertoGananciaCol{
   display:flex;
   flex-direction:column;
@@ -272,17 +270,15 @@ button{
       <div class="label" style="color:#1e90ff">INGRESO</div>
     </div>
 
-    <!-- ✅ TOTAL -->
     <div>
       <div id="totalFichas" class="totalBox">0</div>
       <div class="totalLabel">TOTAL</div>
     </div>
 
-    <!-- ✅ ACIERTO + GANANCIA -->
     <div class="aciertoGananciaCol">
       <div>
-        <div id="aciertoBox" class="aciertoBox">—</div>
-        <div class="aciertoLabel">ACIERT0</div>
+        <div id="aciertoBox" class="aciertoBox">0</div>
+        <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
       </div>
 
       <div>
@@ -292,7 +288,6 @@ button{
     </div>
   </div>
 
-  <!-- ✅ Botón REINICIAR -->
   <div style="margin-top:12px;">
     <button onclick="resetear()">REINICIAR</button>
   </div>
@@ -300,11 +295,9 @@ button{
   <h3 style="color:black">EXPLOSIVOS</h3>
   <div id="explosivos" class="box explosivos">—</div>
 
-  <!-- ✅ REPUESTO -->
   <h3 id="repuestoTitle" class="repuestoTitle">REPUESTO</h3>
   <div id="repuesto" class="box repuesto">—</div>
 
-  <!-- A ... T -->
   <div class="abcWrap">
     <div id="A" class="abc"></div><div id="B" class="abc"></div><div id="C" class="abc"></div><div id="D" class="abc"></div><div id="E" class="abc"></div>
     <div id="F" class="abc"></div><div id="G" class="abc"></div><div id="H" class="abc"></div><div id="I" class="abc"></div><div id="J" class="abc"></div>
@@ -312,7 +305,6 @@ button{
     <div id="P" class="abc"></div><div id="Q" class="abc"></div><div id="R" class="abc"></div><div id="S" class="abc"></div><div id="T" class="abc"></div>
   </div>
 
-  <!-- PANEL ADMIN -->
   <div id="adminPanel" class="adminPanel hidden">
     <div class="adminTitle">CREAR USUARIO (CON VENCIMIENTO)</div>
 
@@ -338,16 +330,13 @@ const API = "https://s77-backend1.onrender.com";
 let TOKEN = "";
 let ROLE = "";
 
-/* ✅ Registrar Service Worker */
+/* Service Worker */
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js").catch(()=>{});
 }
 
 /* ============================
-   ✅ GANANCIA (amarillo): suma acumulativa de ACIERTO (azul)
-   - siempre visible
-   - solo reinicia con REINICIAR
-   - persiste en localStorage
+   GANANCIA (amarillo)
 ============================ */
 const GANANCIA_KEY = "S77_GANANCIA_V1";
 let gananciaAcum = Number(localStorage.getItem(GANANCIA_KEY) || 0);
@@ -361,36 +350,44 @@ function setGanancia(v){
 }
 setGanancia(gananciaAcum);
 
-function setAcierto(v){
-  if (v === null || v === undefined) {
-    aciertoBox.textContent = "—";
-    return;
+/* ============================
+   ✅ ACIERTO (azul) - solo visible si backend dice que es válido
+============================ */
+function renderAcierto(show, value){
+  const box = document.getElementById("aciertoBox");
+  const lab = document.getElementById("aciertoLabel");
+  if(!box || !lab) return;
+
+  if(show){
+    box.style.display = "flex";
+    lab.style.display = "block";
+    box.textContent = String(Math.round(Number(value)||0));
+  }else{
+    box.style.display = "none";
+    lab.style.display = "none";
+    box.textContent = "0";
   }
-  const n = Number(v);
-  aciertoBox.textContent = Number.isFinite(n) ? String(Math.round(n)) : "—";
 }
 
-function sumarGananciaDesdeAcierto(v){
-  const n = Number(v);
+function sumarGananciaDesdeAcierto(value){
+  const n = Number(value);
   if(!Number.isFinite(n)) return;
   setGanancia(gananciaAcum + n);
 }
 
-/* ✅ TOTAL (verde) */
+/* TOTAL (verde) */
 function setTotalFichas(v){
   const n = Number(v);
   totalFichas.textContent = Number.isFinite(n) ? String(Math.round(n)) : "0";
 }
 
-/* ✅ REPUESTO */
-let lastRepuestoSet = new Set();
+/* REPUESTO */
 function renderRepuesto(arr, isRed){
   const title = document.getElementById("repuestoTitle");
   const box = document.getElementById("repuesto");
   if(!title || !box) return;
 
   const cleanArr = Array.isArray(arr) ? arr : [];
-  lastRepuestoSet = new Set(cleanArr);
 
   if(isRed && cleanArr.length){
     title.style.display = "block";
@@ -403,25 +400,20 @@ function renderRepuesto(arr, isRed){
   }
 }
 
-/* ✅ Validación número */
+/* Validación */
 function validarNumero(n){
   if(!Number.isInteger(n)) return { ok:false, msg:"Tenés que ingresar un número entero." };
   if(n < 0 || n > 36) return { ok:false, msg:"Solo se permiten números del 0 al 36." };
   return { ok:true, msg:"" };
 }
 
-/* ============================
-   ✅ ROJO
-============================ */
-let lastExplosivosSet = new Set();
+/* ROJO */
 function setExplosivosWarning(on){
   if(on) explosivos.classList.add("warnRepeats");
   else explosivos.classList.remove("warnRepeats");
 }
 
-/* ============================
-   ✅ PAUSA A..T
-============================ */
+/* PAUSA A..T */
 let conteoPausado = false;
 let cacheActiveId = "A";
 let cacheActiveMult = 1;
@@ -436,7 +428,6 @@ function ocultarAT(){
     el.textContent="";
   });
 }
-
 function mostrarAT(id, mult){
   ocultarAT();
   const elActive = document.getElementById(id);
@@ -445,7 +436,6 @@ function mostrarAT(id, mult){
     elActive.textContent = String(mult);
   }
 }
-
 function aplicarConteoDesdeBackend(activeId, activeMult){
   if(!cacheInicializado){
     cacheInicializado = true;
@@ -454,38 +444,30 @@ function aplicarConteoDesdeBackend(activeId, activeMult){
     mostrarAT(cacheActiveId, cacheActiveMult);
     return;
   }
-
   if(conteoPausado){
     mostrarAT(cacheActiveId, cacheActiveMult);
     return;
   }
-
   cacheActiveId = activeId || cacheActiveId;
   cacheActiveMult = Number(activeMult) || cacheActiveMult;
   mostrarAT(cacheActiveId, cacheActiveMult);
 }
-
 function syncPausaConteoConColor(){
   conteoPausado = explosivos.classList.contains("warnRepeats");
 }
 
-/* ============================
-   ADMIN
-============================ */
+/* ADMIN */
 async function crearUsuario(dias){
   if(ROLE !== "admin"){
     adminOut.innerHTML = "Solo admin puede crear usuarios.";
     return;
   }
-
   const u=(newUser.value||"").trim();
   const p=(newPass.value||"").trim();
-
   if(!u || !p){
     adminOut.innerHTML = "Falta <b>Usuario</b> y/o <b>Clave</b>.";
     return;
   }
-
   try{
     const r = await fetch(`${API}/admin/create-user`,{
       method:"POST",
@@ -497,32 +479,25 @@ async function crearUsuario(dias){
     });
 
     const data = await r.json();
-
     if(!r.ok){
       adminOut.innerHTML = "Error creando usuario (¿token inválido o no sos admin?)";
       return;
     }
-
     const expDate = new Date(data.exp).toLocaleString();
-
     adminOut.innerHTML =
       `✅ Creado/actualizado:<br>`+
       `<b>Usuario:</b> ${data.user}<br>`+
       `<b>Clave:</b> ${p}<br>`+
       `<b>Vence:</b> ${expDate} (${dias} día${dias===1?"":"s"})`;
-
   }catch(e){
     adminOut.innerHTML = "No conecta con el servidor. ¿Está prendido el backend?";
   }
 }
 
-/* ============================
-   LOGIN
-============================ */
+/* LOGIN */
 async function ingresar(){
   const u=(usuario.value||"").trim();
   const p=(clave.value||"").trim();
-
   if(!u || !p){
     err.innerText="Completa usuario y clave";
     return;
@@ -536,7 +511,6 @@ async function ingresar(){
     });
 
     const data = await r.json();
-
     if(!r.ok){
       err.innerText="Usuario/clave inválidos o vencidos";
       return;
@@ -553,7 +527,6 @@ async function ingresar(){
     else adminPanel.classList.add("hidden");
 
     await cargarEstado();
-
   }catch(e){
     err.innerText="No conecta con el servidor. ¿Está prendido el backend?";
   }
@@ -583,10 +556,9 @@ async function cargarEstado(){
       explosivos.innerText = "—";
       setExplosivosWarning(false);
       syncPausaConteoConColor();
-      lastExplosivosSet = new Set();
-      lastRepuestoSet = new Set();
       setTotalFichas(0);
       renderRepuesto([], false);
+      renderAcierto(false, 0);
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
       return;
@@ -601,10 +573,7 @@ async function cargarEstado(){
         c.disabled=true; c.value=v;
         casilleros.appendChild(c);
       });
-
-      if(data.historialLen === 0){
-        renderInicial();
-      }
+      if(data.historialLen === 0) renderInicial();
     }else{
       casilleros.style.gridTemplateColumns="repeat(5,70px)";
       data.ultimos5.forEach(v=>{
@@ -618,8 +587,6 @@ async function cargarEstado(){
       ? data.explosivos.join(" ")
       : "—";
 
-    lastExplosivosSet = new Set(Array.isArray(data.explosivos) ? data.explosivos : []);
-
     setExplosivosWarning(!!data.warnRepeats);
     syncPausaConteoConColor();
 
@@ -629,15 +596,17 @@ async function cargarEstado(){
 
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
+    // ✅ al cargar estado, ACIERTO no se muestra
+    renderAcierto(false, 0);
+
   }catch(e){
     renderInicial();
     explosivos.innerText = "—";
     setExplosivosWarning(false);
     syncPausaConteoConColor();
-    lastExplosivosSet = new Set();
-    lastRepuestoSet = new Set();
     setTotalFichas(0);
     renderRepuesto([], false);
+    renderAcierto(false, 0);
     if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
     else ocultarAT();
   }
@@ -648,7 +617,6 @@ async function resetear(){
     alert("Tenés que estar logueado.");
     return;
   }
-
   if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
 
   try{
@@ -662,16 +630,12 @@ async function resetear(){
       return;
     }
 
-    // ✅ reinicio visual
     setExplosivosWarning(false);
     syncPausaConteoConColor();
     setTotalFichas(0);
     renderRepuesto([], false);
 
-    // ✅ ACIERTO vuelve a —
-    setAcierto(null);
-
-    // ✅ GANANCIA vuelve a 0 (solo con REINICIAR)
+    renderAcierto(false, 0);
     setGanancia(0);
 
     await cargarEstado();
@@ -680,9 +644,7 @@ async function resetear(){
   }
 }
 
-/* ============================
-   ENTER
-============================ */
+/* ENTER */
 nuevo.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
 
@@ -698,17 +660,6 @@ nuevo.addEventListener("keydown", async (e) => {
     return;
   }
 
-  // ✅ “DEL MOMENTO” = multiplicador que estaba vigente ANTES del Enter
-  const multDelMomento = cacheInicializado ? cacheActiveMult : 1;
-
-  // ✅ estado rojo antes
-  const wasRedBeforeUI = explosivos.classList.contains("warnRepeats");
-
-  // ✅ detectar acierto antes (según lo que estaba buscando antes del Enter)
-  const aciertoExplosivos = (!wasRedBeforeUI) && lastExplosivosSet.has(n);
-  const aciertoRepuesto   = (wasRedBeforeUI)  && lastRepuestoSet.has(n);
-  const huboAcierto = aciertoExplosivos || aciertoRepuesto;
-
   nuevo.value = "";
 
   try {
@@ -722,13 +673,11 @@ nuevo.addEventListener("keydown", async (e) => {
     });
 
     const data = await r.json();
-
     if (!r.ok) {
       alert("No autorizado o error del servidor.");
       return;
     }
 
-    // Render casilleros
     casilleros.innerHTML = "";
 
     if (data.historialLen < 17) {
@@ -739,10 +688,7 @@ nuevo.addEventListener("keydown", async (e) => {
         c.value = v;
         casilleros.appendChild(c);
       });
-
-      if(data.historialLen === 0){
-        renderInicial();
-      }
+      if(data.historialLen === 0) renderInicial();
     } else {
       casilleros.style.gridTemplateColumns = "repeat(5,70px)";
       data.ultimos5.forEach(v => {
@@ -764,18 +710,17 @@ nuevo.addEventListener("keydown", async (e) => {
 
     setTotalFichas(data.fichasTotal);
 
-    lastExplosivosSet = new Set(Array.isArray(data.explosivos) ? data.explosivos : []);
-
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
-    // ✅ ACIERTO (azul) + GANANCIA (amarillo)
-    if(huboAcierto){
-      const totalActual = Number(data.fichasTotal || 0);
-      const aciertoVal = (multDelMomento * 36) - totalActual;
-      setAcierto(aciertoVal);
-      sumarGananciaDesdeAcierto(aciertoVal);
-    }else{
-      setAcierto(null);
+    // ✅ ACIERTO correcto (backend) + solo cuando es válido
+    const show = !!data.aciertoShow;
+    const val  = Number(data.aciertoValue);
+
+    renderAcierto(show, val);
+
+    // ✅ GANANCIA suma SOLO cuando hay acierto válido
+    if(show){
+      sumarGananciaDesdeAcierto(val);
     }
 
   } catch (err) {
