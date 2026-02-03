@@ -41,7 +41,7 @@ body{
   display:flex;
   justify-content:center;
   gap:15px;
-  align-items:flex-start; /* ✅ para alinear */
+  align-items:flex-start;
 }
 
 .ingresoInput{
@@ -59,15 +59,15 @@ body{
   font-weight:bold;
 }
 
-/* ✅ casillero TOTAL */
+/* ✅ TOTAL (verde) */
 .totalBox{
   width:120px;
   height:70px;
   font-size:34px;
   font-weight:bold;
   border:4px solid #0b8f3a;
-  background:#0b8f3a; /* verde */
-  color:#fff;         /* blanco */
+  background:#0b8f3a;
+  color:#fff;
   text-align:center;
   display:flex;
   align-items:center;
@@ -80,26 +80,53 @@ body{
   color:#0b8f3a;
 }
 
-/* ✅ NUEVO: casillero RESULTADO (azul, números amarillos, solo visible con acierto) */
-.resultBox{
+/* ✅ ACIERTO (azul con números amarillos) */
+.aciertoBox{
   width:120px;
   height:70px;
-  font-size:28px;
+  font-size:44px;          /* ✅ más grande */
   font-weight:bold;
-  border:4px solid #0057ff;
-  background:#0057ff; /* azul */
-  color:#ffd400;      /* amarillo */
+  border:4px solid #0b57ff;
+  background:#0b57ff;
+  color:#ffd700;           /* ✅ amarillo */
   text-align:center;
-  display:none;       /* oculto por defecto */
+  display:flex;
   align-items:center;
   justify-content:center;
   border-radius:8px;
 }
-.resultLabel{
+.aciertoLabel{
   margin-top:5px;
   font-weight:bold;
-  color:#0057ff;
-  display:none;
+  color:#0b57ff;
+}
+
+/* ✅ GANANCIA (amarillo con letra azul) */
+.gananciaBox{
+  width:120px;
+  height:70px;
+  font-size:38px;
+  font-weight:bold;
+  border:4px solid #ffd400;
+  background:#ffd400;      /* ✅ amarillo */
+  color:#0b57ff;           /* ✅ azul */
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+}
+.gananciaLabel{
+  margin-top:5px;
+  font-weight:bold;
+  color:#ffd400;
+}
+
+/* contenedor columna ACIERTO + GANANCIA */
+.aciertoGananciaCol{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
 .box{
@@ -114,7 +141,7 @@ body{
 .explosivos{background:black;font-size:48px;}
 .explosivos.warnRepeats{ background:red !important; }
 
-/* ✅ REPUESTO (fucsia, solo visible cuando ROJO) */
+/* ✅ REPUESTO */
 .repuesto{
   background:#ff00ff;
   color:#fff;
@@ -156,7 +183,7 @@ button{
   justify-content:center;
 }
 
-/* ====== LOGIN + PANEL ADMIN ====== */
+/* LOGIN + ADMIN */
 .loginBox{
   display:inline-block;
   padding:14px 16px;
@@ -245,19 +272,27 @@ button{
       <div class="label" style="color:#1e90ff">INGRESO</div>
     </div>
 
-    <!-- ✅ TOTAL acumulado -->
+    <!-- ✅ TOTAL -->
     <div>
       <div id="totalFichas" class="totalBox">0</div>
       <div class="totalLabel">TOTAL</div>
     </div>
 
-    <!-- ✅ NUEVO: RESULTADO (solo visible con acierto) -->
-    <div>
-      <div id="resultado" class="resultBox">0</div>
-      <div id="resultadoLabel" class="resultLabel">RESULTADO</div>
+    <!-- ✅ ACIERTO + GANANCIA -->
+    <div class="aciertoGananciaCol">
+      <div>
+        <div id="aciertoBox" class="aciertoBox">—</div>
+        <div class="aciertoLabel">ACIERT0</div>
+      </div>
+
+      <div>
+        <div id="gananciaBox" class="gananciaBox">0</div>
+        <div class="gananciaLabel">GANANCIA</div>
+      </div>
     </div>
   </div>
 
+  <!-- ✅ Botón REINICIAR -->
   <div style="margin-top:12px;">
     <button onclick="resetear()">REINICIAR</button>
   </div>
@@ -265,9 +300,11 @@ button{
   <h3 style="color:black">EXPLOSIVOS</h3>
   <div id="explosivos" class="box explosivos">—</div>
 
+  <!-- ✅ REPUESTO -->
   <h3 id="repuestoTitle" class="repuestoTitle">REPUESTO</h3>
   <div id="repuesto" class="box repuesto">—</div>
 
+  <!-- A ... T -->
   <div class="abcWrap">
     <div id="A" class="abc"></div><div id="B" class="abc"></div><div id="C" class="abc"></div><div id="D" class="abc"></div><div id="E" class="abc"></div>
     <div id="F" class="abc"></div><div id="G" class="abc"></div><div id="H" class="abc"></div><div id="I" class="abc"></div><div id="J" class="abc"></div>
@@ -275,17 +312,21 @@ button{
     <div id="P" class="abc"></div><div id="Q" class="abc"></div><div id="R" class="abc"></div><div id="S" class="abc"></div><div id="T" class="abc"></div>
   </div>
 
+  <!-- PANEL ADMIN -->
   <div id="adminPanel" class="adminPanel hidden">
     <div class="adminTitle">CREAR USUARIO (CON VENCIMIENTO)</div>
+
     <div class="adminGrid">
       <input id="newUser" placeholder="Usuario">
       <input id="newPass" placeholder="Clave">
     </div>
+
     <div class="adminBtns">
       <button onclick="crearUsuario(1)">1 DÍA</button>
       <button onclick="crearUsuario(7)">7 DÍAS</button>
       <button onclick="crearUsuario(30)">30 DÍAS</button>
     </div>
+
     <div id="adminOut" class="adminOut"></div>
     <div class="smallNote">Se guarda en el servidor (backend).</div>
   </div>
@@ -297,43 +338,64 @@ const API = "https://s77-backend1.onrender.com";
 let TOKEN = "";
 let ROLE = "";
 
+/* ✅ Registrar Service Worker */
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js").catch(()=>{});
 }
 
+/* ============================
+   ✅ GANANCIA (amarillo): suma acumulativa de ACIERTO (azul)
+   - siempre visible
+   - solo reinicia con REINICIAR
+   - persiste en localStorage
+============================ */
+const GANANCIA_KEY = "S77_GANANCIA_V1";
+let gananciaAcum = Number(localStorage.getItem(GANANCIA_KEY) || 0);
+if (!Number.isFinite(gananciaAcum)) gananciaAcum = 0;
+
+function setGanancia(v){
+  const n = Number(v);
+  gananciaAcum = Number.isFinite(n) ? n : 0;
+  gananciaBox.textContent = String(Math.round(gananciaAcum));
+  localStorage.setItem(GANANCIA_KEY, String(gananciaAcum));
+}
+setGanancia(gananciaAcum);
+
+function setAcierto(v){
+  if (v === null || v === undefined) {
+    aciertoBox.textContent = "—";
+    return;
+  }
+  const n = Number(v);
+  aciertoBox.textContent = Number.isFinite(n) ? String(Math.round(n)) : "—";
+}
+
+function sumarGananciaDesdeAcierto(v){
+  const n = Number(v);
+  if(!Number.isFinite(n)) return;
+  setGanancia(gananciaAcum + n);
+}
+
+/* ✅ TOTAL (verde) */
 function setTotalFichas(v){
   const n = Number(v);
   totalFichas.textContent = Number.isFinite(n) ? String(Math.round(n)) : "0";
 }
 
-/* ✅ RESULTADO: mostrar/ocultar */
-function mostrarResultado(valor){
-  const box = document.getElementById("resultado");
-  const label = document.getElementById("resultadoLabel");
-  if(!box || !label) return;
-  box.style.display = "flex";
-  label.style.display = "block";
-  box.textContent = String(Math.round(Number(valor) || 0));
-}
-function ocultarResultado(){
-  const box = document.getElementById("resultado");
-  const label = document.getElementById("resultadoLabel");
-  if(!box || !label) return;
-  box.style.display = "none";
-  label.style.display = "none";
-  box.textContent = "0";
-}
-
 /* ✅ REPUESTO */
+let lastRepuestoSet = new Set();
 function renderRepuesto(arr, isRed){
   const title = document.getElementById("repuestoTitle");
   const box = document.getElementById("repuesto");
   if(!title || !box) return;
 
-  if(isRed && Array.isArray(arr) && arr.length){
+  const cleanArr = Array.isArray(arr) ? arr : [];
+  lastRepuestoSet = new Set(cleanArr);
+
+  if(isRed && cleanArr.length){
     title.style.display = "block";
     box.style.display = "block";
-    box.textContent = arr.join(" ");
+    box.textContent = cleanArr.join(" ");
   }else{
     title.style.display = "none";
     box.style.display = "none";
@@ -341,19 +403,25 @@ function renderRepuesto(arr, isRed){
   }
 }
 
+/* ✅ Validación número */
 function validarNumero(n){
   if(!Number.isInteger(n)) return { ok:false, msg:"Tenés que ingresar un número entero." };
   if(n < 0 || n > 36) return { ok:false, msg:"Solo se permiten números del 0 al 36." };
   return { ok:true, msg:"" };
 }
 
+/* ============================
+   ✅ ROJO
+============================ */
 let lastExplosivosSet = new Set();
-
 function setExplosivosWarning(on){
   if(on) explosivos.classList.add("warnRepeats");
   else explosivos.classList.remove("warnRepeats");
 }
 
+/* ============================
+   ✅ PAUSA A..T
+============================ */
 let conteoPausado = false;
 let cacheActiveId = "A";
 let cacheActiveMult = 1;
@@ -368,6 +436,7 @@ function ocultarAT(){
     el.textContent="";
   });
 }
+
 function mostrarAT(id, mult){
   ocultarAT();
   const elActive = document.getElementById(id);
@@ -376,6 +445,7 @@ function mostrarAT(id, mult){
     elActive.textContent = String(mult);
   }
 }
+
 function aplicarConteoDesdeBackend(activeId, activeMult){
   if(!cacheInicializado){
     cacheInicializado = true;
@@ -384,29 +454,38 @@ function aplicarConteoDesdeBackend(activeId, activeMult){
     mostrarAT(cacheActiveId, cacheActiveMult);
     return;
   }
+
   if(conteoPausado){
     mostrarAT(cacheActiveId, cacheActiveMult);
     return;
   }
+
   cacheActiveId = activeId || cacheActiveId;
   cacheActiveMult = Number(activeMult) || cacheActiveMult;
   mostrarAT(cacheActiveId, cacheActiveMult);
 }
+
 function syncPausaConteoConColor(){
   conteoPausado = explosivos.classList.contains("warnRepeats");
 }
 
+/* ============================
+   ADMIN
+============================ */
 async function crearUsuario(dias){
   if(ROLE !== "admin"){
     adminOut.innerHTML = "Solo admin puede crear usuarios.";
     return;
   }
+
   const u=(newUser.value||"").trim();
   const p=(newPass.value||"").trim();
+
   if(!u || !p){
     adminOut.innerHTML = "Falta <b>Usuario</b> y/o <b>Clave</b>.";
     return;
   }
+
   try{
     const r = await fetch(`${API}/admin/create-user`,{
       method:"POST",
@@ -416,40 +495,53 @@ async function crearUsuario(dias){
       },
       body: JSON.stringify({ user:u, pass:p, days:dias })
     });
+
     const data = await r.json();
+
     if(!r.ok){
       adminOut.innerHTML = "Error creando usuario (¿token inválido o no sos admin?)";
       return;
     }
+
     const expDate = new Date(data.exp).toLocaleString();
+
     adminOut.innerHTML =
       `✅ Creado/actualizado:<br>`+
       `<b>Usuario:</b> ${data.user}<br>`+
       `<b>Clave:</b> ${p}<br>`+
       `<b>Vence:</b> ${expDate} (${dias} día${dias===1?"":"s"})`;
+
   }catch(e){
     adminOut.innerHTML = "No conecta con el servidor. ¿Está prendido el backend?";
   }
 }
 
+/* ============================
+   LOGIN
+============================ */
 async function ingresar(){
   const u=(usuario.value||"").trim();
   const p=(clave.value||"").trim();
+
   if(!u || !p){
     err.innerText="Completa usuario y clave";
     return;
   }
+
   try{
     const r = await fetch(`${API}/auth/login`,{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ user:u, pass:p })
     });
+
     const data = await r.json();
+
     if(!r.ok){
       err.innerText="Usuario/clave inválidos o vencidos";
       return;
     }
+
     TOKEN = data.token;
     ROLE = data.role;
 
@@ -461,6 +553,7 @@ async function ingresar(){
     else adminPanel.classList.add("hidden");
 
     await cargarEstado();
+
   }catch(e){
     err.innerText="No conecta con el servidor. ¿Está prendido el backend?";
   }
@@ -482,6 +575,7 @@ async function cargarEstado(){
       method:"GET",
       headers:{ "Authorization": `Bearer ${TOKEN}` }
     });
+
     const data = await r.json();
 
     if(!r.ok){
@@ -490,15 +584,16 @@ async function cargarEstado(){
       setExplosivosWarning(false);
       syncPausaConteoConColor();
       lastExplosivosSet = new Set();
+      lastRepuestoSet = new Set();
       setTotalFichas(0);
       renderRepuesto([], false);
-      ocultarResultado();
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
       return;
     }
 
     casilleros.innerHTML="";
+
     if(data.historialLen < 17){
       casilleros.style.gridTemplateColumns="repeat(4,70px)";
       data.ultimos16.forEach(v=>{
@@ -506,7 +601,10 @@ async function cargarEstado(){
         c.disabled=true; c.value=v;
         casilleros.appendChild(c);
       });
-      if(data.historialLen === 0) renderInicial();
+
+      if(data.historialLen === 0){
+        renderInicial();
+      }
     }else{
       casilleros.style.gridTemplateColumns="repeat(5,70px)";
       data.ultimos5.forEach(v=>{
@@ -516,7 +614,10 @@ async function cargarEstado(){
       });
     }
 
-    explosivos.innerText = (data.explosivos && data.explosivos.length) ? data.explosivos.join(" ") : "—";
+    explosivos.innerText = (data.explosivos && data.explosivos.length)
+      ? data.explosivos.join(" ")
+      : "—";
+
     lastExplosivosSet = new Set(Array.isArray(data.explosivos) ? data.explosivos : []);
 
     setExplosivosWarning(!!data.warnRepeats);
@@ -526,9 +627,6 @@ async function cargarEstado(){
 
     setTotalFichas(data.fichasTotal);
 
-    // ✅ en refresh / state NO mostramos resultado (solo aparece en acierto)
-    ocultarResultado();
-
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
   }catch(e){
@@ -537,9 +635,9 @@ async function cargarEstado(){
     setExplosivosWarning(false);
     syncPausaConteoConColor();
     lastExplosivosSet = new Set();
+    lastRepuestoSet = new Set();
     setTotalFichas(0);
     renderRepuesto([], false);
-    ocultarResultado();
     if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
     else ocultarAT();
   }
@@ -550,6 +648,7 @@ async function resetear(){
     alert("Tenés que estar logueado.");
     return;
   }
+
   if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
 
   try{
@@ -557,16 +656,23 @@ async function resetear(){
       method:"POST",
       headers:{ "Authorization": `Bearer ${TOKEN}` }
     });
+
     if(!r.ok){
       alert("No se pudo reiniciar.");
       return;
     }
 
+    // ✅ reinicio visual
     setExplosivosWarning(false);
     syncPausaConteoConColor();
     setTotalFichas(0);
     renderRepuesto([], false);
-    ocultarResultado();
+
+    // ✅ ACIERTO vuelve a —
+    setAcierto(null);
+
+    // ✅ GANANCIA vuelve a 0 (solo con REINICIAR)
+    setGanancia(0);
 
     await cargarEstado();
   }catch(e){
@@ -574,6 +680,9 @@ async function resetear(){
   }
 }
 
+/* ============================
+   ENTER
+============================ */
 nuevo.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
 
@@ -588,6 +697,17 @@ nuevo.addEventListener("keydown", async (e) => {
     alert(v.msg);
     return;
   }
+
+  // ✅ “DEL MOMENTO” = multiplicador que estaba vigente ANTES del Enter
+  const multDelMomento = cacheInicializado ? cacheActiveMult : 1;
+
+  // ✅ estado rojo antes
+  const wasRedBeforeUI = explosivos.classList.contains("warnRepeats");
+
+  // ✅ detectar acierto antes (según lo que estaba buscando antes del Enter)
+  const aciertoExplosivos = (!wasRedBeforeUI) && lastExplosivosSet.has(n);
+  const aciertoRepuesto   = (wasRedBeforeUI)  && lastRepuestoSet.has(n);
+  const huboAcierto = aciertoExplosivos || aciertoRepuesto;
 
   nuevo.value = "";
 
@@ -608,7 +728,9 @@ nuevo.addEventListener("keydown", async (e) => {
       return;
     }
 
+    // Render casilleros
     casilleros.innerHTML = "";
+
     if (data.historialLen < 17) {
       casilleros.style.gridTemplateColumns = "repeat(4,70px)";
       data.ultimos16.forEach(v => {
@@ -617,7 +739,10 @@ nuevo.addEventListener("keydown", async (e) => {
         c.value = v;
         casilleros.appendChild(c);
       });
-      if(data.historialLen === 0) renderInicial();
+
+      if(data.historialLen === 0){
+        renderInicial();
+      }
     } else {
       casilleros.style.gridTemplateColumns = "repeat(5,70px)";
       data.ultimos5.forEach(v => {
@@ -628,7 +753,9 @@ nuevo.addEventListener("keydown", async (e) => {
       });
     }
 
-    explosivos.innerText = (data.explosivos && data.explosivos.length) ? data.explosivos.join(" ") : "—";
+    explosivos.innerText = (data.explosivos && data.explosivos.length)
+      ? data.explosivos.join(" ")
+      : "—";
 
     setExplosivosWarning(!!data.warnRepeats);
     syncPausaConteoConColor();
@@ -641,11 +768,14 @@ nuevo.addEventListener("keydown", async (e) => {
 
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
-    // ✅ RESULTADO: solo si el backend declara acierto
-    if (data.hitType && data.hitType !== "none") {
-      mostrarResultado(data.hitResult);
-    } else {
-      ocultarResultado();
+    // ✅ ACIERTO (azul) + GANANCIA (amarillo)
+    if(huboAcierto){
+      const totalActual = Number(data.fichasTotal || 0);
+      const aciertoVal = (multDelMomento * 36) - totalActual;
+      setAcierto(aciertoVal);
+      sumarGananciaDesdeAcierto(aciertoVal);
+    }else{
+      setAcierto(null);
     }
 
   } catch (err) {
