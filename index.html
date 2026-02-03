@@ -41,7 +41,7 @@ body{
   display:flex;
   justify-content:center;
   gap:15px;
-  align-items:flex-start; /* ✅ para alinear los dos casilleros */
+  align-items:flex-start; /* ✅ para alinear */
 }
 
 .ingresoInput{
@@ -59,7 +59,7 @@ body{
   font-weight:bold;
 }
 
-/* ✅ NUEVO: casillero TOTAL */
+/* ✅ casillero TOTAL */
 .totalBox{
   width:120px;
   height:70px;
@@ -67,7 +67,7 @@ body{
   font-weight:bold;
   border:4px solid #0b8f3a;
   background:#0b8f3a; /* verde */
-  color:#fff;         /* números blancos */
+  color:#fff;         /* blanco */
   text-align:center;
   display:flex;
   align-items:center;
@@ -80,6 +80,28 @@ body{
   color:#0b8f3a;
 }
 
+/* ✅ NUEVO: casillero RESULTADO (azul, números amarillos, solo visible con acierto) */
+.resultBox{
+  width:120px;
+  height:70px;
+  font-size:28px;
+  font-weight:bold;
+  border:4px solid #0057ff;
+  background:#0057ff; /* azul */
+  color:#ffd400;      /* amarillo */
+  text-align:center;
+  display:none;       /* oculto por defecto */
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+}
+.resultLabel{
+  margin-top:5px;
+  font-weight:bold;
+  color:#0057ff;
+  display:none;
+}
+
 .box{
   width:260px;
   min-height:60px;
@@ -90,8 +112,6 @@ body{
 }
 
 .explosivos{background:black;font-size:48px;}
-
-/* ✅ Aviso “2 repetidos en últimos 12” */
 .explosivos.warnRepeats{ background:red !important; }
 
 /* ✅ REPUESTO (fucsia, solo visible cuando ROJO) */
@@ -131,12 +151,12 @@ button{
   border:4px solid white;
   background:#0b57ff;
   color:white;
-  display:none; /* ocultos por defecto */
+  display:none;
   align-items:center;
   justify-content:center;
 }
 
-/* ====== LOGIN + PANEL ADMIN (USUARIOS CON VENCIMIENTO) ====== */
+/* ====== LOGIN + PANEL ADMIN ====== */
 .loginBox{
   display:inline-block;
   padding:14px 16px;
@@ -225,14 +245,19 @@ button{
       <div class="label" style="color:#1e90ff">INGRESO</div>
     </div>
 
-    <!-- ✅ NUEVO: TOTAL acumulado -->
+    <!-- ✅ TOTAL acumulado -->
     <div>
       <div id="totalFichas" class="totalBox">0</div>
       <div class="totalLabel">TOTAL</div>
     </div>
+
+    <!-- ✅ NUEVO: RESULTADO (solo visible con acierto) -->
+    <div>
+      <div id="resultado" class="resultBox">0</div>
+      <div id="resultadoLabel" class="resultLabel">RESULTADO</div>
+    </div>
   </div>
 
-  <!-- ✅ Botón REINICIAR -->
   <div style="margin-top:12px;">
     <button onclick="resetear()">REINICIAR</button>
   </div>
@@ -240,49 +265,27 @@ button{
   <h3 style="color:black">EXPLOSIVOS</h3>
   <div id="explosivos" class="box explosivos">—</div>
 
-  <!-- ✅ REPUESTO (solo visible si EXPLOSIVOS está ROJO) -->
   <h3 id="repuestoTitle" class="repuestoTitle">REPUESTO</h3>
   <div id="repuesto" class="box repuesto">—</div>
 
-  <!-- A ... T -->
   <div class="abcWrap">
-    <div id="A" class="abc"></div>
-    <div id="B" class="abc"></div>
-    <div id="C" class="abc"></div>
-    <div id="D" class="abc"></div>
-    <div id="E" class="abc"></div>
-    <div id="F" class="abc"></div>
-    <div id="G" class="abc"></div>
-    <div id="H" class="abc"></div>
-    <div id="I" class="abc"></div>
-    <div id="J" class="abc"></div>
-    <div id="K" class="abc"></div>
-    <div id="L" class="abc"></div>
-    <div id="M" class="abc"></div>
-    <div id="N" class="abc"></div>
-    <div id="O" class="abc"></div>
-    <div id="P" class="abc"></div>
-    <div id="Q" class="abc"></div>
-    <div id="R" class="abc"></div>
-    <div id="S" class="abc"></div>
-    <div id="T" class="abc"></div>
+    <div id="A" class="abc"></div><div id="B" class="abc"></div><div id="C" class="abc"></div><div id="D" class="abc"></div><div id="E" class="abc"></div>
+    <div id="F" class="abc"></div><div id="G" class="abc"></div><div id="H" class="abc"></div><div id="I" class="abc"></div><div id="J" class="abc"></div>
+    <div id="K" class="abc"></div><div id="L" class="abc"></div><div id="M" class="abc"></div><div id="N" class="abc"></div><div id="O" class="abc"></div>
+    <div id="P" class="abc"></div><div id="Q" class="abc"></div><div id="R" class="abc"></div><div id="S" class="abc"></div><div id="T" class="abc"></div>
   </div>
 
-  <!-- ====== PANEL ADMIN: CREAR USUARIOS (CON VENCIMIENTO) ====== -->
   <div id="adminPanel" class="adminPanel hidden">
     <div class="adminTitle">CREAR USUARIO (CON VENCIMIENTO)</div>
-
     <div class="adminGrid">
       <input id="newUser" placeholder="Usuario">
       <input id="newPass" placeholder="Clave">
     </div>
-
     <div class="adminBtns">
       <button onclick="crearUsuario(1)">1 DÍA</button>
       <button onclick="crearUsuario(7)">7 DÍAS</button>
       <button onclick="crearUsuario(30)">30 DÍAS</button>
     </div>
-
     <div id="adminOut" class="adminOut"></div>
     <div class="smallNote">Se guarda en el servidor (backend).</div>
   </div>
@@ -294,18 +297,34 @@ const API = "https://s77-backend1.onrender.com";
 let TOKEN = "";
 let ROLE = "";
 
-/* ✅ Registrar Service Worker (ayuda a que Chrome muestre "Instalar") */
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js").catch(()=>{});
 }
 
-// ✅ pinta el TOTAL (viene del backend: data.fichasTotal)
 function setTotalFichas(v){
   const n = Number(v);
   totalFichas.textContent = Number.isFinite(n) ? String(Math.round(n)) : "0";
 }
 
-// ✅ REPUESTO: mostrar/ocultar (solo si está ROJO)
+/* ✅ RESULTADO: mostrar/ocultar */
+function mostrarResultado(valor){
+  const box = document.getElementById("resultado");
+  const label = document.getElementById("resultadoLabel");
+  if(!box || !label) return;
+  box.style.display = "flex";
+  label.style.display = "block";
+  box.textContent = String(Math.round(Number(valor) || 0));
+}
+function ocultarResultado(){
+  const box = document.getElementById("resultado");
+  const label = document.getElementById("resultadoLabel");
+  if(!box || !label) return;
+  box.style.display = "none";
+  label.style.display = "none";
+  box.textContent = "0";
+}
+
+/* ✅ REPUESTO */
 function renderRepuesto(arr, isRed){
   const title = document.getElementById("repuestoTitle");
   const box = document.getElementById("repuesto");
@@ -322,29 +341,20 @@ function renderRepuesto(arr, isRed){
   }
 }
 
-// ✅ Validación simple del número (ruleta europea: 0..36)
 function validarNumero(n){
   if(!Number.isInteger(n)) return { ok:false, msg:"Tenés que ingresar un número entero." };
   if(n < 0 || n > 36) return { ok:false, msg:"Solo se permiten números del 0 al 36." };
   return { ok:true, msg:"" };
 }
 
-/* ============================
-   ✅ AVISO “2 REPETIDOS EN 12”
-   (Ahora lo maneja el backend con data.warnRepeats)
-============================ */
-let lastExplosivosSet = new Set(); // explosivos del cálculo anterior (antes del Enter)
+let lastExplosivosSet = new Set();
 
 function setExplosivosWarning(on){
   if(on) explosivos.classList.add("warnRepeats");
   else explosivos.classList.remove("warnRepeats");
 }
 
-/* ============================
-   ✅ PAUSA CONTEO A..T SI EXPLOSIVOS ESTÁ ROJO
-============================ */
 let conteoPausado = false;
-// cache del “último valor válido” mostrado
 let cacheActiveId = "A";
 let cacheActiveMult = 1;
 let cacheInicializado = false;
@@ -358,7 +368,6 @@ function ocultarAT(){
     el.textContent="";
   });
 }
-
 function mostrarAT(id, mult){
   ocultarAT();
   const elActive = document.getElementById(id);
@@ -367,8 +376,6 @@ function mostrarAT(id, mult){
     elActive.textContent = String(mult);
   }
 }
-
-// Actualiza el conteo SOLO si no está pausado (o si es la primera vez)
 function aplicarConteoDesdeBackend(activeId, activeMult){
   if(!cacheInicializado){
     cacheInicializado = true;
@@ -377,20 +384,14 @@ function aplicarConteoDesdeBackend(activeId, activeMult){
     mostrarAT(cacheActiveId, cacheActiveMult);
     return;
   }
-
   if(conteoPausado){
-    // NO actualizar: queda congelado
     mostrarAT(cacheActiveId, cacheActiveMult);
     return;
   }
-
-  // normal: actualizar y guardar cache
   cacheActiveId = activeId || cacheActiveId;
   cacheActiveMult = Number(activeMult) || cacheActiveMult;
   mostrarAT(cacheActiveId, cacheActiveMult);
 }
-
-// recalcula si está pausado mirando el color (rojo = pausado)
 function syncPausaConteoConColor(){
   conteoPausado = explosivos.classList.contains("warnRepeats");
 }
@@ -400,15 +401,12 @@ async function crearUsuario(dias){
     adminOut.innerHTML = "Solo admin puede crear usuarios.";
     return;
   }
-
   const u=(newUser.value||"").trim();
   const p=(newPass.value||"").trim();
-
   if(!u || !p){
     adminOut.innerHTML = "Falta <b>Usuario</b> y/o <b>Clave</b>.";
     return;
   }
-
   try{
     const r = await fetch(`${API}/admin/create-user`,{
       method:"POST",
@@ -418,22 +416,17 @@ async function crearUsuario(dias){
       },
       body: JSON.stringify({ user:u, pass:p, days:dias })
     });
-
     const data = await r.json();
-
     if(!r.ok){
       adminOut.innerHTML = "Error creando usuario (¿token inválido o no sos admin?)";
       return;
     }
-
     const expDate = new Date(data.exp).toLocaleString();
-
     adminOut.innerHTML =
       `✅ Creado/actualizado:<br>`+
       `<b>Usuario:</b> ${data.user}<br>`+
       `<b>Clave:</b> ${p}<br>`+
       `<b>Vence:</b> ${expDate} (${dias} día${dias===1?"":"s"})`;
-
   }catch(e){
     adminOut.innerHTML = "No conecta con el servidor. ¿Está prendido el backend?";
   }
@@ -442,26 +435,21 @@ async function crearUsuario(dias){
 async function ingresar(){
   const u=(usuario.value||"").trim();
   const p=(clave.value||"").trim();
-
   if(!u || !p){
     err.innerText="Completa usuario y clave";
     return;
   }
-
   try{
     const r = await fetch(`${API}/auth/login`,{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ user:u, pass:p })
     });
-
     const data = await r.json();
-
     if(!r.ok){
       err.innerText="Usuario/clave inválidos o vencidos";
       return;
     }
-
     TOKEN = data.token;
     ROLE = data.role;
 
@@ -473,7 +461,6 @@ async function ingresar(){
     else adminPanel.classList.add("hidden");
 
     await cargarEstado();
-
   }catch(e){
     err.innerText="No conecta con el servidor. ¿Está prendido el backend?";
   }
@@ -495,7 +482,6 @@ async function cargarEstado(){
       method:"GET",
       headers:{ "Authorization": `Bearer ${TOKEN}` }
     });
-
     const data = await r.json();
 
     if(!r.ok){
@@ -506,13 +492,13 @@ async function cargarEstado(){
       lastExplosivosSet = new Set();
       setTotalFichas(0);
       renderRepuesto([], false);
+      ocultarResultado();
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
       return;
     }
 
     casilleros.innerHTML="";
-
     if(data.historialLen < 17){
       casilleros.style.gridTemplateColumns="repeat(4,70px)";
       data.ultimos16.forEach(v=>{
@@ -520,10 +506,7 @@ async function cargarEstado(){
         c.disabled=true; c.value=v;
         casilleros.appendChild(c);
       });
-
-      if(data.historialLen === 0){
-        renderInicial();
-      }
+      if(data.historialLen === 0) renderInicial();
     }else{
       casilleros.style.gridTemplateColumns="repeat(5,70px)";
       data.ultimos5.forEach(v=>{
@@ -533,25 +516,19 @@ async function cargarEstado(){
       });
     }
 
-    // Explosivos
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
-      : "—";
-
-    // Guardar explosivos actuales como “anteriores” para el próximo Enter
+    explosivos.innerText = (data.explosivos && data.explosivos.length) ? data.explosivos.join(" ") : "—";
     lastExplosivosSet = new Set(Array.isArray(data.explosivos) ? data.explosivos : []);
 
-    // ✅ ROJO 100% desde backend
     setExplosivosWarning(!!data.warnRepeats);
     syncPausaConteoConColor();
 
-    // ✅ REPUESTO visible SOLO si warnRepeats=true
     renderRepuesto(data.repuesto, !!data.warnRepeats);
 
-    // ✅ TOTAL desde backend
     setTotalFichas(data.fichasTotal);
 
-    // ✅ A..T (se congela si está rojo)
+    // ✅ en refresh / state NO mostramos resultado (solo aparece en acierto)
+    ocultarResultado();
+
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
   }catch(e){
@@ -562,6 +539,7 @@ async function cargarEstado(){
     lastExplosivosSet = new Set();
     setTotalFichas(0);
     renderRepuesto([], false);
+    ocultarResultado();
     if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
     else ocultarAT();
   }
@@ -572,7 +550,6 @@ async function resetear(){
     alert("Tenés que estar logueado.");
     return;
   }
-
   if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
 
   try{
@@ -580,7 +557,6 @@ async function resetear(){
       method:"POST",
       headers:{ "Authorization": `Bearer ${TOKEN}` }
     });
-
     if(!r.ok){
       alert("No se pudo reiniciar.");
       return;
@@ -590,6 +566,7 @@ async function resetear(){
     syncPausaConteoConColor();
     setTotalFichas(0);
     renderRepuesto([], false);
+    ocultarResultado();
 
     await cargarEstado();
   }catch(e){
@@ -631,9 +608,7 @@ nuevo.addEventListener("keydown", async (e) => {
       return;
     }
 
-    // Render casilleros
     casilleros.innerHTML = "";
-
     if (data.historialLen < 17) {
       casilleros.style.gridTemplateColumns = "repeat(4,70px)";
       data.ultimos16.forEach(v => {
@@ -642,10 +617,7 @@ nuevo.addEventListener("keydown", async (e) => {
         c.value = v;
         casilleros.appendChild(c);
       });
-
-      if(data.historialLen === 0){
-        renderInicial();
-      }
+      if(data.historialLen === 0) renderInicial();
     } else {
       casilleros.style.gridTemplateColumns = "repeat(5,70px)";
       data.ultimos5.forEach(v => {
@@ -656,26 +628,25 @@ nuevo.addEventListener("keydown", async (e) => {
       });
     }
 
-    // Explosivos (texto)
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
-      : "—";
+    explosivos.innerText = (data.explosivos && data.explosivos.length) ? data.explosivos.join(" ") : "—";
 
-    // ✅ ROJO 100% desde backend
     setExplosivosWarning(!!data.warnRepeats);
     syncPausaConteoConColor();
 
-    // ✅ REPUESTO visible SOLO si warnRepeats=true
     renderRepuesto(data.repuesto, !!data.warnRepeats);
 
-    // ✅ TOTAL desde backend
     setTotalFichas(data.fichasTotal);
 
-    // Guardar explosivos actuales para el próximo Enter
     lastExplosivosSet = new Set(Array.isArray(data.explosivos) ? data.explosivos : []);
 
-    // ✅ A..T: si está rojo queda congelado, si negro se actualiza normal
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
+
+    // ✅ RESULTADO: solo si el backend declara acierto
+    if (data.hitType && data.hitType !== "none") {
+      mostrarResultado(data.hitResult);
+    } else {
+      ocultarResultado();
+    }
 
   } catch (err) {
     alert("No conecta con el backend. ¿Está prendido?");
