@@ -263,24 +263,13 @@ function validarNumero(n){
 
 /* ============================
    ✅ AVISO “2 REPETIDOS EN 12”
+   (Ahora lo maneja el backend con data.warnRepeats)
 ============================ */
 let lastExplosivosSet = new Set(); // explosivos del cálculo anterior (antes del Enter)
 
 function setExplosivosWarning(on){
   if(on) explosivos.classList.add("warnRepeats");
   else explosivos.classList.remove("warnRepeats");
-}
-
-// Devuelve true si en los últimos 12 hay 2 o más números repetidos (2+ apariciones)
-function hayDosRepetidosEnUltimos12(lista){
-  const last12 = lista.slice(-12);
-  const counts = new Map();
-  for(const x of last12){
-    counts.set(x, (counts.get(x) || 0) + 1);
-  }
-  let repetidosDistintos = 0;
-  counts.forEach(v => { if(v >= 2) repetidosDistintos++; });
-  return repetidosDistintos >= 2;
 }
 
 /* ============================
@@ -447,7 +436,6 @@ async function cargarEstado(){
       setExplosivosWarning(false);
       syncPausaConteoConColor();
       lastExplosivosSet = new Set();
-      // mostrar lo que haya cacheado
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
       return;
@@ -483,9 +471,8 @@ async function cargarEstado(){
     // Guardar explosivos actuales como “anteriores” para el próximo Enter
     lastExplosivosSet = new Set(Array.isArray(data.explosivos) ? data.explosivos : []);
 
-    // estado aviso repetidos
-    const baseList = Array.isArray(data.ultimos16) ? data.ultimos16 : [];
-    setExplosivosWarning(hayDosRepetidosEnUltimos12(baseList));
+    // ✅ ROJO 100% desde backend
+    setExplosivosWarning(!!data.warnRepeats);
     syncPausaConteoConColor();
 
     // ✅ A..T (se congela si está rojo)
@@ -521,7 +508,6 @@ async function resetear(){
       return;
     }
 
-    // opcional: al reset dejar aviso apagado
     setExplosivosWarning(false);
     syncPausaConteoConColor();
 
@@ -546,7 +532,7 @@ nuevo.addEventListener("keydown", async (e) => {
     return;
   }
 
-  // ✅ ACIERTO: el número ingresado estaba en explosivos ANTES del Enter
+  // ACIERTO (se usa igual para saber si el backend va a apagar el rojo)
   const acierto = lastExplosivosSet.has(n);
 
   nuevo.value = "";
@@ -598,19 +584,8 @@ nuevo.addEventListener("keydown", async (e) => {
       ? data.explosivos.join(" ")
       : "—";
 
-    // ✅ Aviso “2 repetidos en últimos 12”
-    // - Se prende si hay 2 repetidos en los últimos 12
-    // - PERO si hubo acierto, se apaga (vuelve al color inicial)
-    const list16 = Array.isArray(data.ultimos16) ? data.ultimos16 : [];
-    const warn = hayDosRepetidosEnUltimos12(list16);
-
-    if(acierto){
-      setExplosivosWarning(false);
-    }else{
-      setExplosivosWarning(warn);
-    }
-
-    // ✅ sincroniza pausa (si rojo, pausa; si negro, reanuda)
+    // ✅ ROJO 100% desde backend (si hubo acierto, el backend ya lo manda en false)
+    setExplosivosWarning(!!data.warnRepeats);
     syncPausaConteoConColor();
 
     // Guardar explosivos actuales para el próximo Enter
