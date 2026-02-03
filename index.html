@@ -283,6 +283,61 @@ function hayDosRepetidosEnUltimos12(lista){
   return repetidosDistintos >= 2;
 }
 
+/* ============================
+   ✅ PAUSA CONTEO A..T SI EXPLOSIVOS ESTÁ ROJO
+============================ */
+let conteoPausado = false;
+// cache del “último valor válido” mostrado
+let cacheActiveId = "A";
+let cacheActiveMult = 1;
+let cacheInicializado = false;
+
+function ocultarAT(){
+  const ids = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.style.display="none";
+    el.textContent="";
+  });
+}
+
+function mostrarAT(id, mult){
+  ocultarAT();
+  const elActive = document.getElementById(id);
+  if (elActive) {
+    elActive.style.display = "flex";
+    elActive.textContent = String(mult);
+  }
+}
+
+// Actualiza el conteo SOLO si no está pausado (o si es la primera vez)
+function aplicarConteoDesdeBackend(activeId, activeMult){
+  if(!cacheInicializado){
+    cacheInicializado = true;
+    cacheActiveId = activeId || "A";
+    cacheActiveMult = Number(activeMult) || 1;
+    mostrarAT(cacheActiveId, cacheActiveMult);
+    return;
+  }
+
+  if(conteoPausado){
+    // NO actualizar: queda congelado
+    mostrarAT(cacheActiveId, cacheActiveMult);
+    return;
+  }
+
+  // normal: actualizar y guardar cache
+  cacheActiveId = activeId || cacheActiveId;
+  cacheActiveMult = Number(activeMult) || cacheActiveMult;
+  mostrarAT(cacheActiveId, cacheActiveMult);
+}
+
+// recalcula si está pausado mirando el color (rojo = pausado)
+function syncPausaConteoConColor(){
+  conteoPausado = explosivos.classList.contains("warnRepeats");
+}
+
 async function crearUsuario(dias){
   if(ROLE !== "admin"){
     adminOut.innerHTML = "Solo admin puede crear usuarios.";
@@ -377,16 +432,6 @@ function renderInicial(){
   }
 }
 
-function ocultarAT(){
-  const ids = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"];
-  ids.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    el.style.display="none";
-    el.textContent="";
-  });
-}
-
 async function cargarEstado(){
   try{
     const r = await fetch(`${API}/api/state`,{
@@ -398,10 +443,13 @@ async function cargarEstado(){
 
     if(!r.ok){
       renderInicial();
-      ocultarAT();
       explosivos.innerText = "—";
       setExplosivosWarning(false);
+      syncPausaConteoConColor();
       lastExplosivosSet = new Set();
+      // mostrar lo que haya cacheado
+      if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
+      else ocultarAT();
       return;
     }
 
@@ -435,24 +483,22 @@ async function cargarEstado(){
     // Guardar explosivos actuales como “anteriores” para el próximo Enter
     lastExplosivosSet = new Set(Array.isArray(data.explosivos) ? data.explosivos : []);
 
-    // ✅ estado del aviso por repetidos (sin “acierto” acá)
+    // estado aviso repetidos
     const baseList = Array.isArray(data.ultimos16) ? data.ultimos16 : [];
     setExplosivosWarning(hayDosRepetidosEnUltimos12(baseList));
+    syncPausaConteoConColor();
 
-    // A..T
-    ocultarAT();
-    const elActive = document.getElementById(data.activeId);
-    if(elActive){
-      elActive.style.display="flex";
-      elActive.textContent = String(data.activeMult);
-    }
+    // ✅ A..T (se congela si está rojo)
+    aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
   }catch(e){
     renderInicial();
-    ocultarAT();
     explosivos.innerText = "—";
     setExplosivosWarning(false);
+    syncPausaConteoConColor();
     lastExplosivosSet = new Set();
+    if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
+    else ocultarAT();
   }
 }
 
@@ -474,6 +520,10 @@ async function resetear(){
       alert("No se pudo reiniciar.");
       return;
     }
+
+    // opcional: al reset dejar aviso apagado
+    setExplosivosWarning(false);
+    syncPausaConteoConColor();
 
     await cargarEstado();
   }catch(e){
@@ -543,7 +593,7 @@ nuevo.addEventListener("keydown", async (e) => {
       });
     }
 
-    // Explosivos
+    // Explosivos (texto)
     explosivos.innerText = (data.explosivos && data.explosivos.length)
       ? data.explosivos.join(" ")
       : "—";
@@ -560,16 +610,14 @@ nuevo.addEventListener("keydown", async (e) => {
       setExplosivosWarning(warn);
     }
 
+    // ✅ sincroniza pausa (si rojo, pausa; si negro, reanuda)
+    syncPausaConteoConColor();
+
     // Guardar explosivos actuales para el próximo Enter
     lastExplosivosSet = new Set(Array.isArray(data.explosivos) ? data.explosivos : []);
 
-    // A..T
-    ocultarAT();
-    const elActive = document.getElementById(data.activeId);
-    if (elActive) {
-      elActive.style.display = "flex";
-      elActive.textContent = String(data.activeMult);
-    }
+    // ✅ A..T: si está rojo queda congelado, si negro se actualiza normal
+    aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
   } catch (err) {
     alert("No conecta con el backend. ¿Está prendido?");
