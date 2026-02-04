@@ -57,7 +57,7 @@ body{
   font-weight:bold;
 }
 
-/* ✅ TOTAL (verde) */
+/* TOTAL */
 .totalBox{
   width:120px;
   height:70px;
@@ -66,19 +66,14 @@ body{
   border:4px solid #0b8f3a;
   background:#0b8f3a;
   color:#fff;
-  text-align:center;
   display:flex;
   align-items:center;
   justify-content:center;
   border-radius:8px;
 }
-.totalLabel{
-  margin-top:5px;
-  font-weight:bold;
-  color:#0b8f3a;
-}
+.totalLabel{color:#0b8f3a;font-weight:bold;}
 
-/* ✅ ACIERTO (azul) - SOLO VISIBLE cuando hay acierto válido */
+/* ACIERTO */
 .aciertoBox{
   width:120px;
   height:70px;
@@ -87,20 +82,18 @@ body{
   border:4px solid #0b57ff;
   background:#0b57ff;
   color:#ffd700;
-  text-align:center;
   display:none;
   align-items:center;
   justify-content:center;
   border-radius:8px;
 }
 .aciertoLabel{
-  margin-top:5px;
-  font-weight:bold;
   color:#0b57ff;
+  font-weight:bold;
   display:none;
 }
 
-/* ✅ GANANCIA (amarillo) */
+/* GANANCIA */
 .gananciaBox{
   width:120px;
   height:70px;
@@ -109,25 +102,20 @@ body{
   border:4px solid #ffd400;
   background:#ffd400;
   color:#0b57ff;
-  text-align:center;
   display:flex;
   align-items:center;
   justify-content:center;
   border-radius:8px;
 }
-.gananciaLabel{
-  margin-top:5px;
-  font-weight:bold;
-  color:#ffd400;
-}
+.gananciaLabel{color:#ffd400;font-weight:bold;}
 
-/* ✅ NUEVO: ACIERTO + GANANCIA lado a lado */
-.aciertoGananciaRow{
+.aciertoGananciaCol{
   display:flex;
+  flex-direction:column;
   gap:10px;
-  align-items:flex-start;
 }
 
+/* BOXES */
 .box{
   width:260px;
   min-height:60px;
@@ -136,23 +124,17 @@ body{
   font-weight:bold;
   padding:5px;
 }
-
 .explosivos{background:black;font-size:48px;}
-.explosivos.warnRepeats{ background:red !important; }
+.explosivos.warnRepeats{background:red!important;}
 
-/* ✅ REPUESTO */
 .repuesto{
   background:#ff00ff;
-  color:#fff;
+  color:white;
   font-size:48px;
   display:none;
 }
-.repuestoTitle{
-  color:black;
-  margin-top:10px;
-  display:none;
-}
 
+/* BOTONES */
 button{
   padding:10px;
   background:maroon;
@@ -162,18 +144,17 @@ button{
   border-radius:8px;
 }
 
+/* A..T */
 .abcWrap{
   display:flex;
   gap:10px;
   justify-content:center;
-  margin-top:12px;
   flex-wrap:wrap;
 }
 .abc{
   width:70px;
   height:70px;
   font-size:34px;
-  font-weight:bold;
   border:4px solid white;
   background:#0b57ff;
   color:white;
@@ -182,62 +163,23 @@ button{
   justify-content:center;
 }
 
-/* LOGIN + ADMIN */
+/* LOGIN */
 .loginBox{
-  display:inline-block;
-  padding:14px 16px;
   border:2px solid #444;
   border-radius:10px;
+  padding:16px;
+  display:inline-block;
 }
-.loginRow{ margin:8px 0; }
 .loginInput{
   width:220px;
   height:36px;
   font-size:18px;
-  padding:6px 10px;
-  border:2px solid #444;
   background:#111;
-  color:#fff;
-  border-radius:8px;
-}
-
-.adminPanel{
-  width:340px;
-  margin:18px auto 0;
+  color:white;
   border:2px solid #444;
-  border-radius:10px;
-  padding:12px;
-  text-align:left;
-}
-.adminTitle{ font-weight:bold; margin-bottom:10px; }
-.adminGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-.adminGrid input{
-  width:100%;
-  height:34px;
-  font-size:16px;
-  padding:4px 8px;
-  border:2px solid #444;
-  background:#111;
-  color:#fff;
   border-radius:8px;
-}
-.adminBtns{ display:flex; gap:8px; margin-top:10px; }
-.adminBtns button{ flex:1; padding:10px 0; }
-.adminOut{
-  margin-top:10px;
-  font-size:14px;
-  color:#ddd;
-  word-break:break-word;
-  line-height:1.35;
-}
-.smallNote{
-  margin-top:6px;
-  font-size:12px;
-  color:#aaa;
+  padding:5px;
+  margin:5px;
 }
 </style>
 </head>
@@ -247,489 +189,175 @@ button{
 <h1>SISTEMA S77 FULL</h1>
 
 <div id="login" class="loginBox">
-  <div class="loginRow">
-    <input id="usuario" class="loginInput" placeholder="Usuario">
-  </div>
-  <div class="loginRow">
-    <input id="clave" class="loginInput" placeholder="Clave">
-  </div>
-  <div class="loginRow">
-    <button onclick="ingresar()">INGRESAR</button>
-  </div>
-  <p id="err" style="color:red;margin:6px 0 0;"></p>
+  <input id="usuario" class="loginInput" placeholder="Usuario"><br>
+  <input id="clave" class="loginInput" placeholder="Clave"><br>
+  <button onclick="ingresar()">INGRESAR</button>
+  <p id="err" style="color:red"></p>
 </div>
 
 <div id="sistema" class="hidden">
 
-  <div class="inputs" id="casilleros"></div>
+<div class="inputs" id="casilleros"></div>
 
-  <br>
+<br>
 
-  <div class="ingreso">
+<div class="ingreso">
+  <div>
+    <input id="nuevo" class="ingresoInput">
+    <div class="label" style="color:#1e90ff">INGRESO</div>
+  </div>
+
+  <div>
+    <div id="totalFichas" class="totalBox">0</div>
+    <div class="totalLabel">TOTAL</div>
+  </div>
+
+  <div class="aciertoGananciaCol">
     <div>
-      <input id="nuevo" class="ingresoInput">
-      <div class="label" style="color:#1e90ff">INGRESO</div>
+      <div id="aciertoBox" class="aciertoBox">0</div>
+      <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
     </div>
 
     <div>
-      <div id="totalFichas" class="totalBox">0</div>
-      <div class="totalLabel">TOTAL</div>
-    </div>
-
-    <!-- ✅ ACIERTO + GANANCIA lado a lado -->
-    <div class="aciertoGananciaRow">
-      <div>
-        <div id="aciertoBox" class="aciertoBox">0</div>
-        <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
-      </div>
-
-      <div>
-        <div id="gananciaBox" class="gananciaBox">0</div>
-        <div class="gananciaLabel">GANANCIA</div>
-      </div>
+      <div id="gananciaBox" class="gananciaBox">0</div>
+      <div class="gananciaLabel">GANANCIA</div>
     </div>
   </div>
+</div>
 
-  <div style="margin-top:12px;">
-    <button onclick="resetear()">REINICIAR</button>
-  </div>
+<br>
+<button onclick="resetear()">REINICIAR</button>
 
-  <h3 style="color:black">EXPLOSIVOS</h3>
-  <div id="explosivos" class="box explosivos">—</div>
+<h3 style="color:black">EXPLOSIVOS</h3>
+<div id="explosivos" class="box explosivos">—</div>
 
-  <h3 id="repuestoTitle" class="repuestoTitle">REPUESTO</h3>
-  <div id="repuesto" class="box repuesto">—</div>
+<!-- 🔥 CASILLERO FUCSIA SIN TEXTO -->
+<div id="repuesto" class="box repuesto">—</div>
 
-  <div class="abcWrap">
-    <div id="A" class="abc"></div><div id="B" class="abc"></div><div id="C" class="abc"></div><div id="D" class="abc"></div><div id="E" class="abc"></div>
-    <div id="F" class="abc"></div><div id="G" class="abc"></div><div id="H" class="abc"></div><div id="I" class="abc"></div><div id="J" class="abc"></div>
-    <div id="K" class="abc"></div><div id="L" class="abc"></div><div id="M" class="abc"></div><div id="N" class="abc"></div><div id="O" class="abc"></div>
-    <div id="P" class="abc"></div><div id="Q" class="abc"></div><div id="R" class="abc"></div><div id="S" class="abc"></div><div id="T" class="abc"></div>
-  </div>
-
-  <div id="adminPanel" class="adminPanel hidden">
-    <div class="adminTitle">CREAR USUARIO (CON VENCIMIENTO)</div>
-
-    <div class="adminGrid">
-      <input id="newUser" placeholder="Usuario">
-      <input id="newPass" placeholder="Clave">
-    </div>
-
-    <div class="adminBtns">
-      <button onclick="crearUsuario(1)">1 DÍA</button>
-      <button onclick="crearUsuario(7)">7 DÍAS</button>
-      <button onclick="crearUsuario(30)">30 DÍAS</button>
-    </div>
-
-    <div id="adminOut" class="adminOut"></div>
-    <div class="smallNote">Se guarda en el servidor (backend).</div>
-  </div>
+<div class="abcWrap">
+  <div id="A" class="abc"></div><div id="B" class="abc"></div><div id="C" class="abc"></div>
+  <div id="D" class="abc"></div><div id="E" class="abc"></div><div id="F" class="abc"></div>
+  <div id="G" class="abc"></div><div id="H" class="abc"></div><div id="I" class="abc"></div>
+  <div id="J" class="abc"></div><div id="K" class="abc"></div><div id="L" class="abc"></div>
+  <div id="M" class="abc"></div><div id="N" class="abc"></div><div id="O" class="abc"></div>
+  <div id="P" class="abc"></div><div id="Q" class="abc"></div><div id="R" class="abc"></div>
+  <div id="S" class="abc"></div><div id="T" class="abc"></div>
+</div>
 
 </div>
 
 <script>
-const API = "https://s77-backend1.onrender.com";
-let TOKEN = "";
-let ROLE = "";
+const API="https://s77-backend1.onrender.com";
+let TOKEN="";
 
-/* Service Worker */
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js").catch(()=>{});
-}
-
-/* ============================
-   GANANCIA (amarillo)
-============================ */
-const GANANCIA_KEY = "S77_GANANCIA_V1";
-let gananciaAcum = Number(localStorage.getItem(GANANCIA_KEY) || 0);
-if (!Number.isFinite(gananciaAcum)) gananciaAcum = 0;
+/* GANANCIA */
+let ganancia=Number(localStorage.getItem("S77_GANANCIA")||0);
+gananciaBox.textContent=ganancia;
 
 function setGanancia(v){
-  const n = Number(v);
-  gananciaAcum = Number.isFinite(n) ? n : 0;
-  gananciaBox.textContent = String(Math.round(gananciaAcum));
-  localStorage.setItem(GANANCIA_KEY, String(gananciaAcum));
+  ganancia=v;
+  gananciaBox.textContent=v;
+  localStorage.setItem("S77_GANANCIA",v);
 }
-setGanancia(gananciaAcum);
 
-/* ============================
-   ✅ ACIERTO (azul) - solo visible si backend dice que es válido
-============================ */
-function renderAcierto(show, value){
-  const box = document.getElementById("aciertoBox");
-  const lab = document.getElementById("aciertoLabel");
-  if(!box || !lab) return;
-
+function renderAcierto(show,val){
   if(show){
-    box.style.display = "flex";
-    lab.style.display = "block";
-    box.textContent = String(Math.round(Number(value)||0));
+    aciertoBox.style.display="flex";
+    aciertoLabel.style.display="block";
+    aciertoBox.textContent=val;
+    setGanancia(ganancia+val);
   }else{
-    box.style.display = "none";
-    lab.style.display = "none";
-    box.textContent = "0";
-  }
-}
-
-function sumarGananciaDesdeAcierto(value){
-  const n = Number(value);
-  if(!Number.isFinite(n)) return;
-  setGanancia(gananciaAcum + n);
-}
-
-/* TOTAL (verde) */
-function setTotalFichas(v){
-  const n = Number(v);
-  totalFichas.textContent = Number.isFinite(n) ? String(Math.round(n)) : "0";
-}
-
-/* REPUESTO */
-function renderRepuesto(arr, isRed){
-  const title = document.getElementById("repuestoTitle");
-  const box = document.getElementById("repuesto");
-  if(!title || !box) return;
-
-  const cleanArr = Array.isArray(arr) ? arr : [];
-
-  if(isRed && cleanArr.length){
-    title.style.display = "block";
-    box.style.display = "block";
-    box.textContent = cleanArr.join(" ");
-  }else{
-    title.style.display = "none";
-    box.style.display = "none";
-    box.textContent = "—";
-  }
-}
-
-/* Validación */
-function validarNumero(n){
-  if(!Number.isInteger(n)) return { ok:false, msg:"Tenés que ingresar un número entero." };
-  if(n < 0 || n > 36) return { ok:false, msg:"Solo se permiten números del 0 al 36." };
-  return { ok:true, msg:"" };
-}
-
-/* ROJO */
-function setExplosivosWarning(on){
-  if(on) explosivos.classList.add("warnRepeats");
-  else explosivos.classList.remove("warnRepeats");
-}
-
-/* PAUSA A..T */
-let conteoPausado = false;
-let cacheActiveId = "A";
-let cacheActiveMult = 1;
-let cacheInicializado = false;
-
-function ocultarAT(){
-  const ids = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"];
-  ids.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    el.style.display="none";
-    el.textContent="";
-  });
-}
-function mostrarAT(id, mult){
-  ocultarAT();
-  const elActive = document.getElementById(id);
-  if (elActive) {
-    elActive.style.display = "flex";
-    elActive.textContent = String(mult);
-  }
-}
-function aplicarConteoDesdeBackend(activeId, activeMult){
-  if(!cacheInicializado){
-    cacheInicializado = true;
-    cacheActiveId = activeId || "A";
-    cacheActiveMult = Number(activeMult) || 1;
-    mostrarAT(cacheActiveId, cacheActiveMult);
-    return;
-  }
-  if(conteoPausado){
-    mostrarAT(cacheActiveId, cacheActiveMult);
-    return;
-  }
-  cacheActiveId = activeId || cacheActiveId;
-  cacheActiveMult = Number(activeMult) || cacheActiveMult;
-  mostrarAT(cacheActiveId, cacheActiveMult);
-}
-function syncPausaConteoConColor(){
-  conteoPausado = explosivos.classList.contains("warnRepeats");
-}
-
-/* ADMIN */
-async function crearUsuario(dias){
-  if(ROLE !== "admin"){
-    adminOut.innerHTML = "Solo admin puede crear usuarios.";
-    return;
-  }
-  const u=(newUser.value||"").trim();
-  const p=(newPass.value||"").trim();
-  if(!u || !p){
-    adminOut.innerHTML = "Falta <b>Usuario</b> y/o <b>Clave</b>.";
-    return;
-  }
-  try{
-    const r = await fetch(`${API}/admin/create-user`,{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization": `Bearer ${TOKEN}`
-      },
-      body: JSON.stringify({ user:u, pass:p, days:dias })
-    });
-
-    const data = await r.json();
-    if(!r.ok){
-      adminOut.innerHTML = "Error creando usuario (¿token inválido o no sos admin?)";
-      return;
-    }
-    const expDate = new Date(data.exp).toLocaleString();
-    adminOut.innerHTML =
-      `✅ Creado/actualizado:<br>`+
-      `<b>Usuario:</b> ${data.user}<br>`+
-      `<b>Clave:</b> ${p}<br>`+
-      `<b>Vence:</b> ${expDate} (${dias} día${dias===1?"":"s"})`;
-  }catch(e){
-    adminOut.innerHTML = "No conecta con el servidor. ¿Está prendido el backend?";
+    aciertoBox.style.display="none";
+    aciertoLabel.style.display="none";
   }
 }
 
 /* LOGIN */
 async function ingresar(){
-  const u=(usuario.value||"").trim();
-  const p=(clave.value||"").trim();
-  if(!u || !p){
-    err.innerText="Completa usuario y clave";
+  const u=usuario.value;
+  const p=clave.value;
+
+  const r=await fetch(API+"/auth/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({user:u,pass:p})
+  });
+
+  const data=await r.json();
+  if(!r.ok){
+    err.textContent="Error login";
     return;
   }
 
-  try{
-    const r = await fetch(`${API}/auth/login`,{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ user:u, pass:p })
-    });
-
-    const data = await r.json();
-    if(!r.ok){
-      err.innerText="Usuario/clave inválidos o vencidos";
-      return;
-    }
-
-    TOKEN = data.token;
-    ROLE = data.role;
-
-    err.innerText="";
-    login.classList.add("hidden");
-    sistema.classList.remove("hidden");
-
-    if(ROLE === "admin") adminPanel.classList.remove("hidden");
-    else adminPanel.classList.add("hidden");
-
-    await cargarEstado();
-  }catch(e){
-    err.innerText="No conecta con el servidor. ¿Está prendido el backend?";
-  }
+  TOKEN=data.token;
+  login.classList.add("hidden");
+  sistema.classList.remove("hidden");
+  cargarEstado();
 }
 
-function renderInicial(){
-  casilleros.innerHTML="";
-  casilleros.style.gridTemplateColumns="repeat(4,70px)";
-  for(let i=0;i<16;i++){
-    let c=document.createElement("input");
-    c.disabled=true;
-    casilleros.appendChild(c);
-  }
-}
-
+/* STATE */
 async function cargarEstado(){
-  try{
-    const r = await fetch(`${API}/api/state`,{
-      method:"GET",
-      headers:{ "Authorization": `Bearer ${TOKEN}` }
-    });
+  const r=await fetch(API+"/api/state",{headers:{Authorization:"Bearer "+TOKEN}});
+  const data=await r.json();
 
-    const data = await r.json();
+  totalFichas.textContent=data.fichasTotal;
+  explosivos.textContent=data.explosivos.join(" ")||"—";
 
-    if(!r.ok){
-      renderInicial();
-      explosivos.innerText = "—";
-      setExplosivosWarning(false);
-      syncPausaConteoConColor();
-      setTotalFichas(0);
-      renderRepuesto([], false);
-      renderAcierto(false, 0);
-      if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
-      else ocultarAT();
-      return;
-    }
+  if(data.warnRepeats) explosivos.classList.add("warnRepeats");
+  else explosivos.classList.remove("warnRepeats");
 
-    casilleros.innerHTML="";
-
-    if(data.historialLen < 17){
-      casilleros.style.gridTemplateColumns="repeat(4,70px)";
-      data.ultimos16.forEach(v=>{
-        const c=document.createElement("input");
-        c.disabled=true; c.value=v;
-        casilleros.appendChild(c);
-      });
-      if(data.historialLen === 0) renderInicial();
-    }else{
-      casilleros.style.gridTemplateColumns="repeat(5,70px)";
-      data.ultimos5.forEach(v=>{
-        const c=document.createElement("input");
-        c.disabled=true; c.value=v;
-        casilleros.appendChild(c);
-      });
-    }
-
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
-      : "—";
-
-    setExplosivosWarning(!!data.warnRepeats);
-    syncPausaConteoConColor();
-
-    renderRepuesto(data.repuesto, !!data.warnRepeats);
-
-    setTotalFichas(data.fichasTotal);
-
-    aplicarConteoDesdeBackend(data.activeId, data.activeMult);
-
-    renderAcierto(false, 0);
-
-  }catch(e){
-    renderInicial();
-    explosivos.innerText = "—";
-    setExplosivosWarning(false);
-    syncPausaConteoConColor();
-    setTotalFichas(0);
-    renderRepuesto([], false);
-    renderAcierto(false, 0);
-    if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
-    else ocultarAT();
+  if(data.warnRepeats && data.repuesto.length){
+    repuesto.style.display="block";
+    repuesto.textContent=data.repuesto.join(" ");
+  }else{
+    repuesto.style.display="none";
   }
+
+  renderAcierto(false,0);
 }
 
+/* RESET */
 async function resetear(){
-  if(!TOKEN){
-    alert("Tenés que estar logueado.");
-    return;
-  }
-  if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
-
-  try{
-    const r = await fetch(`${API}/api/reset`,{
-      method:"POST",
-      headers:{ "Authorization": `Bearer ${TOKEN}` }
-    });
-
-    if(!r.ok){
-      alert("No se pudo reiniciar.");
-      return;
-    }
-
-    setExplosivosWarning(false);
-    syncPausaConteoConColor();
-    setTotalFichas(0);
-    renderRepuesto([], false);
-
-    renderAcierto(false, 0);
-    setGanancia(0);
-
-    await cargarEstado();
-  }catch(e){
-    alert("No conecta con el backend.");
-  }
+  await fetch(API+"/api/reset",{method:"POST",headers:{Authorization:"Bearer "+TOKEN}});
+  setGanancia(0);
+  renderAcierto(false,0);
+  cargarEstado();
 }
 
 /* ENTER */
-nuevo.addEventListener("keydown", async (e) => {
-  if (e.key !== "Enter") return;
+nuevo.addEventListener("keydown",async e=>{
+  if(e.key!=="Enter") return;
 
-  if(!TOKEN){
-    alert("Primero tenés que ingresar con usuario y clave.");
-    return;
+  const n=parseInt(nuevo.value);
+  nuevo.value="";
+
+  const r=await fetch(API+"/api/enter",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:"Bearer "+TOKEN
+    },
+    body:JSON.stringify({n})
+  });
+
+  const data=await r.json();
+
+  totalFichas.textContent=data.fichasTotal;
+  explosivos.textContent=data.explosivos.join(" ")||"—";
+
+  if(data.warnRepeats) explosivos.classList.add("warnRepeats");
+  else explosivos.classList.remove("warnRepeats");
+
+  if(data.warnRepeats && data.repuesto.length){
+    repuesto.style.display="block";
+    repuesto.textContent=data.repuesto.join(" ");
+  }else{
+    repuesto.style.display="none";
   }
 
-  const n = parseInt(nuevo.value, 10);
-  const v = validarNumero(n);
-  if(!v.ok){
-    alert(v.msg);
-    return;
-  }
-
-  nuevo.value = "";
-
-  try {
-    const r = await fetch(`${API}/api/enter`, {
-      method: "POST",
-      headers: {
-        "Content-Type":"application/json",
-        "Authorization": `Bearer ${TOKEN}`
-      },
-      body: JSON.stringify({ n })
-    });
-
-    const data = await r.json();
-    if (!r.ok) {
-      alert("No autorizado o error del servidor.");
-      return;
-    }
-
-    casilleros.innerHTML = "";
-
-    if (data.historialLen < 17) {
-      casilleros.style.gridTemplateColumns = "repeat(4,70px)";
-      data.ultimos16.forEach(v => {
-        const c = document.createElement("input");
-        c.disabled = true;
-        c.value = v;
-        casilleros.appendChild(c);
-      });
-      if(data.historialLen === 0) renderInicial();
-    } else {
-      casilleros.style.gridTemplateColumns = "repeat(5,70px)";
-      data.ultimos5.forEach(v => {
-        const c = document.createElement("input");
-        c.disabled = true;
-        c.value = v;
-        casilleros.appendChild(c);
-      });
-    }
-
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
-      : "—";
-
-    setExplosivosWarning(!!data.warnRepeats);
-    syncPausaConteoConColor();
-
-    renderRepuesto(data.repuesto, !!data.warnRepeats);
-
-    setTotalFichas(data.fichasTotal);
-
-    aplicarConteoDesdeBackend(data.activeId, data.activeMult);
-
-    // ✅ ACIERTO correcto (backend) + solo cuando es válido
-    const show = !!data.aciertoShow;
-    const val  = Number(data.aciertoValue);
-
-    renderAcierto(show, val);
-
-    // ✅ GANANCIA suma SOLO cuando hay acierto válido
-    if(show){
-      sumarGananciaDesdeAcierto(val);
-    }
-
-  } catch (err) {
-    alert("No conecta con el backend. ¿Está prendido?");
-  }
+  renderAcierto(data.aciertoShow,data.aciertoValue);
 });
 </script>
 
 </body>
 </html>
-
