@@ -334,8 +334,40 @@ let ROLE = "";
 
 /* Service Worker */
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js").catch(()=>{});
+  navigator.serviceWorker.register("./sw.js").then((reg) => {
+    // ✅ chequea updates apenas carga
+    reg.update().catch(()=>{});
+
+    // ✅ si hay un SW nuevo esperando, lo activamos ya
+    if (reg.waiting) {
+      reg.waiting.postMessage({ type: "SKIP_WAITING" });
+    }
+
+    // ✅ cuando aparece una nueva versión
+    reg.addEventListener("updatefound", () => {
+      const newWorker = reg.installing;
+      if (!newWorker) return;
+
+      newWorker.addEventListener("statechange", () => {
+        if (newWorker.state === "installed") {
+          // si ya había uno controlando, entonces es update real
+          if (navigator.serviceWorker.controller) {
+            newWorker.postMessage({ type: "SKIP_WAITING" });
+          }
+        }
+      });
+    });
+
+    // ✅ cuando el SW nuevo toma control, recargamos para agarrar el HTML nuevo
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+  }).catch(()=>{});
 }
+
 
 /* ============================
    GANANCIA (amarillo)
@@ -728,3 +760,4 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
+
