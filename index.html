@@ -121,16 +121,10 @@ body{
   color:#ffd400;
 }
 
-/* ✅ ACIERTO + GANANCIA: ahora van LADO A LADO */
-.aciertoGananciaRow{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-}
-.aciertoGananciaItem{
+.aciertoGananciaCol{
   display:flex;
   flex-direction:column;
-  align-items:center;
+  gap:10px;
 }
 
 .box{
@@ -142,15 +136,27 @@ body{
   padding:5px;
 }
 
+/* ✅ EXPLOSIVOS: normal negro; ROJO y AZUL por avisos */
 .explosivos{background:black;font-size:48px;}
-.explosivos.warnRepeats{ background:red !important; }
+.explosivos.warnRepeats{ background:red !important; }      /* 2 repetidos en 12 */
+.explosivos.warnTriples{ background:#0b57ff !important; }  /* 3 repetidos en 20 */
 
-/* ✅ REPUESTO (fucsia, solo visible cuando ROJO) */
+/* ✅ REPUESTO */
 .repuesto{
   background:#ff00ff;
   color:#fff;
   font-size:48px;
   display:none;
+}
+.repuestoTitle{
+  color:#ff00ff;
+  margin-top:10px;
+  display:none;
+}
+/* ✅ cuando hay 3 repetidos: REPUESTO blanco */
+.repuesto.whiteMode{
+  background:#ffffff !important;
+  color:#000000 !important;
 }
 
 button{
@@ -276,14 +282,13 @@ button{
       <div class="totalLabel">TOTAL</div>
     </div>
 
-    <!-- ✅ ACIERTO + GANANCIA (lado a lado) -->
-    <div class="aciertoGananciaRow">
-      <div class="aciertoGananciaItem">
+    <div class="aciertoGananciaCol">
+      <div>
         <div id="aciertoBox" class="aciertoBox">0</div>
         <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
       </div>
 
-      <div class="aciertoGananciaItem">
+      <div>
         <div id="gananciaBox" class="gananciaBox">0</div>
         <div class="gananciaLabel">GANANCIA</div>
       </div>
@@ -297,7 +302,7 @@ button{
   <h3 style="color:black">EXPLOSIVOS</h3>
   <div id="explosivos" class="box explosivos">—</div>
 
-  <!-- ✅ SIN TEXTO "REPUESTO": solo el casillero fucsia -->
+  <h3 id="repuestoTitle" class="repuestoTitle">REPUESTO</h3>
   <div id="repuesto" class="box repuesto">—</div>
 
   <div class="abcWrap">
@@ -334,40 +339,8 @@ let ROLE = "";
 
 /* Service Worker */
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js").then((reg) => {
-    // ✅ chequea updates apenas carga
-    reg.update().catch(()=>{});
-
-    // ✅ si hay un SW nuevo esperando, lo activamos ya
-    if (reg.waiting) {
-      reg.waiting.postMessage({ type: "SKIP_WAITING" });
-    }
-
-    // ✅ cuando aparece una nueva versión
-    reg.addEventListener("updatefound", () => {
-      const newWorker = reg.installing;
-      if (!newWorker) return;
-
-      newWorker.addEventListener("statechange", () => {
-        if (newWorker.state === "installed") {
-          // si ya había uno controlando, entonces es update real
-          if (navigator.serviceWorker.controller) {
-            newWorker.postMessage({ type: "SKIP_WAITING" });
-          }
-        }
-      });
-    });
-
-    // ✅ cuando el SW nuevo toma control, recargamos para agarrar el HTML nuevo
-    let refreshing = false;
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (refreshing) return;
-      refreshing = true;
-      window.location.reload();
-    });
-  }).catch(()=>{});
+  navigator.serviceWorker.register("./sw.js").catch(()=>{});
 }
-
 
 /* ============================
    GANANCIA (amarillo)
@@ -415,17 +388,41 @@ function setTotalFichas(v){
   totalFichas.textContent = Number.isFinite(n) ? String(Math.round(n)) : "0";
 }
 
-/* ✅ CASILLERO FUCSIA (antes llamado repuesto) */
-function renderRepuesto(arr, isRed){
+/* ============================
+   ✅ AVISOS (ROJO/AZUL)
+   - red: explosivos rojo
+   - blue: explosivos azul y repuesto blanco
+============================ */
+function getWarnModeFromData(data){
+  if(data && typeof data.warnMode === "string") return data.warnMode;
+  if(data && data.warnRepeats) return "red";
+  return "none";
+}
+
+function aplicarWarnMode(mode){
+  explosivos.classList.remove("warnRepeats","warnTriples");
+  if(mode === "red") explosivos.classList.add("warnRepeats");
+  if(mode === "blue") explosivos.classList.add("warnTriples");
+}
+
+/* REPUESTO */
+function renderRepuesto(arr, mode){
+  const title = document.getElementById("repuestoTitle");
   const box = document.getElementById("repuesto");
-  if(!box) return;
+  if(!title || !box) return;
 
   const cleanArr = Array.isArray(arr) ? arr : [];
+  const show = (mode !== "none") && cleanArr.length;
 
-  if(isRed && cleanArr.length){
+  // blanco solo en AZUL
+  box.classList.toggle("whiteMode", mode === "blue");
+
+  if(show){
+    title.style.display = "block";
     box.style.display = "block";
     box.textContent = cleanArr.join(" ");
   }else{
+    title.style.display = "none";
     box.style.display = "none";
     box.textContent = "—";
   }
@@ -438,13 +435,7 @@ function validarNumero(n){
   return { ok:true, msg:"" };
 }
 
-/* ROJO */
-function setExplosivosWarning(on){
-  if(on) explosivos.classList.add("warnRepeats");
-  else explosivos.classList.remove("warnRepeats");
-}
-
-/* PAUSA A..T */
+/* PAUSA A..T (si hay aviso rojo o azul) */
 let conteoPausado = false;
 let cacheActiveId = "A";
 let cacheActiveMult = 1;
@@ -484,7 +475,9 @@ function aplicarConteoDesdeBackend(activeId, activeMult){
   mostrarAT(cacheActiveId, cacheActiveMult);
 }
 function syncPausaConteoConColor(){
-  conteoPausado = explosivos.classList.contains("warnRepeats");
+  conteoPausado =
+    explosivos.classList.contains("warnRepeats") ||
+    explosivos.classList.contains("warnTriples");
 }
 
 /* ADMIN */
@@ -585,10 +578,10 @@ async function cargarEstado(){
     if(!r.ok){
       renderInicial();
       explosivos.innerText = "—";
-      setExplosivosWarning(false);
+      aplicarWarnMode("none");
       syncPausaConteoConColor();
       setTotalFichas(0);
-      renderRepuesto([], false);
+      renderRepuesto([], "none");
       renderAcierto(false, 0);
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
@@ -618,11 +611,14 @@ async function cargarEstado(){
       ? data.explosivos.join(" ")
       : "—";
 
-    setExplosivosWarning(!!data.warnRepeats);
+    const mode = getWarnModeFromData(data);
+    aplicarWarnMode(mode);
     syncPausaConteoConColor();
 
-    renderRepuesto(data.repuesto, !!data.warnRepeats);
+    renderRepuesto(data.repuesto, mode);
+
     setTotalFichas(data.fichasTotal);
+
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
     // al cargar estado, ACIERTO no se muestra
@@ -631,10 +627,10 @@ async function cargarEstado(){
   }catch(e){
     renderInicial();
     explosivos.innerText = "—";
-    setExplosivosWarning(false);
+    aplicarWarnMode("none");
     syncPausaConteoConColor();
     setTotalFichas(0);
-    renderRepuesto([], false);
+    renderRepuesto([], "none");
     renderAcierto(false, 0);
     if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
     else ocultarAT();
@@ -659,10 +655,10 @@ async function resetear(){
       return;
     }
 
-    setExplosivosWarning(false);
+    aplicarWarnMode("none");
     syncPausaConteoConColor();
     setTotalFichas(0);
-    renderRepuesto([], false);
+    renderRepuesto([], "none");
 
     renderAcierto(false, 0);
     setGanancia(0);
@@ -732,22 +728,23 @@ nuevo.addEventListener("keydown", async (e) => {
       ? data.explosivos.join(" ")
       : "—";
 
-    setExplosivosWarning(!!data.warnRepeats);
+    const mode = getWarnModeFromData(data);
+    aplicarWarnMode(mode);
     syncPausaConteoConColor();
 
-    renderRepuesto(data.repuesto, !!data.warnRepeats);
+    renderRepuesto(data.repuesto, mode);
 
     setTotalFichas(data.fichasTotal);
 
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
-    // ✅ ACIERTO correcto (backend) + solo cuando es válido
+    // ACIERTO (backend) + solo cuando es válido
     const show = !!data.aciertoShow;
     const val  = Number(data.aciertoValue);
 
     renderAcierto(show, val);
 
-    // ✅ GANANCIA suma SOLO cuando hay acierto válido
+    // GANANCIA suma SOLO cuando hay acierto válido
     if(show){
       sumarGananciaDesdeAcierto(val);
     }
@@ -760,4 +757,3 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
-
