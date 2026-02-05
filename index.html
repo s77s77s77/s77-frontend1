@@ -19,227 +19,93 @@ body{
 }
 .hidden{display:none;}
 
-.inputs{
-  display:grid;
-  gap:10px;
-  justify-content:center;
-}
+.inputs{display:grid;gap:10px;justify-content:center;}
 .inputs input{
-  width:70px;
-  height:70px;
-  font-size:34px;
-  font-weight:bold;
-  border:4px solid #444;
-  background:#333;
-  color:white;
-  text-align:center;
+  width:70px;height:70px;font-size:34px;font-weight:bold;
+  border:4px solid #444;background:#333;color:white;text-align:center;
 }
 
-.ingreso{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  align-items:flex-start;
-}
-
+.ingreso{display:flex;justify-content:center;gap:15px;align-items:flex-start;}
 .ingresoInput{
-  width:70px;
-  height:70px;
-  font-size:34px;
-  border:4px solid #1e90ff;
-  background:#1e90ff;
-  color:#ccc;
-  text-align:center;
+  width:70px;height:70px;font-size:34px;
+  border:4px solid #1e90ff;background:#1e90ff;color:#ccc;text-align:center;
 }
 
-.label{
-  margin-top:5px;
-  font-weight:bold;
-}
+.label{margin-top:5px;font-weight:bold;}
 
-/* ✅ TOTAL (verde) */
+/* TOTAL */
 .totalBox{
-  width:120px;
-  height:70px;
-  font-size:34px;
-  font-weight:bold;
-  border:4px solid #0b8f3a;
-  background:#0b8f3a;
-  color:#fff;
-  text-align:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:8px;
+  width:120px;height:70px;font-size:34px;font-weight:bold;
+  border:4px solid #0b8f3a;background:#0b8f3a;color:#fff;
+  text-align:center;display:flex;align-items:center;justify-content:center;border-radius:8px;
 }
-.totalLabel{
-  margin-top:5px;
-  font-weight:bold;
-  color:#0b8f3a;
-}
+.totalLabel{margin-top:5px;font-weight:bold;color:#0b8f3a;}
 
-/* ✅ ACIERTO (azul) */
+/* ACIERTO */
 .aciertoBox{
-  width:120px;
-  height:70px;
-  font-size:54px;
-  font-weight:bold;
-  border:4px solid #0b57ff;
-  background:#0b57ff;
-  color:#ffd700;
-  text-align:center;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  border-radius:8px;
+  width:120px;height:70px;font-size:54px;font-weight:bold;
+  border:4px solid #0b57ff;background:#0b57ff;color:#ffd700;
+  text-align:center;display:none;align-items:center;justify-content:center;border-radius:8px;
 }
-.aciertoLabel{
-  margin-top:5px;
-  font-weight:bold;
-  color:#0b57ff;
-  display:none;
-}
+.aciertoLabel{margin-top:5px;font-weight:bold;color:#0b57ff;display:none;}
 
-/* ✅ GANANCIA (amarillo) */
+/* GANANCIA */
 .gananciaBox{
-  width:120px;
-  height:70px;
-  font-size:38px;
-  font-weight:bold;
-  border:4px solid #ffd400;
-  background:#ffd400;
-  color:#0b57ff;
-  text-align:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:8px;
+  width:120px;height:70px;font-size:38px;font-weight:bold;
+  border:4px solid #ffd400;background:#ffd400;color:#0b57ff;
+  text-align:center;display:flex;align-items:center;justify-content:center;border-radius:8px;
 }
-.gananciaLabel{
-  margin-top:5px;
-  font-weight:bold;
-  color:#ffd400;
-}
+.gananciaLabel{margin-top:5px;font-weight:bold;color:#ffd400;}
 
-.aciertoGananciaCol{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+.aciertoGananciaCol{display:flex;flex-direction:column;gap:10px;}
 
 .box{
-  width:260px;
-  min-height:60px;
-  margin:10px auto;
-  border:6px solid #444;
-  font-weight:bold;
-  padding:5px;
+  width:260px;min-height:60px;margin:10px auto;border:6px solid #444;
+  font-weight:bold;padding:5px;
 }
 
-/* ✅ EXPLOSIVOS: normal negro; ROJO y AZUL por avisos */
+/* EXPLOSIVOS */
 .explosivos{background:black;font-size:48px;}
-.explosivos.warnRepeats{ background:red !important; }      /* 2 repetidos en 12 */
-.explosivos.warnTriples{ background:#0b57ff !important; }  /* 3 repetidos en 20 */
+.explosivos.warnRepeats{ background:red !important; }
+.explosivos.warnTriples{ background:#0b57ff !important; }
 
-/* ✅ REPUESTO */
+/* REPUESTO */
 .repuesto{
-  background:#ff00ff;
-  color:#fff;
-  font-size:48px;
-  display:none;
+  background:#ff00ff;color:#fff;font-size:48px;display:none;
 }
-.repuestoTitle{
-  color:#ff00ff;
-  margin-top:10px;
-  display:none;
-}
+.repuestoTitle{color:#ff00ff;margin-top:10px;display:none;}
 
-button{
-  padding:10px;
-  background:maroon;
-  color:white;
-  font-weight:bold;
-  border:none;
-  border-radius:8px;
-}
+button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;border-radius:8px;}
 
-.abcWrap{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  margin-top:12px;
-  flex-wrap:wrap;
-}
+.abcWrap{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
 .abc{
-  width:70px;
-  height:70px;
-  font-size:34px;
-  font-weight:bold;
-  border:4px solid white;
-  background:#0b57ff;
-  color:white;
-  display:none;
-  align-items:center;
-  justify-content:center;
+  width:70px;height:70px;font-size:34px;font-weight:bold;
+  border:4px solid white;background:#0b57ff;color:white;
+  display:none;align-items:center;justify-content:center;
 }
 
 /* LOGIN + ADMIN */
-.loginBox{
-  display:inline-block;
-  padding:14px 16px;
-  border:2px solid #444;
-  border-radius:10px;
-}
-.loginRow{ margin:8px 0; }
+.loginBox{display:inline-block;padding:14px 16px;border:2px solid #444;border-radius:10px;}
+.loginRow{margin:8px 0;}
 .loginInput{
-  width:220px;
-  height:36px;
-  font-size:18px;
-  padding:6px 10px;
-  border:2px solid #444;
-  background:#111;
-  color:#fff;
-  border-radius:8px;
+  width:220px;height:36px;font-size:18px;padding:6px 10px;
+  border:2px solid #444;background:#111;color:#fff;border-radius:8px;
 }
 
 .adminPanel{
-  width:340px;
-  margin:18px auto 0;
-  border:2px solid #444;
-  border-radius:10px;
-  padding:12px;
-  text-align:left;
+  width:340px;margin:18px auto 0;border:2px solid #444;border-radius:10px;
+  padding:12px;text-align:left;
 }
-.adminTitle{ font-weight:bold; margin-bottom:10px; }
-.adminGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
+.adminTitle{font-weight:bold;margin-bottom:10px;}
+.adminGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .adminGrid input{
-  width:100%;
-  height:34px;
-  font-size:16px;
-  padding:4px 8px;
-  border:2px solid #444;
-  background:#111;
-  color:#fff;
-  border-radius:8px;
+  width:100%;height:34px;font-size:16px;padding:4px 8px;
+  border:2px solid #444;background:#111;color:#fff;border-radius:8px;
 }
-.adminBtns{ display:flex; gap:8px; margin-top:10px; }
-.adminBtns button{ flex:1; padding:10px 0; }
-.adminOut{
-  margin-top:10px;
-  font-size:14px;
-  color:#ddd;
-  word-break:break-word;
-  line-height:1.35;
-}
-.smallNote{
-  margin-top:6px;
-  font-size:12px;
-  color:#aaa;
-}
+.adminBtns{display:flex;gap:8px;margin-top:10px;}
+.adminBtns button{flex:1;padding:10px 0;}
+.adminOut{margin-top:10px;font-size:14px;color:#ddd;word-break:break-word;line-height:1.35;}
+.smallNote{margin-top:6px;font-size:12px;color:#aaa;}
 </style>
 </head>
 
@@ -248,15 +114,9 @@ button{
 <h1>SISTEMA S77 FULL</h1>
 
 <div id="login" class="loginBox">
-  <div class="loginRow">
-    <input id="usuario" class="loginInput" placeholder="Usuario">
-  </div>
-  <div class="loginRow">
-    <input id="clave" class="loginInput" placeholder="Clave">
-  </div>
-  <div class="loginRow">
-    <button onclick="ingresar()">INGRESAR</button>
-  </div>
+  <div class="loginRow"><input id="usuario" class="loginInput" placeholder="Usuario"></div>
+  <div class="loginRow"><input id="clave" class="loginInput" placeholder="Clave"></div>
+  <div class="loginRow"><button onclick="ingresar()">INGRESAR</button></div>
   <p id="err" style="color:red;margin:6px 0 0;"></p>
 </div>
 
@@ -332,14 +192,11 @@ const API = "https://s77-backend1.onrender.com";
 let TOKEN = "";
 let ROLE = "";
 
-/* Service Worker */
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js").catch(()=>{});
 }
 
-/* ============================
-   GANANCIA (amarillo)
-============================ */
+/* GANANCIA */
 const GANANCIA_KEY = "S77_GANANCIA_V1";
 let gananciaAcum = Number(localStorage.getItem(GANANCIA_KEY) || 0);
 if (!Number.isFinite(gananciaAcum)) gananciaAcum = 0;
@@ -352,7 +209,6 @@ function setGanancia(v){
 }
 setGanancia(gananciaAcum);
 
-/* ACIERTO */
 function renderAcierto(show, value){
   const box = document.getElementById("aciertoBox");
   const lab = document.getElementById("aciertoLabel");
@@ -375,7 +231,6 @@ function sumarGananciaDesdeAcierto(value){
   setGanancia(gananciaAcum + n);
 }
 
-/* TOTAL (verde) */
 function setTotalFichas(v){
   const n = Number(v);
   totalFichas.textContent = Number.isFinite(n) ? String(Math.round(n)) : "0";
@@ -395,10 +250,20 @@ function aplicarWarnMode(mode){
   if(m === "red") explosivos.classList.add("warnRepeats");
   if(m === "blue") explosivos.classList.add("warnTriples");
 
-  // ✅ No ocultamos nada en AZUL. Solo cambia el color.
+  // ✅ PEDIDO: en AZUL no querés ver EXPLOSIVOS NI REPUESTO
   const expTitle = document.getElementById("explosivosTitle");
-  if(expTitle) expTitle.style.display = "block";
-  explosivos.style.display = "block";
+  const repTitle = document.getElementById("repuestoTitle");
+  const repBox   = document.getElementById("repuesto");
+
+  const hideBoth = (m === "blue");
+
+  if(expTitle) expTitle.style.display = hideBoth ? "none" : "block";
+  explosivos.style.display = hideBoth ? "none" : "block";
+
+  if(hideBoth){
+    if(repTitle) repTitle.style.display = "none";
+    if(repBox){ repBox.style.display = "none"; repBox.textContent = "—"; }
+  }
 }
 
 /* REPUESTO: SOLO visible en ROJO */
@@ -421,14 +286,13 @@ function renderRepuesto(arr, mode){
   }
 }
 
-/* Validación */
 function validarNumero(n){
   if(!Number.isInteger(n)) return { ok:false, msg:"Tenés que ingresar un número entero." };
   if(n < 0 || n > 36) return { ok:false, msg:"Solo se permiten números del 0 al 36." };
   return { ok:true, msg:"" };
 }
 
-/* PAUSA A..T (si hay aviso rojo o azul) */
+/* PAUSA A..T */
 let conteoPausado = false;
 let cacheActiveId = "A";
 let cacheActiveMult = 1;
@@ -494,10 +358,9 @@ async function crearUsuario(dias){
       },
       body: JSON.stringify({ user:u, pass:p, days:dias })
     });
-
     const data = await r.json();
     if(!r.ok){
-      adminOut.innerHTML = "Error creando usuario (¿token inválido o no sos admin?)";
+      adminOut.innerHTML = "Error creando usuario.";
       return;
     }
     const expDate = new Date(data.exp).toLocaleString();
@@ -505,9 +368,9 @@ async function crearUsuario(dias){
       `✅ Creado/actualizado:<br>`+
       `<b>Usuario:</b> ${data.user}<br>`+
       `<b>Clave:</b> ${p}<br>`+
-      `<b>Vence:</b> ${expDate} (${dias} día${dias===1?"":"s"})`;
+      `<b>Vence:</b> ${expDate}`;
   }catch(e){
-    adminOut.innerHTML = "No conecta con el servidor. ¿Está prendido el backend?";
+    adminOut.innerHTML = "No conecta con el servidor.";
   }
 }
 
@@ -545,7 +408,7 @@ async function ingresar(){
 
     await cargarEstado();
   }catch(e){
-    err.innerText="No conecta con el servidor. ¿Está prendido el backend?";
+    err.innerText="No conecta con el servidor.";
   }
 }
 
@@ -570,19 +433,18 @@ async function cargarEstado(){
 
     if(!r.ok){
       renderInicial();
-      explosivos.innerText = "—";
+      explosivos.innerText="—";
       aplicarWarnMode("none");
       syncPausaConteoConColor();
       setTotalFichas(0);
       renderRepuesto([], "none");
-      renderAcierto(false, 0);
+      renderAcierto(false,0);
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
       return;
     }
 
     casilleros.innerHTML="";
-
     if(data.historialLen < 17){
       casilleros.style.gridTemplateColumns="repeat(4,70px)";
       data.ultimos16.forEach(v=>{
@@ -590,7 +452,7 @@ async function cargarEstado(){
         c.disabled=true; c.value=v;
         casilleros.appendChild(c);
       });
-      if(data.historialLen === 0) renderInicial();
+      if(data.historialLen===0) renderInicial();
     }else{
       casilleros.style.gridTemplateColumns="repeat(5,70px)";
       data.ultimos5.forEach(v=>{
@@ -600,40 +462,33 @@ async function cargarEstado(){
       });
     }
 
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
-      : "—";
+    explosivos.innerText=(data.explosivos && data.explosivos.length)?data.explosivos.join(" "):"—";
 
-    const mode = getWarnModeFromData(data);
+    const mode=getWarnModeFromData(data);
     aplicarWarnMode(mode);
     syncPausaConteoConColor();
 
     renderRepuesto(data.repuesto, mode);
-
     setTotalFichas(data.fichasTotal);
-
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
-
-    renderAcierto(false, 0);
+    renderAcierto(false,0);
 
   }catch(e){
     renderInicial();
-    explosivos.innerText = "—";
+    explosivos.innerText="—";
     aplicarWarnMode("none");
     syncPausaConteoConColor();
     setTotalFichas(0);
     renderRepuesto([], "none");
-    renderAcierto(false, 0);
+    renderAcierto(false,0);
     if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
     else ocultarAT();
   }
 }
 
+/* RESET */
 async function resetear(){
-  if(!TOKEN){
-    alert("Tenés que estar logueado.");
-    return;
-  }
+  if(!TOKEN){ alert("Tenés que estar logueado."); return; }
   if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
 
   try{
@@ -641,20 +496,14 @@ async function resetear(){
       method:"POST",
       headers:{ "Authorization": `Bearer ${TOKEN}` }
     });
-
-    if(!r.ok){
-      alert("No se pudo reiniciar.");
-      return;
-    }
+    if(!r.ok){ alert("No se pudo reiniciar."); return; }
 
     aplicarWarnMode("none");
     syncPausaConteoConColor();
     setTotalFichas(0);
     renderRepuesto([], "none");
-
-    renderAcierto(false, 0);
+    renderAcierto(false,0);
     setGanancia(0);
-
     await cargarEstado();
   }catch(e){
     alert("No conecta con el backend.");
@@ -665,93 +514,68 @@ async function resetear(){
 nuevo.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
 
-  if(!TOKEN){
-    alert("Primero tenés que ingresar con usuario y clave.");
-    return;
-  }
+  if(!TOKEN){ alert("Primero tenés que ingresar."); return; }
 
   const n = parseInt(nuevo.value, 10);
   const v = validarNumero(n);
-  if(!v.ok){
-    alert(v.msg);
-    return;
-  }
+  if(!v.ok){ alert(v.msg); return; }
 
-  nuevo.value = "";
+  nuevo.value="";
 
-  try {
-    const r = await fetch(`${API}/api/enter`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${TOKEN}`
+  try{
+    const r = await fetch(`${API}/api/enter`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${TOKEN}`
       },
       body: JSON.stringify({ n })
     });
 
     const data = await r.json();
-    if (!r.ok) {
-      alert("No autorizado o error del servidor.");
-      return;
-    }
+    if(!r.ok){ alert("No autorizado o error."); return; }
 
-    casilleros.innerHTML = "";
+    casilleros.innerHTML="";
 
-    if (data.historialLen < 17) {
-      casilleros.style.gridTemplateColumns = "repeat(4,70px)";
-      data.ultimos16.forEach(v => {
-        const c = document.createElement("input");
-        c.disabled = true;
-        c.value = v;
+    if(data.historialLen < 17){
+      casilleros.style.gridTemplateColumns="repeat(4,70px)";
+      data.ultimos16.forEach(v=>{
+        const c=document.createElement("input");
+        c.disabled=true; c.value=v;
         casilleros.appendChild(c);
       });
-      if(data.historialLen === 0) renderInicial();
-    } else {
-      casilleros.style.gridTemplateColumns = "repeat(5,70px)";
-      data.ultimos5.forEach(v => {
-        const c = document.createElement("input");
-        c.disabled = true;
-        c.value = v;
+    }else{
+      casilleros.style.gridTemplateColumns="repeat(5,70px)";
+      data.ultimos5.forEach(v=>{
+        const c=document.createElement("input");
+        c.disabled=true; c.value=v;
         casilleros.appendChild(c);
       });
     }
 
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
-      : "—";
+    explosivos.innerText=(data.explosivos && data.explosivos.length)?data.explosivos.join(" "):"—";
 
-    const mode = getWarnModeFromData(data);
+    const mode=getWarnModeFromData(data);
     aplicarWarnMode(mode);
     syncPausaConteoConColor();
 
     renderRepuesto(data.repuesto, mode);
-
     setTotalFichas(data.fichasTotal);
-
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
-    // ✅ BLOQUEO ABSOLUTO:
-    // - Si backend marca invalidAciertos
-    // - O si estamos en AZUL (3 repetidos): REPUESTO también es inválido
-    const invalid = !!data.invalidAciertos || (mode === "blue");
-    if(invalid){
-      renderAcierto(false, 0);
-      // no sumar ganancia nunca
+    // bloquear acierto si backend lo marca (incluye AZUL)
+    if(!!data.invalidAciertos || mode==="blue"){
+      renderAcierto(false,0);
       return;
     }
 
-    // ACIERTO + GANANCIA (solo válido cuando backend lo permite)
-    const show = !!data.aciertoShow;
-    const val  = Number(data.aciertoValue);
+    const show=!!data.aciertoShow;
+    const val=Number(data.aciertoValue);
+    renderAcierto(show,val);
+    if(show) sumarGananciaDesdeAcierto(val);
 
-    renderAcierto(show, val);
-
-    if(show){
-      sumarGananciaDesdeAcierto(val);
-    }
-
-  } catch (err) {
-    alert("No conecta con el backend. ¿Está prendido?");
+  }catch(err){
+    alert("No conecta con el backend.");
   }
 });
 </script>
