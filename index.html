@@ -78,7 +78,7 @@ body{
   color:#0b8f3a;
 }
 
-/* ✅ ACIERTO (azul) - SOLO VISIBLE cuando hay acierto válido */
+/* ✅ ACIERTO (azul) */
 .aciertoBox{
   width:120px;
   height:70px;
@@ -151,24 +151,6 @@ body{
 .repuestoTitle{
   color:#ff00ff;
   margin-top:10px;
-  display:none;
-}
-/* ✅ cuando hay 3 repetidos: REPUESTO blanco */
-.repuesto.whiteMode{
-  background:#ffffff !important;
-  color:#000000 !important;
-}
-
-/* ✅ NUEVO: aviso bloqueo de aciertos */
-.blockMsg{
-  margin: 10px auto 0;
-  max-width: 520px;
-  padding: 10px 12px;
-  border: 2px solid #ff2d2d;
-  border-radius: 10px;
-  background: rgba(255,45,45,0.15);
-  color: #ff2d2d;
-  font-weight: bold;
   display:none;
 }
 
@@ -308,9 +290,6 @@ button{
     </div>
   </div>
 
-  <!-- ✅ NUEVO: aviso bloqueo -->
-  <div id="blockMsg" class="blockMsg"></div>
-
   <div style="margin-top:12px;">
     <button onclick="resetear()">REINICIAR</button>
   </div>
@@ -373,9 +352,7 @@ function setGanancia(v){
 }
 setGanancia(gananciaAcum);
 
-/* ============================
-   ✅ ACIERTO (azul) - solo visible si backend dice que es válido
-============================ */
+/* ACIERTO */
 function renderAcierto(show, value){
   const box = document.getElementById("aciertoBox");
   const lab = document.getElementById("aciertoLabel");
@@ -398,28 +375,13 @@ function sumarGananciaDesdeAcierto(value){
   setGanancia(gananciaAcum + n);
 }
 
-/* ✅ NUEVO: aviso bloqueo */
-function showBlockMsg(on, text){
-  const el = document.getElementById("blockMsg");
-  if(!el) return;
-  if(on){
-    el.style.display = "block";
-    el.innerHTML = text || "ACIERTOS INVÁLIDOS (bloqueo activo)";
-  }else{
-    el.style.display = "none";
-    el.innerHTML = "";
-  }
-}
-
 /* TOTAL (verde) */
 function setTotalFichas(v){
   const n = Number(v);
   totalFichas.textContent = Number.isFinite(n) ? String(Math.round(n)) : "0";
 }
 
-/* ============================
-   ✅ AVISOS (ROJO/AZUL)
-============================ */
+/* AVISOS */
 function getWarnModeFromData(data){
   if(data && typeof data.warnMode === "string") return data.warnMode;
   if(data && data.warnRepeats) return "red";
@@ -433,25 +395,13 @@ function aplicarWarnMode(mode){
   if(m === "red") explosivos.classList.add("warnRepeats");
   if(m === "blue") explosivos.classList.add("warnTriples");
 
-  // ✅ en tu UI actual: si hay AZUL ocultás ambos
+  // ✅ No ocultamos nada en AZUL. Solo cambia el color.
   const expTitle = document.getElementById("explosivosTitle");
-  const repTitle = document.getElementById("repuestoTitle");
-  const repBox   = document.getElementById("repuesto");
-
-  const hideBoth = (m === "blue");
-  if(expTitle) expTitle.style.display = hideBoth ? "none" : "block";
-  explosivos.style.display = hideBoth ? "none" : "block";
-
-  if(hideBoth){
-    if(repTitle) repTitle.style.display = "none";
-    if(repBox){
-      repBox.style.display = "none";
-      repBox.textContent = "—";
-    }
-  }
+  if(expTitle) expTitle.style.display = "block";
+  explosivos.style.display = "block";
 }
 
-/* REPUESTO */
+/* REPUESTO: SOLO visible en ROJO */
 function renderRepuesto(arr, mode){
   const title = document.getElementById("repuestoTitle");
   const box = document.getElementById("repuesto");
@@ -459,8 +409,6 @@ function renderRepuesto(arr, mode){
 
   const cleanArr = Array.isArray(arr) ? arr : [];
   const show = (mode === "red") && cleanArr.length;
-
-  box.classList.toggle("whiteMode", mode === "blue");
 
   if(show){
     title.style.display = "block";
@@ -628,7 +576,6 @@ async function cargarEstado(){
       setTotalFichas(0);
       renderRepuesto([], "none");
       renderAcierto(false, 0);
-      showBlockMsg(false, "");
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
       return;
@@ -668,7 +615,6 @@ async function cargarEstado(){
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
     renderAcierto(false, 0);
-    showBlockMsg(false, "");
 
   }catch(e){
     renderInicial();
@@ -678,7 +624,6 @@ async function cargarEstado(){
     setTotalFichas(0);
     renderRepuesto([], "none");
     renderAcierto(false, 0);
-    showBlockMsg(false, "");
     if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
     else ocultarAT();
   }
@@ -708,7 +653,6 @@ async function resetear(){
     renderRepuesto([], "none");
 
     renderAcierto(false, 0);
-    showBlockMsg(false, "");
     setGanancia(0);
 
     await cargarEstado();
@@ -786,20 +730,17 @@ nuevo.addEventListener("keydown", async (e) => {
 
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
-    // ✅ BLOQUEO DE ACIERTOS (3+ repeticiones totales en últimos 20)
-    const invalid = !!data.invalidAciertos;
-    const rep20 = Number(data.repeticiones20);
-
+    // ✅ BLOQUEO ABSOLUTO:
+    // - Si backend marca invalidAciertos
+    // - O si estamos en AZUL (3 repetidos): REPUESTO también es inválido
+    const invalid = !!data.invalidAciertos || (mode === "blue");
     if(invalid){
-      renderAcierto(false, 0);            // no mostrar acierto
-      showBlockMsg(true, `ACIERTOS INVÁLIDOS (repeticiones últimos 20 = ${Number.isFinite(rep20)?rep20:"?"})`);
-      // NO sumar ganancia
+      renderAcierto(false, 0);
+      // no sumar ganancia nunca
       return;
-    }else{
-      showBlockMsg(false, "");
     }
 
-    // ACIERTO + GANANCIA (solo cuando es válido)
+    // ACIERTO + GANANCIA (solo válido cuando backend lo permite)
     const show = !!data.aciertoShow;
     const val  = Number(data.aciertoValue);
 
