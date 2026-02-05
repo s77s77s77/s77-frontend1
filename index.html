@@ -299,7 +299,7 @@ button{
     <button onclick="resetear()">REINICIAR</button>
   </div>
 
-  <h3 style="color:black">EXPLOSIVOS</h3>
+  <h3 id="explosivosTitle" style="color:black">EXPLOSIVOS</h3>
   <div id="explosivos" class="box explosivos">—</div>
 
   <h3 id="repuestoTitle" class="repuestoTitle">REPUESTO</h3>
@@ -582,6 +582,7 @@ async function cargarEstado(){
       syncPausaConteoConColor();
       setTotalFichas(0);
       renderRepuesto([], "none");
+      toggleTriplesBoxes("none");
       renderAcierto(false, 0);
       if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
       else ocultarAT();
@@ -616,6 +617,7 @@ async function cargarEstado(){
     syncPausaConteoConColor();
 
     renderRepuesto(data.repuesto, mode);
+    toggleTriplesBoxes(mode);
 
     setTotalFichas(data.fichasTotal);
 
@@ -631,6 +633,7 @@ async function cargarEstado(){
     syncPausaConteoConColor();
     setTotalFichas(0);
     renderRepuesto([], "none");
+      toggleTriplesBoxes("none");
     renderAcierto(false, 0);
     if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
     else ocultarAT();
@@ -659,6 +662,7 @@ async function resetear(){
     syncPausaConteoConColor();
     setTotalFichas(0);
     renderRepuesto([], "none");
+      toggleTriplesBoxes("none");
 
     renderAcierto(false, 0);
     setGanancia(0);
@@ -733,6 +737,7 @@ nuevo.addEventListener("keydown", async (e) => {
     syncPausaConteoConColor();
 
     renderRepuesto(data.repuesto, mode);
+    toggleTriplesBoxes(mode);
 
     setTotalFichas(data.fichasTotal);
 
@@ -757,3 +762,18 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
+function toggleTriplesBoxes(mode){
+  const t = document.getElementById("explosivosTitle");
+  const rt = document.getElementById("repuestoTitle");
+  const rb = document.getElementById("repuesto");
+  if(mode === "blue"){
+    if(t) t.style.display = "none";
+    if(explosivos) explosivos.style.display = "none";
+    if(rt) rt.style.display = "none";
+    if(rb) rb.style.display = "none";
+  }else{
+    if(t) t.style.display = "";
+    if(explosivos) explosivos.style.display = "";
+    // repuesto lo maneja renderRepuesto()
+  }
+}
