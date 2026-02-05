@@ -299,7 +299,7 @@ button{
     <button onclick="resetear()">REINICIAR</button>
   </div>
 
-  <h3 style="color:black">EXPLOSIVOS</h3>
+  <h3 id="explosivosTitle" style="color:black">EXPLOSIVOS</h3>
   <div id="explosivos" class="box explosivos">—</div>
 
   <h3 id="repuestoTitle" class="repuestoTitle">REPUESTO</h3>
@@ -400,9 +400,30 @@ function getWarnModeFromData(data){
 }
 
 function aplicarWarnMode(mode){
+  // mode: "none" | "red" | "blue"
+  const m = mode || "none";
+
+  // Reset clases
   explosivos.classList.remove("warnRepeats","warnTriples");
-  if(mode === "red") explosivos.classList.add("warnRepeats");
-  if(mode === "blue") explosivos.classList.add("warnTriples");
+  if(m === "red") explosivos.classList.add("warnRepeats");
+  if(m === "blue") explosivos.classList.add("warnTriples");
+
+  // ✅ NUEVO: si hay 3 repetidos (mode=blue) ocultar EXPLOSIVOS y REPUESTO
+  const expTitle = document.getElementById("explosivosTitle");
+  const repTitle = document.getElementById("repuestoTitle");
+  const repBox   = document.getElementById("repuesto");
+
+  const hideBoth = (m === "blue");
+  if(expTitle) expTitle.style.display = hideBoth ? "none" : "block";
+  explosivos.style.display = hideBoth ? "none" : "block";
+
+  if(hideBoth){
+    if(repTitle) repTitle.style.display = "none";
+    if(repBox){
+      repBox.style.display = "none";
+      repBox.textContent = "—";
+    }
+  }
 }
 
 /* REPUESTO */
@@ -412,7 +433,8 @@ function renderRepuesto(arr, mode){
   if(!title || !box) return;
 
   const cleanArr = Array.isArray(arr) ? arr : [];
-  const show = (mode !== "none") && cleanArr.length;
+  // ✅ Solo se muestra en ROJO. En AZUL (3 repetidos) se oculta siempre.
+  const show = (mode === "red") && cleanArr.length;
 
   // blanco solo en AZUL
   box.classList.toggle("whiteMode", mode === "blue");
