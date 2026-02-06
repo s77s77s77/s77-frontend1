@@ -442,35 +442,43 @@ function aplicarSuspensionUI(active){
   }
 }
 
+/* ✅ CAMBIO: SOLO UN CASILLERO VISIBLE A LA VEZ */
 function aplicarWarnMode(mode){
   const m = mode || "none";
 
+  // clases de color en explosivos (por si las querés usar visualmente)
   explosivos.classList.remove("warnRepeats","warnTriples");
   if(m === "red") explosivos.classList.add("warnRepeats");
   if(m === "blue") explosivos.classList.add("warnTriples");
 
-  const expTitle = document.getElementById("explosivosTitle");
-  const repTitle = document.getElementById("repuestoTitle");
-  const repBox   = document.getElementById("repuesto");
+  const expBox = document.getElementById("explosivos");
+  const repBox = document.getElementById("repuesto");
 
-  const hideBoth = (m === "blue");
+  if(!expBox || !repBox) return;
 
-  if(expTitle) expTitle.style.display = hideBoth ? "none" : "block";
-  explosivos.style.display = hideBoth ? "none" : "block";
-
-  if(hideBoth){
-    if(repTitle) repTitle.style.display = "none";
-    if(repBox){ repBox.style.display = "none"; repBox.textContent = "—"; }
+  if(m === "none"){
+    // ✅ por defecto: solo EXPLOSIVOS
+    expBox.style.display = "block";
+    repBox.style.display = "none";
+    repBox.textContent = "—";
+  }else if(m === "red"){
+    // ✅ con 2 repetidos: solo REPUESTO
+    expBox.style.display = "none";
+    repBox.style.display = "block";
+  }else{
+    // ✅ con 3 repetidos (azul): ninguno
+    expBox.style.display = "none";
+    repBox.style.display = "none";
+    repBox.textContent = "—";
   }
 }
 
+/* ✅ CAMBIO: renderRepuesto respeta la regla (solo visible en ROJO) */
 function renderRepuesto(arr, mode, suspensionActive){
-  const title = document.getElementById("repuestoTitle");
   const box = document.getElementById("repuesto");
-  if(!title || !box) return;
+  if(!box) return;
 
-  if(suspensionActive || mode === "blue"){
-    title.style.display = "none";
+  if(suspensionActive || mode === "blue" || mode === "none"){
     box.style.display = "none";
     box.textContent = "—";
     return;
@@ -480,11 +488,9 @@ function renderRepuesto(arr, mode, suspensionActive){
   const show = (mode === "red") && cleanArr.length;
 
   if(show){
-    title.style.display = "block";
     box.style.display = "block";
     box.textContent = cleanArr.join(" ");
   }else{
-    title.style.display = "none";
     box.style.display = "none";
     box.textContent = "—";
   }
@@ -826,15 +832,3 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
