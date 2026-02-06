@@ -12,10 +12,26 @@
 <style>
 body{
   font-family:impact;
-  background:black;
+  background-image: url("./bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color:blue;
   text-align:center;
   padding:20px;
+}
+
+/* Capa oscura para mejorar lectura */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background: rgba(0,0,0,0.65);
+  z-index:-1;
 }
 .hidden{display:none;}
 
@@ -681,3 +697,4 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
+
