@@ -20,14 +20,36 @@ body{
   color:blue;
   text-align:center;
   padding:20px;
+  }
   
 h1{
   color: white;
-  letter-spacing: 3px;              /* separación entre letras */
+  letter-spacing: 3px;
   text-shadow:
     0 0 6px #ffffff,
     0 0 12px #1e90ff,
     0 0 20px #1e90ff;
+  animation: pulsoTitulo 3s ease-in-out infinite;
+}
+@keyframes pulsoTitulo{
+  0%{
+    text-shadow:
+      0 0 6px #ffffff,
+      0 0 12px #1e90ff,
+      0 0 20px #1e90ff;
+  }
+  50%{
+    text-shadow:
+      0 0 10px #ffffff,
+      0 0 20px #1e90ff,
+      0 0 35px #1e90ff;
+  }
+  100%{
+    text-shadow:
+      0 0 6px #ffffff,
+      0 0 12px #1e90ff,
+      0 0 20px #1e90ff;
+  }
 }
 
 /* OCULTAR TITULOS EXPLOSIVOS Y REPUESTO */
@@ -711,6 +733,7 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
+
 
 
 
