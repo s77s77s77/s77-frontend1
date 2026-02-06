@@ -83,7 +83,12 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
 }
 
 /* LOGIN + ADMIN */
-.loginBox{display:inline-block;padding:14px 16px;border:2px solid #444;border-radius:10px;}
+.loginBox{
+  display:inline-block;
+  padding:14px 16px;
+  border:2px solid #444;
+  border-radius:10px;
+}
 .loginRow{margin:8px 0;}
 .loginInput{
   width:220px;height:36px;font-size:18px;padding:6px 10px;
@@ -104,6 +109,17 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
 .adminBtns button{flex:1;padding:10px 0;}
 .adminOut{margin-top:10px;font-size:14px;color:#ddd;word-break:break-word;line-height:1.35;}
 .smallNote{margin-top:6px;font-size:12px;color:#aaa;}
+
+/* SALIR */
+.logoutBtn{
+  margin-top:14px;
+  padding:8px 14px;
+  background:#222;
+  color:#fff;
+  border:2px solid #444;
+  border-radius:10px;
+  font-weight:bold;
+}
 </style>
 </head>
 
@@ -113,7 +129,7 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
 
 <div id="login" class="loginBox">
   <div class="loginRow"><input id="usuario" class="loginInput" placeholder="Usuario"></div>
-  <div class="loginRow"><input id="clave" class="loginInput" placeholder="Clave"></div>
+  <div class="loginRow"><input id="clave" class="loginInput" placeholder="Clave" type="password"></div>
   <div class="loginRow"><button onclick="ingresar()">INGRESAR</button></div>
   <p id="err" style="color:red;margin:6px 0 0;"></p>
 </div>
@@ -183,12 +199,17 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
     <div class="smallNote">Se guarda en el servidor (backend).</div>
   </div>
 
+  <button class="logoutBtn" onclick="salir()">SALIR</button>
 </div>
 
 <script>
 const API = "https://s77-backend1.onrender.com";
-let TOKEN = "";
-let ROLE = "";
+
+const TOKEN_KEY = "S77_TOKEN_V1";
+const ROLE_KEY  = "S77_ROLE_V1";
+
+let TOKEN = localStorage.getItem(TOKEN_KEY) || "";
+let ROLE  = localStorage.getItem(ROLE_KEY) || "";
 
 /* Service Worker */
 if ("serviceWorker" in navigator) {
@@ -240,7 +261,7 @@ function getWarnModeFromData(data){
   return "none";
 }
 
-/* ✅ SUSPENSIÓN UI */
+/* SUSPENSIÓN UI */
 function aplicarSuspensionUI(active){
   const expTitle = document.getElementById("explosivosTitle");
   const repTitle = document.getElementById("repuestoTitle");
@@ -252,8 +273,6 @@ function aplicarSuspensionUI(active){
     if(repTitle) repTitle.style.display = "none";
     if(repBox){ repBox.style.display = "none"; repBox.textContent = "—"; }
     renderAcierto(false, 0);
-  }else{
-    // no hace nada acá: lo re-aplica aplicarWarnMode/renderRepuesto
   }
 }
 
@@ -284,16 +303,7 @@ function renderRepuesto(arr, mode, suspensionActive){
   const box = document.getElementById("repuesto");
   if(!title || !box) return;
 
-  // ✅ durante suspensión: no se ve nunca
-  if(suspensionActive){
-    title.style.display = "none";
-    box.style.display = "none";
-    box.textContent = "—";
-    return;
-  }
-
-  // ✅ en AZUL tampoco
-  if(mode === "blue"){
+  if(suspensionActive || mode === "blue"){
     title.style.display = "none";
     box.style.display = "none";
     box.textContent = "—";
@@ -321,7 +331,7 @@ function validarNumero(n){
   return { ok:true, msg:"" };
 }
 
-/* PAUSA A..T (si hay aviso rojo o azul) */
+/* PAUSA A..T */
 let conteoPausado = false;
 let cacheActiveId = "A";
 let cacheActiveMult = 1;
@@ -404,14 +414,27 @@ async function crearUsuario(dias){
   }
 }
 
+/* ✅ Mostrar/ocultar login sin ocupar lugar */
+function mostrarLogin(){
+  login.classList.remove("hidden");
+  login.style.display = "inline-block";
+  sistema.classList.add("hidden");
+  sistema.style.display = "none";
+}
+function mostrarSistema(){
+  login.classList.add("hidden");
+  login.style.display = "none";           // ✅ NO ocupa lugar
+  sistema.classList.remove("hidden");
+  sistema.style.display = "block";
+  if(ROLE === "admin") adminPanel.classList.remove("hidden");
+  else adminPanel.classList.add("hidden");
+}
+
 /* LOGIN */
 async function ingresar(){
   const u=(usuario.value||"").trim();
   const p=(clave.value||"").trim();
-  if(!u || !p){
-    err.innerText="Completa usuario y clave";
-    return;
-  }
+  if(!u || !p){ err.innerText="Completa usuario y clave"; return; }
 
   try{
     const r = await fetch(`${API}/auth/login`,{
@@ -429,19 +452,28 @@ async function ingresar(){
     TOKEN = data.token;
     ROLE = data.role;
 
+    localStorage.setItem(TOKEN_KEY, TOKEN);
+    localStorage.setItem(ROLE_KEY, ROLE);
+
     err.innerText="";
-    login.classList.add("hidden");
-    sistema.classList.remove("hidden");
-
-    if(ROLE === "admin") adminPanel.classList.remove("hidden");
-    else adminPanel.classList.add("hidden");
-
+    mostrarSistema();
     await cargarEstado();
   }catch(e){
     err.innerText="No conecta con el servidor. ¿Está prendido el backend?";
   }
 }
 
+/* SALIR */
+function salir(){
+  if(!confirm("¿Seguro querés salir?")) return;
+  TOKEN = "";
+  ROLE = "";
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(ROLE_KEY);
+  mostrarLogin();
+}
+
+/* Render inicial */
 function renderInicial(){
   casilleros.innerHTML="";
   casilleros.style.gridTemplateColumns="repeat(4,70px)";
@@ -462,15 +494,8 @@ async function cargarEstado(){
     const data = await r.json();
 
     if(!r.ok){
-      renderInicial();
-      explosivos.innerText="—";
-      aplicarWarnMode("none");
-      syncPausaConteoConColor();
-      setTotalFichas(0);
-      renderRepuesto([], "none", false);
-      renderAcierto(false, 0);
-      if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
-      else ocultarAT();
+      // token vencido o inválido
+      salir();
       return;
     }
 
@@ -495,7 +520,6 @@ async function cargarEstado(){
 
     const suspensionActive = !!data.suspensionActive;
 
-    // explosivos
     explosivos.innerText = (data.explosivos && data.explosivos.length)
       ? data.explosivos.join(" ")
       : "—";
@@ -505,30 +529,18 @@ async function cargarEstado(){
     if(suspensionActive){
       aplicarSuspensionUI(true);
     }else{
-      aplicarSuspensionUI(false);
       aplicarWarnMode(mode);
     }
 
     syncPausaConteoConColor();
-
     renderRepuesto(data.repuesto, mode, suspensionActive);
 
     setTotalFichas(data.fichasTotal);
-
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
-
     renderAcierto(false, 0);
 
   }catch(e){
-    renderInicial();
-    explosivos.innerText="—";
-    aplicarWarnMode("none");
-    syncPausaConteoConColor();
-    setTotalFichas(0);
-    renderRepuesto([], "none", false);
-    renderAcierto(false, 0);
-    if(cacheInicializado) mostrarAT(cacheActiveId, cacheActiveMult);
-    else ocultarAT();
+    // si falla el fetch, no tocamos sesión
   }
 }
 
@@ -548,7 +560,6 @@ async function resetear(){
     syncPausaConteoConColor();
     setTotalFichas(0);
     renderRepuesto([], "none", false);
-
     renderAcierto(false, 0);
     setGanancia(0);
 
@@ -585,7 +596,7 @@ nuevo.addEventListener("keydown", async (e) => {
 
     const data = await r.json();
     if (!r.ok) {
-      alert("No autorizado o error del servidor.");
+      salir();
       return;
     }
 
@@ -621,19 +632,15 @@ nuevo.addEventListener("keydown", async (e) => {
     if(suspensionActive){
       aplicarSuspensionUI(true);
     }else{
-      aplicarSuspensionUI(false);
       aplicarWarnMode(mode);
     }
 
     syncPausaConteoConColor();
-
     renderRepuesto(data.repuesto, mode, suspensionActive);
 
     setTotalFichas(data.fichasTotal);
-
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
 
-    // ✅ durante suspensión: ACIERTO siempre apagado, NO suma GANANCIA
     if(suspensionActive){
       renderAcierto(false, 0);
       return;
@@ -643,15 +650,22 @@ nuevo.addEventListener("keydown", async (e) => {
     const val  = Number(data.aciertoValue);
 
     renderAcierto(show, val);
-
-    if(show){
-      sumarGananciaDesdeAcierto(val);
-    }
+    if(show){ sumarGananciaDesdeAcierto(val); }
 
   } catch (err) {
     alert("No conecta con el backend. ¿Está prendido?");
   }
 });
+
+/* ✅ Auto-login al abrir si hay token */
+(async function init(){
+  if(TOKEN){
+    mostrarSistema();
+    await cargarEstado();
+  }else{
+    mostrarLogin();
+  }
+})();
 </script>
 
 </body>
