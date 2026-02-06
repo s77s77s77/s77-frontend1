@@ -8,9 +8,15 @@ const CORE_ASSETS = [
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png",
-  "./bg.jpg",        // ✅ BACKGROUND
+  "./bg.jpg",
+  "./bg-casino-square.png",
+  "./bg-casino-green.png",
+  "./btn-neon-cian.png",
+  "./btn-neon-gold.png",
+  "./bg-acierto-blue.png",
   "./sw.js",
 ];
+
 
 // Instalación: precache mínimo
 self.addEventListener("install", (event) => {
@@ -89,3 +95,4 @@ self.addEventListener("message", (event) => {
     self.skipWaiting();
   }
 });
+
