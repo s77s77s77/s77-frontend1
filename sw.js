@@ -1,6 +1,6 @@
 // sw.js  ✅ S77 - cache con versionado + limpieza automática
 // Cambiá esta versión cada vez que subas cambios:
-const SW_VERSION = "s77-v2026-02-04-01";
+const SW_VERSION = "s77-v2026-02-05-01";
 
 const CORE_ASSETS = [
   "./",
@@ -8,6 +8,7 @@ const CORE_ASSETS = [
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png",
+  "./bg.jpg",        // ✅ BACKGROUND
   "./sw.js",
 ];
 
@@ -35,21 +36,20 @@ self.addEventListener("activate", (event) => {
 });
 
 // Estrategia:
-// - HTML (navegación): network-first (si hay red, trae lo nuevo; si no, usa cache)
+// - HTML (navegación): network-first
 // - Assets estáticos: cache-first
-// - Requests externos (API onrender): network-only (no cachear)
+// - Requests externos (API onrender): network-only
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // ✅ No cachear tu API (muy importante)
-  // Ajustá si tu API cambia:
+  // ❌ No cachear API
   if (url.hostname.includes("onrender.com") && url.pathname.startsWith("/api")) {
     event.respondWith(fetch(req));
     return;
   }
 
-  // ✅ Navegación (HTML): network-first
+  // HTML
   if (req.mode === "navigate") {
     event.respondWith(
       (async () => {
@@ -67,14 +67,13 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // ✅ Archivos estáticos: cache-first
+  // Assets
   event.respondWith(
     (async () => {
       const cached = await caches.match(req);
       if (cached) return cached;
 
       const fresh = await fetch(req);
-      // Guardar solo mismos-orígenes
       if (url.origin === self.location.origin) {
         const cache = await caches.open(SW_VERSION);
         cache.put(req, fresh.clone());
@@ -84,7 +83,7 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// ✅ Permite “saltear espera” desde el cliente
+// Permite forzar actualización
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
