@@ -25,13 +25,30 @@ body{
   border:4px solid #444;background:#333;color:white;text-align:center;
 }
 
-.ingreso{display:flex;justify-content:center;gap:15px;align-items:flex-start;}
+/* ✅ Layout ingreso */
+.ingreso{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr; /* ingreso | total | ganancia */
+  gap:15px;
+  justify-content:center;
+  align-items:start;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.ingresoCol{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+}
+
 .ingresoInput{
   width:70px;height:70px;font-size:34px;
   border:4px solid #1e90ff;background:#1e90ff;color:#ccc;text-align:center;
 }
 
-.label{margin-top:5px;font-weight:bold;}
+.label{margin-top:0;font-weight:bold;}
 
 /* TOTAL */
 .totalBox{
@@ -39,15 +56,7 @@ body{
   border:4px solid #0b8f3a;background:#0b8f3a;color:#fff;
   text-align:center;display:flex;align-items:center;justify-content:center;border-radius:8px;
 }
-.totalLabel{margin-top:5px;font-weight:bold;color:#0b8f3a;}
-
-/* ACIERTO */
-.aciertoBox{
-  width:120px;height:70px;font-size:54px;font-weight:bold;
-  border:4px solid #0b57ff;background:#0b57ff;color:#ffd700;
-  text-align:center;display:none;align-items:center;justify-content:center;border-radius:8px;
-}
-.aciertoLabel{margin-top:5px;font-weight:bold;color:#0b57ff;display:none;}
+.totalLabel{margin-top:0;font-weight:bold;color:#0b8f3a;}
 
 /* GANANCIA */
 .gananciaBox{
@@ -55,9 +64,22 @@ body{
   border:4px solid #ffd400;background:#ffd400;color:#0b57ff;
   text-align:center;display:flex;align-items:center;justify-content:center;border-radius:8px;
 }
-.gananciaLabel{margin-top:5px;font-weight:bold;color:#ffd400;}
+.gananciaLabel{margin-top:0;font-weight:bold;color:#ffd400;}
 
-.aciertoGananciaCol{display:flex;flex-direction:column;gap:10px;}
+/* ✅ ACIERTO debajo de GANANCIA */
+.aciertoWrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  margin-top:6px; /* separa de ganancia */
+}
+.aciertoBox{
+  width:120px;height:70px;font-size:54px;font-weight:bold;
+  border:4px solid #0b57ff;background:#0b57ff;color:#ffd700;
+  text-align:center;display:none;align-items:center;justify-content:center;border-radius:8px;
+}
+.aciertoLabel{margin-top:0;font-weight:bold;color:#0b57ff;display:none;}
 
 .box{
   width:260px;min-height:60px;margin:10px auto;border:6px solid #444;
@@ -140,26 +162,25 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
 
   <br>
 
+  <!-- ✅ NUEVO LAYOUT -->
   <div class="ingreso">
-    <div>
+    <div class="ingresoCol">
       <input id="nuevo" class="ingresoInput">
       <div class="label" style="color:#1e90ff">INGRESO</div>
     </div>
 
-    <div>
+    <div class="ingresoCol">
       <div id="totalFichas" class="totalBox">0</div>
       <div class="totalLabel">TOTAL</div>
     </div>
 
-    <div class="aciertoGananciaCol">
-      <div>
+    <div class="ingresoCol">
+      <div id="gananciaBox" class="gananciaBox">0</div>
+      <div class="gananciaLabel">GANANCIA</div>
+
+      <div class="aciertoWrap">
         <div id="aciertoBox" class="aciertoBox">0</div>
         <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
-      </div>
-
-      <div>
-        <div id="gananciaBox" class="gananciaBox">0</div>
-        <div class="gananciaLabel">GANANCIA</div>
       </div>
     </div>
   </div>
@@ -414,7 +435,7 @@ async function crearUsuario(dias){
   }
 }
 
-/* ✅ Mostrar/ocultar login sin ocupar lugar */
+/* Mostrar/ocultar login */
 function mostrarLogin(){
   login.classList.remove("hidden");
   login.style.display = "inline-block";
@@ -423,7 +444,7 @@ function mostrarLogin(){
 }
 function mostrarSistema(){
   login.classList.add("hidden");
-  login.style.display = "none";           // ✅ NO ocupa lugar
+  login.style.display = "none";
   sistema.classList.remove("hidden");
   sistema.style.display = "block";
   if(ROLE === "admin") adminPanel.classList.remove("hidden");
@@ -492,12 +513,7 @@ async function cargarEstado(){
     });
 
     const data = await r.json();
-
-    if(!r.ok){
-      // token vencido o inválido
-      salir();
-      return;
-    }
+    if(!r.ok){ salir(); return; }
 
     casilleros.innerHTML="";
 
@@ -539,9 +555,7 @@ async function cargarEstado(){
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
     renderAcierto(false, 0);
 
-  }catch(e){
-    // si falla el fetch, no tocamos sesión
-  }
+  }catch(e){}
 }
 
 async function resetear(){
@@ -595,10 +609,7 @@ nuevo.addEventListener("keydown", async (e) => {
     });
 
     const data = await r.json();
-    if (!r.ok) {
-      salir();
-      return;
-    }
+    if (!r.ok) { salir(); return; }
 
     casilleros.innerHTML = "";
 
@@ -657,7 +668,7 @@ nuevo.addEventListener("keydown", async (e) => {
   }
 });
 
-/* ✅ Auto-login al abrir si hay token */
+/* Auto-login */
 (async function init(){
   if(TOKEN){
     mostrarSistema();
