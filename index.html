@@ -20,8 +20,25 @@ body{
   color:blue;
   text-align:center;
   padding:20px;
-  }
+}
 
+/* Capa oscura para mejorar lectura */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background: rgba(0,0,0,0.65);
+  z-index:-1;
+}
+
+.hidden{display:none;}
+
+/* =========================
+   TITULO
+========================= */
 h1{
   color: white;
   letter-spacing: 3px;
@@ -31,6 +48,7 @@ h1{
     0 0 20px #1e90ff;
   animation: pulsoTitulo 3s ease-in-out infinite;
 }
+
 @keyframes pulsoTitulo{
   0%{
     text-shadow:
@@ -50,7 +68,10 @@ h1{
       0 0 12px #1e90ff,
       0 0 20px #1e90ff;
   }
-  @keyframes pulsoAcierto {
+}
+
+/* ✅ PULSO ACIERTO (4s) */
+@keyframes pulsoAcierto {
   0%{
     text-shadow:
       0 0 6px rgba(255,255,255,0.6),
@@ -77,19 +98,9 @@ h1{
   display:none !important;
 }
 
-/* Capa oscura para mejorar lectura */
-body::before{
-  content:"";
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background: rgba(0,0,0,0.65);
-  z-index:-1;
-}
-.hidden{display:none;}
-
+/* =========================
+   ULTIMOS 16 / 5
+========================= */
 .inputs{display:grid;gap:10px;justify-content:center;}
 .inputs input{
   width:70px;
@@ -99,12 +110,13 @@ body::before{
 
   background:#000000;        /* se pisa por JS según el número */
   border:3px solid #000000;  /* ✅ borde negro */
-
   color:#ffffff;             /* ✅ texto blanco SIEMPRE */
   text-align:center;
 }
 
-/* ✅ Layout ingreso */
+/* =========================
+   LAYOUT INGRESO
+========================= */
 .ingreso{
   display:grid;
   grid-template-columns: 1fr 1fr 1fr; /* ingreso | total | ganancia */
@@ -140,16 +152,17 @@ body::before{
   text-align:center;
 
   text-shadow: 0 0 6px #00ff88;
-
   outline:none;
 }
 
 .label{margin-top:0;font-weight:bold;}
 
-/* TOTAL */
+/* =========================
+   TOTAL + GANANCIA (altura +10%, centrado, sombra más gruesa)
+========================= */
 .totalBox{
   width:120px;
-  height:77px; /* ⬅️ ya con el +10% que pediste antes */
+  height:77px;
   font-size:34px;
   font-weight:bold;
 
@@ -161,20 +174,20 @@ body::before{
   border:none;
   color:#ffffff;
 
-  display:flex;                 /* ✅ */
-  align-items:center;           /* ✅ centra vertical */
-  justify-content:center;       /* ✅ centra horizontal */
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
   border-radius:10px;
 
-  text-shadow: 0 2px 6px rgba(0,0,0,0.8); /* sombra más gruesa */
+  text-shadow: 0 2px 7px rgba(0,0,0,0.9);
 }
+
 .totalLabel{margin-top:0;font-weight:bold;color:#0b8f3a;}
 
-/* GANANCIA */
 .gananciaBox{
   width:120px;
-  height:77px; /* ⬅️ +10% */
+  height:77px;
   font-size:38px;
   font-weight:bold;
 
@@ -186,24 +199,28 @@ body::before{
   border:none;
   color:#ffffff;
 
-  display:flex;                 /* ✅ */
-  align-items:center;           /* ✅ centra vertical */
-  justify-content:center;       /* ✅ centra horizontal */
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
   border-radius:10px;
 
-  text-shadow: 0 2px 6px rgba(0,0,0,0.85); /* sombra oscura más marcada */
+  text-shadow: 0 2px 7px rgba(0,0,0,0.92);
 }
+
 .gananciaLabel{margin-top:0;font-weight:bold;color:#ffd400;}
 
-/* ✅ ACIERTO debajo de GANANCIA */
+/* =========================
+   ACIERTO
+========================= */
 .aciertoWrap{
   display:flex;
   flex-direction:column;
   align-items:center;
   gap:4px;
-  margin-top:6px; /* separa de ganancia */
+  margin-top:6px;
 }
+
 .aciertoBox{
   width:80px;
   height:80px;
@@ -225,19 +242,31 @@ body::before{
   border-radius:10px;
 
   text-shadow: 0 0 8px #00e5ff;
-
-  animation: pulsoAcierto 4s ease-in-out infinite; /* ✅ PULSO */
+  animation: pulsoAcierto 4s ease-in-out infinite; /* ✅ PULSO 4s */
 }
-.aciertoLabel{margin-top:0;font-weight:bold;color:#0b57ff;display:none;}
 
+.aciertoLabel{
+  margin-top:0;
+  font-weight:bold;
+  color:#0b57ff;
+  display:none;
+}
+
+/* =========================
+   BOXES (EXPLOSIVOS / REPUESTO)
+========================= */
 .box{
-  width:260px;min-height:60px;margin:10px auto;border:6px solid #444;
-  font-weight:bold;padding:5px;
+  width:260px;
+  min-height:60px;
+  margin:10px auto;
+  border:6px solid #444;
+  font-weight:bold;
+  padding:5px;
 }
 
-/* EXPLOSIVOS */
+/* EXPLOSIVOS: sobrio casino clásico */
 .explosivos{
-  background: #0b1a2a;          /* azul noche sobrio */
+  background: #0b1a2a;       /* azul noche sobrio */
   color: #ffffff;
   font-size: 48px;
   font-weight: bold;
@@ -245,21 +274,20 @@ body::before{
   padding: 16px;
   border-radius: 8px;
 
-  border: 3px solid #c9a24d;    /* dorado clásico */
-  
+  border: 3px solid #c9a24d; /* dorado clásico */
   box-shadow:
-    0 0 4px rgba(0,0,0,0.8),    /* sombra base */
-    0 2px 6px rgba(0,0,0,0.9);  /* profundidad */
+    0 0 4px rgba(0,0,0,0.8),
+    0 2px 6px rgba(0,0,0,0.9);
 
-  text-shadow:
-    0 1px 2px rgba(0,0,0,0.9);  /* lectura limpia */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.95);
 }
+
 .explosivos.warnRepeats{ background:red !important; }
 .explosivos.warnTriples{ background:#0b57ff !important; } /* (no se usa si backend no manda blue) */
 
-/* REPUESTO */
+/* REPUESTO: bordó sobrio */
 .repuesto{
-  background: #2b0f14;          /* bordó oscuro */
+  background: #2b0f14;
   color: #ffffff;
   font-size: 48px;
   font-weight: bold;
@@ -267,19 +295,29 @@ body::before{
   padding: 16px;
   border-radius: 8px;
 
-  border: 3px solid #c9a24d;    /* mismo dorado para coherencia */
+  border: 3px solid #c9a24d;
 
   box-shadow:
     0 0 4px rgba(0,0,0,0.8),
     0 2px 6px rgba(0,0,0,0.9);
 
-  text-shadow:
-    0 1px 2px rgba(0,0,0,0.9);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.95);
+
+  display:none; /* ✅ importante: arranca oculto */
 }
+
 .repuestoTitle{color:#ff00ff;margin-top:10px;display:none;}
 
-button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;border-radius:8px;}
+button{
+  padding:10px;
+  background:maroon;
+  color:white;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+}
 
+/* A..T */
 .abcWrap{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
 .abc{
   width:80px;
@@ -362,7 +400,6 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
 
   <br>
 
-  <!-- ✅ NUEVO LAYOUT -->
   <div class="ingreso">
     <div class="ingresoCol">
       <input id="nuevo" class="ingresoInput">
@@ -497,11 +534,10 @@ function aplicarSuspensionUI(active){
   }
 }
 
-/* ✅ CAMBIO: SOLO UN CASILLERO VISIBLE A LA VEZ */
+/* ✅ SOLO UN CASILLERO VISIBLE A LA VEZ */
 function aplicarWarnMode(mode){
   const m = mode || "none";
 
-  // clases de color en explosivos (por si las querés usar visualmente)
   explosivos.classList.remove("warnRepeats","warnTriples");
   if(m === "red") explosivos.classList.add("warnRepeats");
   if(m === "blue") explosivos.classList.add("warnTriples"); // (no se usa si backend no manda blue)
@@ -512,23 +548,19 @@ function aplicarWarnMode(mode){
   if(!expBox || !repBox) return;
 
   if(m === "none"){
-    // ✅ por defecto: solo EXPLOSIVOS
     expBox.style.display = "block";
     repBox.style.display = "none";
     repBox.textContent = "—";
   }else if(m === "red"){
-    // ✅ con 2 repetidos: solo REPUESTO
     expBox.style.display = "none";
     repBox.style.display = "block";
   }else{
-    // ✅ con 3 repetidos (azul): ninguno
     expBox.style.display = "none";
     repBox.style.display = "none";
     repBox.textContent = "—";
   }
 }
 
-/* ✅ CAMBIO: renderRepuesto respeta la regla (solo visible en ROJO) */
 function renderRepuesto(arr, mode, suspensionActive){
   const box = document.getElementById("repuesto");
   if(!box) return;
@@ -553,10 +585,9 @@ function renderRepuesto(arr, mode, suspensionActive){
 
 /* =========================
    COLORES POR NÚMERO (ULTIMOS 16 / 5)
-   ✅ Verde ajustado "ruleta"
 ========================= */
 const NUM_BG = {
-  0:"#0b7a3b",      // ✅ verde ruleta (más oscuro)
+  0:"#0b7a3b",  // verde ruleta
   1:"#ff0000",
   2:"#000000",
   3:"#ff0000",
@@ -598,13 +629,11 @@ const NUM_BG = {
 function pintarCasilleroPorNumero(inputEl){
   const v = parseInt(inputEl.value, 10);
   inputEl.style.background = Number.isFinite(v) ? (NUM_BG[v] || "#000") : "#000";
-  inputEl.style.color = "#fff";       // texto blanco SIEMPRE
-  inputEl.style.borderColor = "#000"; // borde negro
+  inputEl.style.color = "#fff";
+  inputEl.style.borderColor = "#000";
 }
 
-/* =========================
-   Validación
-========================= */
+/* Validación */
 function validarNumero(n){
   if(!Number.isInteger(n)) return { ok:false, msg:"Tenés que ingresar un número entero." };
   if(n < 0 || n > 36) return { ok:false, msg:"Solo se permiten números del 0 al 36." };
@@ -760,8 +789,8 @@ function renderInicial(){
   for(let i=0;i<16;i++){
     let c=document.createElement("input");
     c.disabled=true;
-    c.value = "";
-    pintarCasilleroPorNumero(c); // ✅
+    c.value="";
+    pintarCasilleroPorNumero(c);
     casilleros.appendChild(c);
   }
 }
@@ -782,11 +811,8 @@ async function cargarEstado(){
       casilleros.style.gridTemplateColumns="repeat(4,70px)";
       data.ultimos16.forEach(v=>{
         const c=document.createElement("input");
-        c.disabled=true;
-        c.value=v;
-
-        pintarCasilleroPorNumero(c); // ✅
-
+        c.disabled=true; c.value=v;
+        pintarCasilleroPorNumero(c);
         casilleros.appendChild(c);
       });
       if(data.historialLen===0) renderInicial();
@@ -794,11 +820,8 @@ async function cargarEstado(){
       casilleros.style.gridTemplateColumns="repeat(5,70px)";
       data.ultimos5.forEach(v=>{
         const c=document.createElement("input");
-        c.disabled=true;
-        c.value=v;
-
-        pintarCasilleroPorNumero(c); // ✅
-
+        c.disabled=true; c.value=v;
+        pintarCasilleroPorNumero(c);
         casilleros.appendChild(c);
       });
     }
@@ -888,9 +911,7 @@ nuevo.addEventListener("keydown", async (e) => {
         const c = document.createElement("input");
         c.disabled = true;
         c.value = v;
-
-        pintarCasilleroPorNumero(c); // ✅
-
+        pintarCasilleroPorNumero(c);
         casilleros.appendChild(c);
       });
       if(data.historialLen === 0) renderInicial();
@@ -900,9 +921,7 @@ nuevo.addEventListener("keydown", async (e) => {
         const c = document.createElement("input");
         c.disabled = true;
         c.value = v;
-
-        pintarCasilleroPorNumero(c); // ✅
-
+        pintarCasilleroPorNumero(c);
         casilleros.appendChild(c);
       });
     }
@@ -956,11 +975,3 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
