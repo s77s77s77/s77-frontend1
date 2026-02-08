@@ -215,7 +215,18 @@ body::before{
 }
 
 /* EXPLOSIVOS */
-.explosivos{background:black;font-size:48px;}
+.explosivos{
+  background-image: url("./bg-explosivos.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  font-size:48px;
+  color:#ffffff;                 /* texto blanco */
+  text-shadow: 0 0 8px #000000;  /* sombra oscura para legibilidad */
+
+  border-radius:8px;
+}
 .explosivos.warnRepeats{ background:red !important; }
 .explosivos.warnTriples{ background:#0b57ff !important; } /* (no se usa si backend no manda blue) */
 
@@ -901,3 +912,4 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
+
