@@ -1,29 +1,43 @@
-// sw.js  ✅ S77 - cache con versionado + limpieza automática
-// Cambiá esta versión cada vez que subas cambios:
-const SW_VERSION = "s77-v2026-02-05-01";
+// sw.js ✅ S77 - cache con versionado + limpieza automática
+// ✅ NO cachea manifest ni íconos (para que no queden pegados viejos)
+const SW_VERSION = "s77-v2026-02-08-02";
 
+// ✅ Cacheamos solo assets que ayudan a cargar rápido (incluye splash)
 const CORE_ASSETS = [
   "./",
   "./index.html",
-  "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png",
   "./bg.jpg",
   "./bg-casino-square.png",
   "./bg-casino-green.png",
   "./btn-neon-cian.png",
   "./btn-neon-gold.png",
   "./bg-acierto-blue.png",
-  "./sw.js",
+  "./splash.png",
+  "./sw.js"
 ];
 
+// ❌ Nunca cachear estos
+const NO_CACHE = new Set([
+  "/manifest.json",
+  "/icon-192.png",
+  "/icon-512.png"
+]);
+
+function isNoCacheRequest(reqUrl){
+  try{
+    const u = new URL(reqUrl);
+    return NO_CACHE.has(u.pathname);
+  }catch(e){
+    return false;
+  }
+}
 
 // Instalación: precache mínimo
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(SW_VERSION).then((cache) => cache.addAll(CORE_ASSETS))
   );
-  self.skipWaiting(); // ✅ toma control más rápido
+  self.skipWaiting();
 });
 
 // Activación: borrar caches viejos
@@ -42,12 +56,19 @@ self.addEventListener("activate", (event) => {
 });
 
 // Estrategia:
-// - HTML (navegación): network-first
+// - HTML: network-first
 // - Assets estáticos: cache-first
-// - Requests externos (API onrender): network-only
+// - API onrender: network-only
+// - manifest + icons: network-only (para que cambien de verdad)
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
+
+  // ❌ No cachear manifest ni icons (siempre red)
+  if (isNoCacheRequest(req.url)) {
+    event.respondWith(fetch(req, { cache: "no-store" }));
+    return;
+  }
 
   // ❌ No cachear API
   if (url.hostname.includes("onrender.com") && url.pathname.startsWith("/api")) {
@@ -55,7 +76,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // HTML
+  // HTML navegación
   if (req.mode === "navigate") {
     event.respondWith(
       (async () => {
@@ -73,7 +94,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Assets
+  // Assets estáticos
   event.respondWith(
     (async () => {
       const cached = await caches.match(req);
@@ -95,4 +116,3 @@ self.addEventListener("message", (event) => {
     self.skipWaiting();
   }
 });
-
