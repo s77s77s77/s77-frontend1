@@ -21,7 +21,7 @@ body{
   text-align:center;
   padding:20px;
   }
-  
+
 h1{
   color: white;
   letter-spacing: 3px;
@@ -78,10 +78,10 @@ body::before{
   font-size:34px;
   font-weight:bold;
 
-  background:#000000;          /* fondo negro */
-  border:3px solid #00ff88;    /* marco verde */
+  background:#000000;        /* se pisa por JS según el número */
+  border:3px solid #000000;  /* ✅ borde negro */
 
-  color:#ffffff;
+  color:#ffffff;             /* ✅ texto blanco SIEMPRE */
   text-align:center;
 }
 
@@ -217,7 +217,7 @@ body::before{
 /* EXPLOSIVOS */
 .explosivos{background:black;font-size:48px;}
 .explosivos.warnRepeats{ background:red !important; }
-.explosivos.warnTriples{ background:#0b57ff !important; }
+.explosivos.warnTriples{ background:#0b57ff !important; } /* (no se usa si backend no manda blue) */
 
 /* REPUESTO */
 .repuesto{background:#ff00ff;color:#fff;font-size:48px;display:none;}
@@ -449,7 +449,7 @@ function aplicarWarnMode(mode){
   // clases de color en explosivos (por si las querés usar visualmente)
   explosivos.classList.remove("warnRepeats","warnTriples");
   if(m === "red") explosivos.classList.add("warnRepeats");
-  if(m === "blue") explosivos.classList.add("warnTriples");
+  if(m === "blue") explosivos.classList.add("warnTriples"); // (no se usa si backend no manda blue)
 
   const expBox = document.getElementById("explosivos");
   const repBox = document.getElementById("repuesto");
@@ -496,7 +496,60 @@ function renderRepuesto(arr, mode, suspensionActive){
   }
 }
 
-/* Validación */
+/* =========================
+   COLORES POR NÚMERO (ULTIMOS 16 / 5)
+   ✅ Verde ajustado "ruleta"
+========================= */
+const NUM_BG = {
+  0:"#0b7a3b",      // ✅ verde ruleta (más oscuro)
+  1:"#ff0000",
+  2:"#000000",
+  3:"#ff0000",
+  4:"#000000",
+  5:"#ff0000",
+  6:"#000000",
+  7:"#ff0000",
+  8:"#000000",
+  9:"#ff0000",
+  10:"#000000",
+  11:"#000000",
+  12:"#ff0000",
+  13:"#000000",
+  14:"#ff0000",
+  15:"#000000",
+  16:"#ff0000",
+  17:"#000000",
+  18:"#ff0000",
+  19:"#ff0000",
+  20:"#000000",
+  21:"#ff0000",
+  22:"#000000",
+  23:"#ff0000",
+  24:"#000000",
+  25:"#ff0000",
+  26:"#000000",
+  27:"#ff0000",
+  28:"#000000",
+  29:"#000000",
+  30:"#ff0000",
+  31:"#000000",
+  32:"#ff0000",
+  33:"#000000",
+  34:"#ff0000",
+  35:"#000000",
+  36:"#ff0000",
+};
+
+function pintarCasilleroPorNumero(inputEl){
+  const v = parseInt(inputEl.value, 10);
+  inputEl.style.background = Number.isFinite(v) ? (NUM_BG[v] || "#000") : "#000";
+  inputEl.style.color = "#fff";       // texto blanco SIEMPRE
+  inputEl.style.borderColor = "#000"; // borde negro
+}
+
+/* =========================
+   Validación
+========================= */
 function validarNumero(n){
   if(!Number.isInteger(n)) return { ok:false, msg:"Tenés que ingresar un número entero." };
   if(n < 0 || n > 36) return { ok:false, msg:"Solo se permiten números del 0 al 36." };
@@ -652,6 +705,8 @@ function renderInicial(){
   for(let i=0;i<16;i++){
     let c=document.createElement("input");
     c.disabled=true;
+    c.value = "";
+    pintarCasilleroPorNumero(c); // ✅
     casilleros.appendChild(c);
   }
 }
@@ -672,7 +727,11 @@ async function cargarEstado(){
       casilleros.style.gridTemplateColumns="repeat(4,70px)";
       data.ultimos16.forEach(v=>{
         const c=document.createElement("input");
-        c.disabled=true; c.value=v;
+        c.disabled=true;
+        c.value=v;
+
+        pintarCasilleroPorNumero(c); // ✅
+
         casilleros.appendChild(c);
       });
       if(data.historialLen===0) renderInicial();
@@ -680,7 +739,11 @@ async function cargarEstado(){
       casilleros.style.gridTemplateColumns="repeat(5,70px)";
       data.ultimos5.forEach(v=>{
         const c=document.createElement("input");
-        c.disabled=true; c.value=v;
+        c.disabled=true;
+        c.value=v;
+
+        pintarCasilleroPorNumero(c); // ✅
+
         casilleros.appendChild(c);
       });
     }
@@ -770,6 +833,9 @@ nuevo.addEventListener("keydown", async (e) => {
         const c = document.createElement("input");
         c.disabled = true;
         c.value = v;
+
+        pintarCasilleroPorNumero(c); // ✅
+
         casilleros.appendChild(c);
       });
       if(data.historialLen === 0) renderInicial();
@@ -779,6 +845,9 @@ nuevo.addEventListener("keydown", async (e) => {
         const c = document.createElement("input");
         c.disabled = true;
         c.value = v;
+
+        pintarCasilleroPorNumero(c); // ✅
+
         casilleros.appendChild(c);
       });
     }
