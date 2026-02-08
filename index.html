@@ -351,21 +351,59 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
   font-weight:bold;
 }
 
-/* =========================
-   ✅ SPLASH FULLSCREEN 4s
-   ========================= */
+/* ✅ SPLASH FULLSCREEN 4s */
 #splash{
   position:fixed;
   inset:0;
   z-index:99999;
   background:#000;
-  background-image:url("./splash.png"); /* ✅ tu imagen */
+  background-image:url("./splash.png");
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
 }
 #appContent{
-  display:none; /* se activa luego de 4s */
+  display:none;
+}
+
+/* ✅ BLOQUEO OFFLINE (100% online) */
+#offlineWall{
+  position:fixed;
+  inset:0;
+  z-index:99998; /* debajo del splash, arriba de todo el sistema */
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.92);
+  padding:20px;
+}
+.offlineCard{
+  width:min(420px, 92vw);
+  border:2px solid #444;
+  border-radius:14px;
+  background: rgba(15,15,15,0.85);
+  padding:18px 16px;
+  color:#fff;
+  text-align:center;
+}
+.offlineTitle{
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+.offlineText{
+  font-size:14px;
+  color:#ddd;
+  line-height:1.35;
+  margin-bottom:12px;
+}
+.offlineBtn{
+  padding:10px 14px;
+  background:#111;
+  border:2px solid #444;
+  border-radius:12px;
+  color:#fff;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -375,7 +413,19 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
 <!-- ✅ SPLASH -->
 <div id="splash"></div>
 
-<!-- ✅ TODO TU SISTEMA QUEDA ADENTRO -->
+<!-- ✅ OFFLINE WALL -->
+<div id="offlineWall">
+  <div class="offlineCard">
+    <div class="offlineTitle">REQUIERE CONEXIÓN A INTERNET</div>
+    <div class="offlineText">
+      Para usar el sistema necesitás estar online.<br>
+      Conectate y tocá “Reintentar”.
+    </div>
+    <button class="offlineBtn" onclick="location.reload()">REINTENTAR</button>
+  </div>
+</div>
+
+<!-- ✅ TODO TU SISTEMA ADENTRO -->
 <div id="appContent">
 
 <h1>SISTEMA UNICO PREMIUM</h1>
@@ -393,7 +443,6 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
 
   <br>
 
-  <!-- ✅ NUEVO LAYOUT -->
   <div class="ingreso">
     <div class="ingresoCol">
       <input id="nuevo" class="ingresoInput">
@@ -454,7 +503,7 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
   <button class="logoutBtn" onclick="salir()">SALIR</button>
 </div>
 
-</div><!-- ✅ fin appContent -->
+</div><!-- fin appContent -->
 
 <script>
 const API = "https://s77-backend1.onrender.com";
@@ -465,9 +514,24 @@ const ROLE_KEY  = "S77_ROLE_V1";
 let TOKEN = localStorage.getItem(TOKEN_KEY) || "";
 let ROLE  = localStorage.getItem(ROLE_KEY) || "";
 
-/* Service Worker */
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js").catch(()=>{});
+/* ✅ 100% ONLINE: NO registrar Service Worker */
+// if ("serviceWorker" in navigator) {
+//   navigator.serviceWorker.register("./sw.js").catch(()=>{});
+// }
+
+/* ✅ Offline wall helpers */
+let booted = false;
+function setOfflineWall(){
+  const wall = document.getElementById("offlineWall");
+  const online = navigator.onLine;
+
+  if(!wall) return;
+  wall.style.display = online ? "none" : "flex";
+
+  // Si se cae internet, ocultamos acierto por las dudas
+  if(!online){
+    try{ renderAcierto(false, 0); }catch(e){}
+  }
 }
 
 /* GANANCIA */
@@ -584,42 +648,12 @@ function renderRepuesto(arr, mode, suspensionActive){
    COLORES POR NÚMERO
 ========================= */
 const NUM_BG = {
-  0:"#0b7a3b",
-  1:"#ff0000",
-  2:"#000000",
-  3:"#ff0000",
-  4:"#000000",
-  5:"#ff0000",
-  6:"#000000",
-  7:"#ff0000",
-  8:"#000000",
-  9:"#ff0000",
-  10:"#000000",
-  11:"#000000",
-  12:"#ff0000",
-  13:"#000000",
-  14:"#ff0000",
-  15:"#000000",
-  16:"#ff0000",
-  17:"#000000",
-  18:"#ff0000",
-  19:"#ff0000",
-  20:"#000000",
-  21:"#ff0000",
-  22:"#000000",
-  23:"#ff0000",
-  24:"#000000",
-  25:"#ff0000",
-  26:"#000000",
-  27:"#ff0000",
-  28:"#000000",
-  29:"#000000",
-  30:"#ff0000",
-  31:"#000000",
-  32:"#ff0000",
-  33:"#000000",
-  34:"#ff0000",
-  35:"#000000",
+  0:"#0b7a3b", 1:"#ff0000", 2:"#000000", 3:"#ff0000", 4:"#000000", 5:"#ff0000",
+  6:"#000000", 7:"#ff0000", 8:"#000000", 9:"#ff0000", 10:"#000000", 11:"#000000",
+  12:"#ff0000", 13:"#000000", 14:"#ff0000", 15:"#000000", 16:"#ff0000", 17:"#000000",
+  18:"#ff0000", 19:"#ff0000", 20:"#000000", 21:"#ff0000", 22:"#000000", 23:"#ff0000",
+  24:"#000000", 25:"#ff0000", 26:"#000000", 27:"#ff0000", 28:"#000000", 29:"#000000",
+  30:"#ff0000", 31:"#000000", 32:"#ff0000", 33:"#000000", 34:"#ff0000", 35:"#000000",
   36:"#ff0000",
 };
 
@@ -740,6 +774,8 @@ function mostrarSistema(){
 
 /* LOGIN */
 async function ingresar(){
+  if(!navigator.onLine){ setOfflineWall(); return; }
+
   const u=(usuario.value||"").trim();
   const p=(clave.value||"").trim();
   if(!u || !p){ err.innerText="Completa usuario y clave"; return; }
@@ -795,6 +831,8 @@ function renderInicial(){
 }
 
 async function cargarEstado(){
+  if(!navigator.onLine){ setOfflineWall(); return; }
+
   try{
     const r = await fetch(`${API}/api/state`,{
       method:"GET",
@@ -852,6 +890,8 @@ async function cargarEstado(){
 }
 
 async function resetear(){
+  if(!navigator.onLine){ setOfflineWall(); return; }
+
   if(!TOKEN){ alert("Tenés que estar logueado."); return; }
   if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
 
@@ -879,6 +919,8 @@ async function resetear(){
 /* ENTER */
 nuevo.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
+
+  if(!navigator.onLine){ setOfflineWall(); return; }
 
   if(!TOKEN){
     alert("Primero tenés que ingresar con usuario y clave.");
@@ -963,29 +1005,56 @@ nuevo.addEventListener("keydown", async (e) => {
   }
 });
 
-/* ✅ Auto-login + Splash */
-(async function init(){
+/* ✅ Boot (online only) */
+async function boot(){
+  if(booted) return;
+  if(!navigator.onLine){ setOfflineWall(); return; }
 
-  // ✅ Mostrar splash 4 segundos
-  const splash = document.getElementById("splash");
-  const app = document.getElementById("appContent");
+  booted = true;
 
-  setTimeout(() => {
-    if(splash) splash.style.display = "none";
-    if(app) app.style.display = "block";
-  }, 4000);
-
-  // Mientras corre el splash, cargamos igual
   if(TOKEN){
     mostrarSistema();
     await cargarEstado();
   }else{
     mostrarLogin();
   }
+}
+
+/* ✅ Splash + Online gate */
+(async function init(){
+
+  // Splash 4s
+  const splash = document.getElementById("splash");
+  const app = document.getElementById("appContent");
+
+  setTimeout(() => {
+    if(splash) splash.style.display = "none";
+    if(app) app.style.display = "block";
+    setOfflineWall();
+  }, 4000);
+
+  // Estado inicial online/offline
+  setOfflineWall();
+
+  // Boot solo si hay internet
+  await boot();
+
+  // Listeners: si se cae internet, bloquea. Si vuelve, bootea/carga.
+  window.addEventListener("offline", () => {
+    setOfflineWall();
+  });
+  window.addEventListener("online", async () => {
+    setOfflineWall();
+    // Si todavía no booteó o necesita refrescar estado
+    if(!booted){
+      await boot();
+    }else if(TOKEN){
+      await cargarEstado();
+    }
+  });
+
 })();
 </script>
 
 </body>
 </html>
-
-
