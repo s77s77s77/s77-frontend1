@@ -216,43 +216,45 @@ body::before{
 
 /* EXPLOSIVOS */
 .explosivos{
-  position: relative;
-  background: #06162a; /* azul noche */
+  background: #0b1a2a;          /* azul noche sobrio */
   color: #ffffff;
   font-size: 48px;
-  text-shadow: 0 0 4px rgba(0,0,0,0.9);
-  
-  padding: 14px;
-  border-radius: 10px;
+  font-weight: bold;
 
-  /* marco */
-  border: 4px solid #f5c16c;
+  padding: 16px;
+  border-radius: 8px;
+
+  border: 3px solid #c9a24d;    /* dorado clásico */
+  
   box-shadow:
-    0 0 6px rgba(245,193,108,0.6),
-    0 0 12px rgba(245,193,108,0.4),
-    inset 0 0 10px rgba(0,0,0,0.8);
+    0 0 4px rgba(0,0,0,0.8),    /* sombra base */
+    0 2px 6px rgba(0,0,0,0.9);  /* profundidad */
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.9);  /* lectura limpia */
 }
 .explosivos.warnRepeats{ background:red !important; }
 .explosivos.warnTriples{ background:#0b57ff !important; } /* (no se usa si backend no manda blue) */
 
 /* REPUESTO */
 .repuesto{
-  position: relative;
-  background: #2a0b12; /* bordó oscuro */
+  background: #2b0f14;          /* bordó oscuro */
   color: #ffffff;
   font-size: 48px;
-  text-shadow: 0 0 4px rgba(0,0,0,0.9);
+  font-weight: bold;
 
-  padding: 14px;
-  border-radius: 10px;
+  padding: 16px;
+  border-radius: 8px;
 
-  border: 4px solid #f0b060;
+  border: 3px solid #c9a24d;    /* mismo dorado para coherencia */
+
   box-shadow:
-    0 0 6px rgba(240,176,96,0.6),
-    0 0 12px rgba(240,176,96,0.4),
-    inset 0 0 10px rgba(0,0,0,0.8);
-}
+    0 0 4px rgba(0,0,0,0.8),
+    0 2px 6px rgba(0,0,0,0.9);
 
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.9);
+}
 .repuestoTitle{color:#ff00ff;margin-top:10px;display:none;}
 
 button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;border-radius:8px;}
@@ -933,6 +935,7 @@ nuevo.addEventListener("keydown", async (e) => {
 
 </body>
 </html>
+
 
 
 
