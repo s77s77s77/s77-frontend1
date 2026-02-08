@@ -1,6 +1,6 @@
 {
   "name": "Sistema Premium",
-  "short_name": "LOADING...",
+  "short_name": "S77 FULL",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#000000",
@@ -18,4 +18,5 @@
     }
   ]
 }
+
 
