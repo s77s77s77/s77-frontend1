@@ -1,6 +1,6 @@
 // sw.js ✅ S77 - cache con versionado + limpieza automática
 // ✅ NO cachea manifest ni íconos (para que no queden pegados viejos)
-const SW_VERSION = "s77-v2026-02-08-02";
+const SW_VERSION = "s77-v2026-02-08-03";
 
 // ✅ Cacheamos solo assets que ayudan a cargar rápido (incluye splash)
 const CORE_ASSETS = [
@@ -116,3 +116,4 @@ self.addEventListener("message", (event) => {
     self.skipWaiting();
   }
 });
+
