@@ -697,19 +697,10 @@ function mostrarAT(id, mult){
   }
 }
 function aplicarConteoDesdeBackend(activeId, activeMult){
-  if(!cacheInicializado){
-    cacheInicializado = true;
-    cacheActiveId = activeId || "A";
-    cacheActiveMult = Number(activeMult) || 1;
-    mostrarAT(cacheActiveId, cacheActiveMult);
-    return;
-  }
-  if(conteoPausado){
-    mostrarAT(cacheActiveId, cacheActiveMult);
-    return;
-  }
-  cacheActiveId = activeId || cacheActiveId;
-  cacheActiveMult = Number(activeMult) || cacheActiveMult;
+  // ✅ SIEMPRE sincronizamos con backend (aunque haya warn rojo)
+  cacheInicializado = true;
+  cacheActiveId = activeId || "A";
+  cacheActiveMult = Number(activeMult) || 1;
   mostrarAT(cacheActiveId, cacheActiveMult);
 }
 function syncPausaConteoConColor(){
@@ -1058,3 +1049,4 @@ async function boot(){
 
 </body>
 </html>
+
