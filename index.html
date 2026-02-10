@@ -409,18 +409,20 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
   font-weight:bold;
 }
 
-/* ✅ EFECTO ACIERTO (LOTTIE ARRIBA DEL BOTÓN) */
+/* ✅ EFECTO ACIERTO (LOTTIE OVERLAY) */
 #winFx{
-  width:100%;
+  position:fixed;
+  inset:0;
+  z-index:99997; /* debajo splash/offlineWall, encima del sistema */
   display:none;
-  justify-content:center;
   align-items:center;
-  margin-top:6px;
-  margin-bottom:2px;
+  justify-content:center;
+  pointer-events:none;
+  background: rgba(0,0,0,0.15);
 }
 #winPlayer{
-  width: 110px;
-  height: 110px;
+  width: min(78vw, 420px);
+  height: min(78vw, 420px);
 }
 </style>
 </head>
@@ -440,6 +442,18 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
     </div>
     <button class="offlineBtn" onclick="location.reload()">REINTENTAR</button>
   </div>
+</div>
+
+<!-- ✅ EFECTO ACIERTO -->
+<div id="winFx">
+  <dotlottie-player
+    id="winPlayer"
+    src="./success-cav.lottie"
+    background="transparent"
+    speed="1"
+    loop="false"
+    autoplay="false">
+  </dotlottie-player>
 </div>
 
 <!-- ✅ TODO TU SISTEMA ADENTRO -->
@@ -480,18 +494,6 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
         <div id="aciertoLabel" class="aciertoLabel" style="color:#00e5ff; text-shadow:0 0 6px #00e5ff;">ACIERTO</div>
       </div>
     </div>
-  </div>
-
-  <!-- ✅ EFECTO ACIERTO (AHORA VA ACÁ: ARRIBA DEL REINICIAR) -->
-  <div id="winFx">
-    <dotlottie-player
-      id="winPlayer"
-      src="./success-cav.lottie"
-      background="transparent"
-      speed="1"
-      loop="false"
-      autoplay="false">
-    </dotlottie-player>
   </div>
 
   <div style="margin-top:12px;">
@@ -557,7 +559,7 @@ function setOfflineWall(){
   }
 }
 
-/* ✅ LOTTIE WIN FX (AHORA NO ES OVERLAY, ES ARRIBA DEL BOTÓN) */
+/* ✅ LOTTIE WIN FX */
 let winFxTimer = null;
 function showWinFx(ms = 1200){
   const fx = document.getElementById("winFx");
@@ -815,279 +817,4 @@ async function ingresar(){
   try{
     const r = await fetch(`${API}/auth/login`,{
       method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ user:u, pass:p })
-    });
-
-    const data = await r.json();
-    if(!r.ok){
-      err.innerText="Usuario/clave inválidos o vencidos";
-      return;
-    }
-
-    TOKEN = data.token;
-    ROLE = data.role;
-
-    localStorage.setItem(TOKEN_KEY, TOKEN);
-    localStorage.setItem(ROLE_KEY, ROLE);
-
-    err.innerText="";
-    mostrarSistema();
-    await cargarEstado();
-  }catch(e){
-    err.innerText="No conecta con el servidor. ¿Está prendido el backend?";
-  }
-}
-
-/* SALIR */
-function salir(){
-  if(!confirm("¿Seguro querés salir?")) return;
-  TOKEN = "";
-  ROLE = "";
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(ROLE_KEY);
-  mostrarLogin();
-}
-
-/* Render inicial */
-function renderInicial(){
-  casilleros.innerHTML="";
-  casilleros.style.gridTemplateColumns="repeat(4,70px)";
-  for(let i=0;i<16;i++){
-    let c=document.createElement("input");
-    c.disabled=true;
-    c.value = "";
-    pintarCasilleroPorNumero(c);
-    casilleros.appendChild(c);
-  }
-}
-
-async function cargarEstado(){
-  if(!navigator.onLine){ setOfflineWall(); return; }
-
-  try{
-    const r = await fetch(`${API}/api/state`,{
-      method:"GET",
-      headers:{ "Authorization": `Bearer ${TOKEN}` }
-    });
-
-    const data = await r.json();
-    if(!r.ok){ salir(); return; }
-
-    casilleros.innerHTML="";
-
-    if(data.historialLen < 17){
-      casilleros.style.gridTemplateColumns="repeat(4,70px)";
-      data.ultimos16.forEach(v=>{
-        const c=document.createElement("input");
-        c.disabled=true;
-        c.value=v;
-        pintarCasilleroPorNumero(c);
-        casilleros.appendChild(c);
-      });
-      if(data.historialLen===0) renderInicial();
-    }else{
-      casilleros.style.gridTemplateColumns="repeat(5,70px)";
-      data.ultimos5.forEach(v=>{
-        const c=document.createElement("input");
-        c.disabled=true;
-        c.value=v;
-        pintarCasilleroPorNumero(c);
-        casilleros.appendChild(c);
-      });
-    }
-
-    const suspensionActive = !!data.suspensionActive;
-
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
-      : "—";
-
-    const mode = getWarnModeFromData(data);
-
-    if(suspensionActive){
-      aplicarSuspensionUI(true);
-    }else{
-      aplicarWarnMode(mode);
-    }
-
-    syncPausaConteoConColor();
-    renderRepuesto(data.repuesto, mode, suspensionActive);
-
-    setTotalFichas(data.fichasTotal);
-    aplicarConteoDesdeBackend(data.activeId, data.activeMult);
-    renderAcierto(false, 0);
-
-  }catch(e){}
-}
-
-async function resetear(){
-  if(!navigator.onLine){ setOfflineWall(); return; }
-
-  if(!TOKEN){ alert("Tenés que estar logueado."); return; }
-  if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
-
-  try{
-    const r = await fetch(`${API}/api/reset`,{
-      method:"POST",
-      headers:{ "Authorization": `Bearer ${TOKEN}` }
-    });
-
-    if(!r.ok){ alert("No se pudo reiniciar."); return; }
-
-    aplicarWarnMode("none");
-    syncPausaConteoConColor();
-    setTotalFichas(0);
-    renderRepuesto([], "none", false);
-    renderAcierto(false, 0);
-    setGanancia(0);
-
-    // ✅ ocultar fx si estaba visible
-    const fx = document.getElementById("winFx");
-    if(fx) fx.style.display = "none";
-
-    await cargarEstado();
-  }catch(e){
-    alert("No conecta con el backend.");
-  }
-}
-
-/* ENTER */
-nuevo.addEventListener("keydown", async (e) => {
-  if (e.key !== "Enter") return;
-
-  if(!navigator.onLine){ setOfflineWall(); return; }
-
-  if(!TOKEN){
-    alert("Primero tenés que ingresar con usuario y clave.");
-    return;
-  }
-
-  const n = parseInt(nuevo.value, 10);
-  const v = validarNumero(n);
-  if(!v.ok){ alert(v.msg); return; }
-
-  nuevo.value = "";
-
-  try {
-    const r = await fetch(`${API}/api/enter`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${TOKEN}`
-      },
-      body: JSON.stringify({ n })
-    });
-
-    const data = await r.json();
-    if (!r.ok) { salir(); return; }
-
-    casilleros.innerHTML = "";
-
-    if (data.historialLen < 17) {
-      casilleros.style.gridTemplateColumns = "repeat(4,70px)";
-      data.ultimos16.forEach(v => {
-        const c = document.createElement("input");
-        c.disabled = true;
-        c.value = v;
-        pintarCasilleroPorNumero(c);
-        casilleros.appendChild(c);
-      });
-      if(data.historialLen === 0) renderInicial();
-    } else {
-      casilleros.style.gridTemplateColumns = "repeat(5,70px)";
-      data.ultimos5.forEach(v => {
-        const c = document.createElement("input");
-        c.disabled = true;
-        c.value = v;
-        pintarCasilleroPorNumero(c);
-        casilleros.appendChild(c);
-      });
-    }
-
-    const suspensionActive = !!data.suspensionActive;
-
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
-      : "—";
-
-    const mode = getWarnModeFromData(data);
-
-    if(suspensionActive){
-      aplicarSuspensionUI(true);
-    }else{
-      aplicarWarnMode(mode);
-    }
-
-    syncPausaConteoConColor();
-    renderRepuesto(data.repuesto, mode, suspensionActive);
-
-    setTotalFichas(data.fichasTotal);
-    aplicarConteoDesdeBackend(data.activeId, data.activeMult);
-
-    if(suspensionActive){
-      renderAcierto(false, 0);
-      return;
-    }
-
-    const show = !!data.aciertoShow;
-    const val  = Number(data.aciertoValue);
-
-    renderAcierto(show, val);
-    if(show){
-      sumarGananciaDesdeAcierto(val);
-      showWinFx(1200); // ✅ EXPLOSIÓN DORADA (arriba del botón)
-    }
-
-  } catch (err) {
-    alert("No conecta con el backend. ¿Está prendido?");
-  }
-});
-
-/* ✅ Boot (online only) */
-async function boot(){
-  if(booted) return;
-  if(!navigator.onLine){ setOfflineWall(); return; }
-
-  booted = true;
-
-  if(TOKEN){
-    mostrarSistema();
-    await cargarEstado();
-  }else{
-    mostrarLogin();
-  }
-}
-
-/* ✅ Splash + Online gate */
-(async function init(){
-
-  const splash = document.getElementById("splash");
-  const app = document.getElementById("appContent");
-
-  setTimeout(() => {
-    if(splash) splash.style.display = "none";
-    if(app) app.style.display = "block";
-    setOfflineWall();
-  }, 4000);
-
-  setOfflineWall();
-  await boot();
-
-  window.addEventListener("offline", () => {
-    setOfflineWall();
-  });
-  window.addEventListener("online", async () => {
-    setOfflineWall();
-    if(!booted){
-      await boot();
-    }else if(TOKEN){
-      await cargarEstado();
-    }
-  });
-
-})();
-</script>
-
-</body>
-</html>
+      headers:{ "
