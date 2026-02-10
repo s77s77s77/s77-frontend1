@@ -409,20 +409,18 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
   font-weight:bold;
 }
 
-/* ✅ EFECTO ACIERTO (LOTTIE OVERLAY) */
+/* ✅ EFECTO ACIERTO (LOTTIE ARRIBA DEL BOTÓN) */
 #winFx{
-  position:fixed;
-  inset:0;
-  z-index:99997; /* debajo splash/offlineWall, encima del sistema */
+  width:100%;
   display:none;
-  align-items:center;
   justify-content:center;
-  pointer-events:none;
-  background: rgba(0,0,0,0.15);
+  align-items:center;
+  margin-top:6px;
+  margin-bottom:2px;
 }
 #winPlayer{
-  width: min(78vw, 420px);
-  height: min(78vw, 420px);
+  width: 110px;
+  height: 110px;
 }
 </style>
 </head>
@@ -442,18 +440,6 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
     </div>
     <button class="offlineBtn" onclick="location.reload()">REINTENTAR</button>
   </div>
-</div>
-
-<!-- ✅ EFECTO ACIERTO -->
-<div id="winFx">
-  <dotlottie-player
-    id="winPlayer"
-    src="./success-cav.lottie"
-    background="transparent"
-    speed="1"
-    loop="false"
-    autoplay="false">
-  </dotlottie-player>
 </div>
 
 <!-- ✅ TODO TU SISTEMA ADENTRO -->
@@ -494,6 +480,18 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
         <div id="aciertoLabel" class="aciertoLabel" style="color:#00e5ff; text-shadow:0 0 6px #00e5ff;">ACIERTO</div>
       </div>
     </div>
+  </div>
+
+  <!-- ✅ EFECTO ACIERTO (AHORA VA ACÁ: ARRIBA DEL REINICIAR) -->
+  <div id="winFx">
+    <dotlottie-player
+      id="winPlayer"
+      src="./success-cav.lottie"
+      background="transparent"
+      speed="1"
+      loop="false"
+      autoplay="false">
+    </dotlottie-player>
   </div>
 
   <div style="margin-top:12px;">
@@ -559,7 +557,7 @@ function setOfflineWall(){
   }
 }
 
-/* ✅ LOTTIE WIN FX */
+/* ✅ LOTTIE WIN FX (AHORA NO ES OVERLAY, ES ARRIBA DEL BOTÓN) */
 let winFxTimer = null;
 function showWinFx(ms = 1200){
   const fx = document.getElementById("winFx");
@@ -944,6 +942,10 @@ async function resetear(){
     renderAcierto(false, 0);
     setGanancia(0);
 
+    // ✅ ocultar fx si estaba visible
+    const fx = document.getElementById("winFx");
+    if(fx) fx.style.display = "none";
+
     await cargarEstado();
   }catch(e){
     alert("No conecta con el backend.");
@@ -1034,7 +1036,7 @@ nuevo.addEventListener("keydown", async (e) => {
     renderAcierto(show, val);
     if(show){
       sumarGananciaDesdeAcierto(val);
-      showWinFx(1200); // ✅ EXPLOSIÓN DORADA
+      showWinFx(1200); // ✅ EXPLOSIÓN DORADA (arriba del botón)
     }
 
   } catch (err) {
