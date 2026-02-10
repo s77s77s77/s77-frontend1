@@ -9,6 +9,9 @@
 
 <title>SISTEMA UNICO PREMIUM</title>
 
+<!-- ✅ LOTTIE PLAYER (para .lottie) -->
+<script type="module" src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"></script>
+
 <style>
 body{
   font-family:impact;
@@ -370,7 +373,7 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
 #offlineWall{
   position:fixed;
   inset:0;
-  z-index:99998; /* debajo del splash, arriba de todo el sistema */
+  z-index:99998;
   display:none;
   align-items:center;
   justify-content:center;
@@ -405,6 +408,22 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
   color:#fff;
   font-weight:bold;
 }
+
+/* ✅ EFECTO ACIERTO (LOTTIE OVERLAY) */
+#winFx{
+  position:fixed;
+  inset:0;
+  z-index:99997; /* debajo splash/offlineWall, encima del sistema */
+  display:none;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  background: rgba(0,0,0,0.15);
+}
+#winPlayer{
+  width: min(78vw, 420px);
+  height: min(78vw, 420px);
+}
 </style>
 </head>
 
@@ -423,6 +442,18 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
     </div>
     <button class="offlineBtn" onclick="location.reload()">REINTENTAR</button>
   </div>
+</div>
+
+<!-- ✅ EFECTO ACIERTO -->
+<div id="winFx">
+  <dotlottie-player
+    id="winPlayer"
+    src="./success-cav.lottie"
+    background="transparent"
+    speed="1"
+    loop="false"
+    autoplay="false">
+  </dotlottie-player>
 </div>
 
 <!-- ✅ TODO TU SISTEMA ADENTRO -->
@@ -514,11 +545,6 @@ const ROLE_KEY  = "S77_ROLE_V1";
 let TOKEN = localStorage.getItem(TOKEN_KEY) || "";
 let ROLE  = localStorage.getItem(ROLE_KEY) || "";
 
-/* ✅ 100% ONLINE: NO registrar Service Worker */
-// if ("serviceWorker" in navigator) {
-//   navigator.serviceWorker.register("./sw.js").catch(()=>{});
-// }
-
 /* ✅ Offline wall helpers */
 let booted = false;
 function setOfflineWall(){
@@ -528,10 +554,29 @@ function setOfflineWall(){
   if(!wall) return;
   wall.style.display = online ? "none" : "flex";
 
-  // Si se cae internet, ocultamos acierto por las dudas
   if(!online){
     try{ renderAcierto(false, 0); }catch(e){}
   }
+}
+
+/* ✅ LOTTIE WIN FX */
+let winFxTimer = null;
+function showWinFx(ms = 1200){
+  const fx = document.getElementById("winFx");
+  const player = document.getElementById("winPlayer");
+  if(!fx || !player) return;
+
+  fx.style.display = "flex";
+
+  try{
+    player.stop();
+    player.play();
+  }catch(e){}
+
+  clearTimeout(winFxTimer);
+  winFxTimer = setTimeout(() => {
+    fx.style.display = "none";
+  }, ms);
 }
 
 /* GANANCIA */
@@ -621,7 +666,6 @@ function aplicarWarnMode(mode){
   }
 }
 
-/* ✅ CAMBIO: renderRepuesto respeta la regla (solo visible en ROJO) */
 function renderRepuesto(arr, mode, suspensionActive){
   const box = document.getElementById("repuesto");
   if(!box) return;
@@ -697,7 +741,6 @@ function mostrarAT(id, mult){
   }
 }
 function aplicarConteoDesdeBackend(activeId, activeMult){
-  // ✅ SIEMPRE sincronizamos con backend (aunque haya warn rojo)
   cacheInicializado = true;
   cacheActiveId = activeId || "A";
   cacheActiveMult = Number(activeMult) || 1;
@@ -989,7 +1032,10 @@ nuevo.addEventListener("keydown", async (e) => {
     const val  = Number(data.aciertoValue);
 
     renderAcierto(show, val);
-    if(show){ sumarGananciaDesdeAcierto(val); }
+    if(show){
+      sumarGananciaDesdeAcierto(val);
+      showWinFx(1200); // ✅ EXPLOSIÓN DORADA
+    }
 
   } catch (err) {
     alert("No conecta con el backend. ¿Está prendido?");
@@ -1014,7 +1060,6 @@ async function boot(){
 /* ✅ Splash + Online gate */
 (async function init(){
 
-  // Splash 4s
   const splash = document.getElementById("splash");
   const app = document.getElementById("appContent");
 
@@ -1024,19 +1069,14 @@ async function boot(){
     setOfflineWall();
   }, 4000);
 
-  // Estado inicial online/offline
   setOfflineWall();
-
-  // Boot solo si hay internet
   await boot();
 
-  // Listeners: si se cae internet, bloquea. Si vuelve, bootea/carga.
   window.addEventListener("offline", () => {
     setOfflineWall();
   });
   window.addEventListener("online", async () => {
     setOfflineWall();
-    // Si todavía no booteó o necesita refrescar estado
     if(!booted){
       await boot();
     }else if(TOKEN){
@@ -1049,6 +1089,3 @@ async function boot(){
 
 </body>
 </html>
-
-
-
