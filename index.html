@@ -315,7 +315,7 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
   text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
-/* ✅ NUEVO: MULT SIEMPRE VISIBLE */
+/* ✅ MULT SIEMPRE VISIBLE (infinito) */
 #MULT{
   display:flex !important;
 }
@@ -510,7 +510,7 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
   <div id="repuesto" class="box repuesto">—</div>
 
   <div class="abcWrap">
-    <!-- ✅ NUEVO: ficha única SIEMPRE visible -->
+    <!-- ✅ ficha única SIEMPRE visible -->
     <div id="MULT" class="abc"></div>
 
     <div id="A" class="abc"></div><div id="B" class="abc"></div><div id="C" class="abc"></div><div id="D" class="abc"></div><div id="E" class="abc"></div>
@@ -734,6 +734,7 @@ let cacheInicializado = false;
 
 function ocultarAT(){
   const ids = [
+    "MULT",
     "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T",
     "U","V","W","X","Y","Z",
     "AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN"
@@ -745,22 +746,16 @@ function ocultarAT(){
     el.style.display="none";
     el.textContent="";
   });
-
-  // ✅ asegurar MULT visible (aunque ocultarAT corra)
-  const multEl = document.getElementById("MULT");
-  if(multEl){
-    multEl.style.display = "flex";
-  }
 }
 
 function mostrarAT(id, mult){
+  // ✅ ocultamos todo (incluye A..AN) y pintamos SOLO MULT
   ocultarAT();
 
-  // ✅ SIEMPRE mostrar el multiplicador en la ficha única
   const multEl = document.getElementById("MULT");
   if(multEl){
     multEl.style.display = "flex";
-    multEl.textContent = String(mult);
+    multEl.textContent = String(Number(mult) || 0);
   }
 }
 
@@ -1062,7 +1057,7 @@ nuevo.addEventListener("keydown", async (e) => {
     renderAcierto(show, val);
     if(show){
       sumarGananciaDesdeAcierto(val);
-      showWinFx(1200); // ✅ EXPLOSIÓN DORADA (arriba del botón)
+      showWinFx(1200);
     }
 
   } catch (err) {
