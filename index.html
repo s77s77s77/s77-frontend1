@@ -554,6 +554,17 @@ const ROLE_KEY  = "S77_ROLE_V1";
 let TOKEN = localStorage.getItem(TOKEN_KEY) || "";
 let ROLE  = localStorage.getItem(ROLE_KEY) || "";
 
+/* =========================
+   ✅ FIX ANTI-CUELGUE (solo esto se agrega)
+   - si /api/enter se cuelga o tarda demasiado, se corta solo y no queda "clavado"
+========================= */
+function fetchWithTimeout(url, options = {}, timeoutMs = 12000){
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal })
+    .finally(() => clearTimeout(id));
+}
+
 /* ✅ Offline wall helpers */
 let booted = false;
 function setOfflineWall(){
@@ -784,14 +795,14 @@ async function crearUsuario(dias){
     return;
   }
   try{
-    const r = await fetch(`${API}/admin/create-user`,{
+    const r = await fetchWithTimeout(`${API}/admin/create-user`,{
       method:"POST",
       headers:{
         "Content-Type":"application/json",
         "Authorization": `Bearer ${TOKEN}`
       },
       body: JSON.stringify({ user:u, pass:p, days:dias })
-    });
+    }, 12000);
 
     const data = await r.json();
     if(!r.ok){
@@ -834,11 +845,11 @@ async function ingresar(){
   if(!u || !p){ err.innerText="Completa usuario y clave"; return; }
 
   try{
-    const r = await fetch(`${API}/auth/login`,{
+    const r = await fetchWithTimeout(`${API}/auth/login`,{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ user:u, pass:p })
-    });
+    }, 12000);
 
     const data = await r.json();
     if(!r.ok){
@@ -887,10 +898,10 @@ async function cargarEstado(){
   if(!navigator.onLine){ setOfflineWall(); return; }
 
   try{
-    const r = await fetch(`${API}/api/state`,{
+    const r = await fetchWithTimeout(`${API}/api/state`,{
       method:"GET",
       headers:{ "Authorization": `Bearer ${TOKEN}` }
-    });
+    }, 12000);
 
     const data = await r.json();
     if(!r.ok){ salir(); return; }
@@ -949,10 +960,10 @@ async function resetear(){
   if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
 
   try{
-    const r = await fetch(`${API}/api/reset`,{
+    const r = await fetchWithTimeout(`${API}/api/reset`,{
       method:"POST",
       headers:{ "Authorization": `Bearer ${TOKEN}` }
-    });
+    }, 12000);
 
     if(!r.ok){ alert("No se pudo reiniciar."); return; }
 
@@ -969,7 +980,11 @@ async function resetear(){
 
     await cargarEstado();
   }catch(e){
-    alert("No conecta con el backend.");
+    if (e && e.name === "AbortError") {
+      alert("El servidor tardó demasiado y se cortó la petición. Intentá de nuevo.");
+    } else {
+      alert("No conecta con el backend.");
+    }
   }
 }
 
@@ -991,14 +1006,14 @@ nuevo.addEventListener("keydown", async (e) => {
   nuevo.value = "";
 
   try {
-    const r = await fetch(`${API}/api/enter`, {
+    const r = await fetchWithTimeout(`${API}/api/enter`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${TOKEN}`
       },
       body: JSON.stringify({ n })
-    });
+    }, 12000);
 
     const data = await r.json();
     if (!r.ok) { salir(); return; }
@@ -1061,7 +1076,11 @@ nuevo.addEventListener("keydown", async (e) => {
     }
 
   } catch (err) {
-    alert("No conecta con el backend. ¿Está prendido?");
+    if (err && err.name === "AbortError") {
+      alert("El servidor tardó demasiado y se cortó la petición. Tocá REINICIAR e intentá de nuevo.");
+    } else {
+      alert("No conecta con el backend. ¿Está prendido?");
+    }
   }
 });
 
