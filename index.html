@@ -509,6 +509,10 @@ button{padding:10px;background:maroon;color:white;font-weight:bold;border:none;b
     <div id="F" class="abc"></div><div id="G" class="abc"></div><div id="H" class="abc"></div><div id="I" class="abc"></div><div id="J" class="abc"></div>
     <div id="K" class="abc"></div><div id="L" class="abc"></div><div id="M" class="abc"></div><div id="N" class="abc"></div><div id="O" class="abc"></div>
     <div id="P" class="abc"></div><div id="Q" class="abc"></div><div id="R" class="abc"></div><div id="S" class="abc"></div><div id="T" class="abc"></div>
+    <div id="U" class="abc"></div><div id="V" class="abc"></div><div id="W" class="abc"></div><div id="X" class="abc"></div><div id="Y" class="abc"></div><div id="Z" class="abc"></div>
+    <div id="AA" class="abc"></div><div id="AB" class="abc"></div><div id="AC" class="abc"></div><div id="AD" class="abc"></div><div id="AE" class="abc"></div><div id="AF" class="abc"></div>
+    <div id="AG" class="abc"></div><div id="AH" class="abc"></div><div id="AI" class="abc"></div><div id="AJ" class="abc"></div><div id="AK" class="abc"></div><div id="AL" class="abc"></div><div id="AM" class="abc"></div><div id="AN" class="abc"></div>
+
   </div>
 
   <div id="adminPanel" class="adminPanel hidden">
@@ -722,7 +726,12 @@ let cacheActiveMult = 1;
 let cacheInicializado = false;
 
 function ocultarAT(){
-  const ids = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"];
+  const ids = [
+"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T",
+  "U","V","W","X","Y","Z",
+  "AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN"
+];
+
   ids.forEach(id=>{
     const el=document.getElementById(id);
     if(!el) return;
@@ -1091,4 +1100,5 @@ async function boot(){
 
 </body>
 </html>
+
 
