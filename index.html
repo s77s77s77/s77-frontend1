@@ -931,8 +931,12 @@ async function cargarEstado(){
 
     const suspensionActive = !!data.suspensionActive;
 
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
+    const explosivosOrdenados = Array.isArray(data.explosivos)
+      ? [...data.explosivos].sort((a,b) => Number(a) - Number(b))
+      : [];
+
+    explosivos.innerText = explosivosOrdenados.length
+      ? explosivosOrdenados.join(" ")
       : "—";
 
     const mode = getWarnModeFromData(data);
@@ -944,7 +948,12 @@ async function cargarEstado(){
     }
 
     syncPausaConteoConColor();
-    renderRepuesto(data.repuesto, mode, suspensionActive);
+
+    const repuestoOrdenado = Array.isArray(data.repuesto)
+      ? [...data.repuesto].sort((a,b) => Number(a) - Number(b))
+      : [];
+
+    renderRepuesto(repuestoOrdenado, mode, suspensionActive);
 
     setTotalFichas(data.fichasTotal);
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
@@ -1043,8 +1052,12 @@ nuevo.addEventListener("keydown", async (e) => {
 
     const suspensionActive = !!data.suspensionActive;
 
-    explosivos.innerText = (data.explosivos && data.explosivos.length)
-      ? data.explosivos.join(" ")
+    const explosivosOrdenados = Array.isArray(data.explosivos)
+      ? [...data.explosivos].sort((a,b) => Number(a) - Number(b))
+      : [];
+
+    explosivos.innerText = explosivosOrdenados.length
+      ? explosivosOrdenados.join(" ")
       : "—";
 
     const mode = getWarnModeFromData(data);
@@ -1056,7 +1069,12 @@ nuevo.addEventListener("keydown", async (e) => {
     }
 
     syncPausaConteoConColor();
-    renderRepuesto(data.repuesto, mode, suspensionActive);
+
+    const repuestoOrdenado = Array.isArray(data.repuesto)
+      ? [...data.repuesto].sort((a,b) => Number(a) - Number(b))
+      : [];
+
+    renderRepuesto(repuestoOrdenado, mode, suspensionActive);
 
     setTotalFichas(data.fichasTotal);
     aplicarConteoDesdeBackend(data.activeId, data.activeMult);
