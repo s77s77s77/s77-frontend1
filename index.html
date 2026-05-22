@@ -875,22 +875,46 @@ function renderEstado(data){
 
   renderCasilleros(data);
 
+  const favoritos =
+    Array.isArray(data.favoritos) ? data.favoritos :
+    Array.isArray(data.rep3) ? data.rep3 :
+    [];
+
+  const onfire =
+    Array.isArray(data.onfire) ? data.onfire :
+    Array.isArray(data.rep4) ? data.rep4 :
+    [];
+
   renderLista(
     "favoritosBox",
-    data.favoritos
+    favoritos
   );
 
   renderLista(
     "onfireBox",
-    data.onfire
+    onfire
   );
 
-  setTotal(data.totalGeneral);
+  const total =
+    Number.isFinite(Number(data.totalGeneral))
+      ? Number(data.totalGeneral)
+      : Number.isFinite(Number(data.fichasTotal))
+        ? Number(data.fichasTotal)
+        : 0;
 
-  setFicha(data.fichasTotal);
+  const ficha =
+    Number.isFinite(Number(data.activeMult))
+      ? Number(data.activeMult)
+      : Number.isFinite(Number(data.fichasTotal))
+        ? Number(data.fichasTotal)
+        : 1;
+
+  setTotal(total);
+
+  setFicha(ficha);
 
   renderAcierto(false, 0);
-}
+  }
 
 async function cargarEstado(){
 
