@@ -773,7 +773,11 @@ function validarNumero(n){
 
   }catch(e){
 
-    err.innerText = "No conecta con el servidor. ¿Está prendido el backend?";
+  console.error("ERROR LOGIN:", e);
+
+  err.innerText =
+    "ERROR LOGIN: " +
+    (e && e.message ? e.message : String(e));
   }
 }
 
