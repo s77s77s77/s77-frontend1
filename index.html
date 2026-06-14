@@ -953,7 +953,19 @@ function mostrarSistema(){
 
   sistema.classList.remove("hidden");
   sistema.style.display = "block";
-}
+
+  const panel = document.getElementById("adminPanel");
+
+  if(panel){
+
+    if(ROLE === "admin"){
+      panel.classList.remove("hidden");
+    }else{
+      panel.classList.add("hidden");
+    }
+
+  }
+  }
 
 function salir(){
 
@@ -1213,7 +1225,72 @@ async function boot(){
     mostrarLogin();
   }
 }
+async function crearUsuario(days){
 
+  const user =
+    document.getElementById("newUser").value.trim();
+
+  const pass =
+    document.getElementById("newPass").value.trim();
+
+  const out =
+    document.getElementById("adminOut");
+
+  if(!user || !pass){
+
+    out.innerText =
+      "Completa usuario y clave.";
+
+    return;
+  }
+
+  try{
+
+    const r = await fetchWithTimeout(
+
+      `${API}/admin/create-user`,
+
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${TOKEN}`
+        },
+
+        body:JSON.stringify({
+          user,
+          pass,
+          days
+        })
+      },
+
+      12000
+    );
+
+    const data = await r.json();
+
+    if(!r.ok){
+
+      out.innerText =
+        "Error creando usuario.";
+
+      return;
+    }
+
+    out.innerText =
+      `Usuario: ${data.user}
+Vence: ${new Date(data.exp).toLocaleString()}`;
+
+    document.getElementById("newUser").value = "";
+    document.getElementById("newPass").value = "";
+
+  }catch(e){
+
+    out.innerText =
+      "No conecta con el servidor.";
+  }
+  }
 (async function init(){
 
   const splash = document.getElementById("splash");
