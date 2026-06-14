@@ -1268,15 +1268,13 @@ async function boot(){
 
   booted = true;
 
-  if(TOKEN){
+  TOKEN = "";
+  ROLE = "";
 
-    mostrarSistema();
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(ROLE_KEY);
 
-    await cargarEstado();
-
-  }else{
-
-    mostrarLogin();
+  mostrarLogin();
   }
 }
 async function crearUsuario(days){
