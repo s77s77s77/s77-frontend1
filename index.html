@@ -1105,12 +1105,36 @@ function renderEstado(data){
     data.onfire
   );
 
+  const banner =
+    document.getElementById("pauseBanner");
+
+  const fav =
+    document.getElementById("favoritosBox");
+
+  const fire =
+    document.getElementById("onfireBox");
+
+  if(data.suspensionActive){
+
+    banner.classList.remove("hidden");
+
+    fav.classList.add("pausedBox");
+    fire.classList.add("pausedBox");
+
+  }else{
+
+    banner.classList.add("hidden");
+
+    fav.classList.remove("pausedBox");
+    fire.classList.remove("pausedBox");
+  }
+
   setTotal(data.totalGeneral);
 
   setFicha(data.activeMult);
 
   renderAcierto(false, 0);
-}
+  }
 
 async function cargarEstado(){
 
