@@ -992,13 +992,26 @@ function mostrarSistema(){
 
   const panel = document.getElementById("adminPanel");
 
-  if(panel){
+if(panel){
 
-    if(ROLE === "admin"){
-      panel.classList.remove("hidden");
-    }else{
-      panel.classList.add("hidden");
-    }
+  if(ROLE === "admin"){
+
+    document.getElementById("casilleros").style.display = "none";
+    document.getElementById("nuevo").parentElement.parentElement.style.display = "none";
+
+    document.getElementById("pauseBanner").style.display = "none";
+
+    document.getElementById("favoritosBox").style.display = "none";
+    document.getElementById("onfireBox").style.display = "none";
+
+    document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
+
+    panel.classList.remove("hidden");
+
+  }else{
+
+    panel.classList.add("hidden");
+  }
 
   }
   }
