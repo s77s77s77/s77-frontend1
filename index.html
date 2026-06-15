@@ -1078,9 +1078,27 @@ if(music){
     panel.classList.remove("hidden");
 
   }else{
-document.getElementById("maiDireMai").style.display = "none";
-document.getElementById("bannerUsuarios").style.display = "block";
-    panel.classList.add("hidden");
+
+  document.getElementById("maiDireMai").style.display = "none";
+  document.getElementById("bannerUsuarios").style.display = "block";
+
+  document.getElementById("casilleros").style.display = "grid";
+
+  document.getElementById("nuevo").parentElement.parentElement.style.display = "";
+
+  document.getElementById("favoritosBox").style.display = "";
+
+  document.getElementById("onfireBox").style.display = "";
+
+  document.getElementById("totalGeneral").parentElement.parentElement.style.display = "";
+
+  document.querySelectorAll(".label")[1].style.display = "";
+
+  document.querySelectorAll(".label")[2].style.display = "";
+
+  document.querySelector('button[onclick="resetear()"]').style.display = "";
+
+  panel.classList.add("hidden");
   }
 
   }
