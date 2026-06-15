@@ -349,7 +349,7 @@ button{
 }
 
 .adminPanel{
-  width:340px;
+  width:700px;
   margin:18px auto 0;
   border:2px solid #444;
   border-radius:10px;
@@ -394,7 +394,9 @@ button{
   margin-top:10px;
   font-size:14px;
   color:#ddd;
-  word-break:break-word;
+  word-break:normal;
+white-space:nowrap;
+overflow-x:auto;
   line-height:1.35;
 }
 
@@ -1008,6 +1010,10 @@ if(panel){
 
     document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
 
+    document.querySelectorAll(".label")[1].style.display = "none";
+
+    document.querySelectorAll(".label")[2].style.display = "none";
+   
     panel.classList.remove("hidden");
 
   }else{
@@ -1335,7 +1341,9 @@ async function boot(){
         document.createElement("div");
 
       fila.style.marginBottom = "10px";
-
+fila.style.display = "flex";
+fila.style.justifyContent = "space-between";
+fila.style.alignItems = "center";
       fila.innerHTML = `
         <b>${u.user}</b>
         (${u.daysLeft} días)
