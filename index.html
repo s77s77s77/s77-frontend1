@@ -727,6 +727,15 @@ overflow-x:auto;
 
 </div>
 
+<div class="adminBtns">
+
+  <button id="musicBtn"
+          onclick="toggleMusic()">
+    🔊 MÚSICA ON
+  </button>
+
+</div>
+
     <div id="adminOut" class="adminOut"></div>
 
     <div id="usuariosPanel"
@@ -1474,7 +1483,32 @@ async function eliminarUsuario(user){
     mostrarUsuarios();
 
   }catch(e){}
-      }
+}
+
+function toggleMusic(){
+
+  const music =
+    document.getElementById("adminMusic");
+
+  const btn =
+    document.getElementById("musicBtn");
+
+  if(!music || !btn) return;
+
+  if(music.paused){
+
+    music.play();
+
+    btn.textContent = "🔊 MÚSICA ON";
+
+  }else{
+
+    music.pause();
+
+    btn.textContent = "🔇 MÚSICA OFF";
+  }
+}
+
 async function crearUsuario(days){
 
   const user =
