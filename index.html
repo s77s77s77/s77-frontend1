@@ -1341,29 +1341,34 @@ async function boot(){
         document.createElement("div");
 
       fila.style.marginBottom = "10px";
-fila.style.display = "flex";
-fila.style.justifyContent = "space-between";
+fila.style.display = "grid";
+fila.style.gridTemplateColumns =
+  "120px 120px 70px 70px 70px 70px";
+
 fila.style.alignItems = "center";
+fila.style.columnGap = "10px";
+fila.style.marginBottom = "10px";
       fila.innerHTML = `
-        <b>${u.user}</b>
-        (${u.daysLeft} días)
+  <div><b>${u.user}</b></div>
 
-        <button onclick="extenderUsuario('${u.user}',1)">
-  +1
-</button>
+  <div>${u.daysLeft}</div>
 
-<button onclick="extenderUsuario('${u.user}',7)">
-  +7
-</button>
+  <button onclick="extenderUsuario('${u.user}',1)">
+    +1
+  </button>
 
-<button onclick="extenderUsuario('${u.user}',30)">
-  +30
-</button>
+  <button onclick="extenderUsuario('${u.user}',7)">
+    +7
+  </button>
 
-        <button onclick="eliminarUsuario('${u.user}')">
-          🗑
-        </button>
-      `;
+  <button onclick="extenderUsuario('${u.user}',30)">
+    +30
+  </button>
+
+  <button onclick="eliminarUsuario('${u.user}')">
+    🗑
+  </button>
+`;
 
       lista.appendChild(fila);
     });
