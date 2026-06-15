@@ -778,6 +778,19 @@ overflow-x:auto;
   >
 
 </div>
+  <div id="bannerUsuarios"
+     style="text-align:center;margin-top:80px;display:none;">
+
+  <img
+    src="./banner-admin.jpg"
+    style="
+      width:100%;
+      max-width:700px;
+      border-radius:10px;
+    "
+  >
+
+  </div>
 <script>
 
 const API = "https://s77-backend1.onrender.com";
@@ -1050,7 +1063,9 @@ if(panel){
 
     document.querySelectorAll(".label")[2].style.display = "none";
     document.querySelector('button[onclick="resetear()"]').style.display = "none";
-   const music =
+    document.getElementById("maiDireMai").style.display = "block";
+    document.getElementById("bannerUsuarios").style.display = "none";
+    const music =
   document.getElementById("adminMusic");
 
 if(music){
@@ -1063,7 +1078,8 @@ if(music){
     panel.classList.remove("hidden");
 
   }else{
-
+document.getElementById("maiDireMai").style.display = "none";
+document.getElementById("bannerUsuarios").style.display = "block";
     panel.classList.add("hidden");
   }
 
