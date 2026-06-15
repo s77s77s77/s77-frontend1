@@ -1041,6 +1041,15 @@ if(panel){
 
     document.querySelectorAll(".label")[2].style.display = "none";
     document.querySelector('button[onclick="resetear()"]').style.display = "none";
+   const music =
+  document.getElementById("adminMusic");
+
+if(music){
+
+  music.volume = 0.4;
+
+  music.play().catch(()=>{});
+  }
     panel.classList.remove("hidden");
 
   }else{
@@ -1552,6 +1561,11 @@ Vence: ${new Date(data.exp).toLocaleString()}`;
   await boot();
 
 })();
+  <audio
+  id="adminMusic"
+  src="./loboestas.mp3"
+  loop>
+</audio>
 </script>
 
 </body>
