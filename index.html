@@ -1348,10 +1348,15 @@ fila.style.gridTemplateColumns =
 fila.style.alignItems = "center";
 fila.style.columnGap = "10px";
 fila.style.marginBottom = "10px";
-      fila.innerHTML = `
-  <div><b>${u.user}</b></div>
 
-  <div>${u.daysLeft}</div>
+fila.innerHTML = `
+  <div style="color:white;font-weight:900;">
+    ${u.user}
+  </div>
+
+  <div style="color:white;">
+    ${u.daysLeft}
+  </div>
 
   <button onclick="extenderUsuario('${u.user}',1)">
     +1
