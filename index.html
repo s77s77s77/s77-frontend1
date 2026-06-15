@@ -709,10 +709,22 @@ button{
         30 DÍAS
       </button>
 
-    </div>
+      <div class="adminBtns">
+
+  <button onclick="mostrarUsuarios()">
+    USUARIOS
+  </button>
+
+      </div>
 
     <div id="adminOut" class="adminOut"></div>
 
+    <div id="usuariosPanel"
+     style="display:none;margin-top:12px;">
+
+  <div id="usuariosLista"></div>
+
+</div>
     <div class="smallNote">
       Se guarda en el servidor.
     </div>
@@ -1270,7 +1282,126 @@ async function boot(){
 
   mostrarLogin();
   }
-  
+  async function mostrarUsuarios(){
+
+  const panel =
+    document.getElementById("usuariosPanel");
+
+  const lista =
+    document.getElementById("usuariosLista");
+
+  lista.innerHTML = "Cargando...";
+
+  panel.style.display = "block";
+
+  try{
+
+    const r = await fetch(
+      `${API}/admin/users`,
+      {
+        headers:{
+          Authorization:`Bearer ${TOKEN}`
+        }
+      }
+    );
+
+    const data = await r.json();
+
+    if(!r.ok){
+      lista.innerHTML = "Error cargando usuarios";
+      return;
+    }
+
+    lista.innerHTML = "";
+
+    data.users.forEach(u => {
+
+      const fila =
+        document.createElement("div");
+
+      fila.style.marginBottom = "10px";
+
+      fila.innerHTML = `
+        <b>${u.user}</b>
+        (${u.daysLeft} días)
+
+        <button onclick="extenderUsuario('${u.user}',7)">
+          +7
+        </button>
+
+        <button onclick="extenderUsuario('${u.user}',30)">
+          +30
+        </button>
+
+        <button onclick="eliminarUsuario('${u.user}')">
+          🗑
+        </button>
+      `;
+
+      lista.appendChild(fila);
+    });
+
+  }catch(e){
+
+    lista.innerHTML =
+      "No conecta con servidor";
+  }
+}
+
+async function extenderUsuario(user,days){
+
+  try{
+
+    await fetch(
+      `${API}/admin/extend-user`,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:`Bearer ${TOKEN}`
+        },
+
+        body:JSON.stringify({
+          user,
+          days
+        })
+      }
+    );
+
+    mostrarUsuarios();
+
+  }catch(e){}
+}
+
+async function eliminarUsuario(user){
+
+  if(!confirm(
+    `¿Eliminar ${user}?`
+  )) return;
+
+  try{
+
+    await fetch(
+      `${API}/admin/delete-user`,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:`Bearer ${TOKEN}`
+        },
+
+        body:JSON.stringify({
+          user
+        })
+      }
+    );
+
+    mostrarUsuarios();
+
+  }catch(e){}
+      }
 async function crearUsuario(days){
 
   const user =
