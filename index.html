@@ -179,6 +179,11 @@ h1{
   border-color:#ff5500;
 }
 
+.miniBoxActive{
+  background:#0a4d6d;
+  border-color:#00e5ff;
+}
+
 .totalBox{
   width:130px;
   height:80px;
@@ -496,29 +501,13 @@ overflow-x:auto;
   height:300px;
 }
 
-#pauseBanner{
-  width:340px;
-  margin:12px auto;
-  padding:12px;
-
-  background:#5a3900;
-  border:3px solid #ff9900;
-
-  color:#fff;
-
-  font-size:22px;
-  font-weight:bold;
-
-  border-radius:10px;
-}
-
-.pausedBox{
-  opacity:0.35;
-}
-
 </style>
 </head>
 <body>
+
+<audio id="musicAudio" loop style="display:none;">
+  <source src="./lobo-estas.mp3" type="audio/mpeg">
+</audio>
 
 <div id="splash"></div>
 
@@ -530,7 +519,7 @@ overflow-x:auto;
 
     <div class="offlineText">
       Para usar el sistema necesitás estar online.<br>
-      Conectate y tocá “Reintentar”.
+      Conectate y tocá "Reintentar".
     </div>
 
     <button class="offlineBtn" onclick="location.reload()">
@@ -581,11 +570,6 @@ overflow-x:auto;
 
 <br>
 
-<div id="pauseBanner" class="hidden">
-  ⏸ SISTEMA EN PAUSA<br>
-  Esperando acierto para reactivar
-</div>
-
   <!-- =========================
        FAVORITOS / REP3
   ========================= -->
@@ -610,6 +594,25 @@ overflow-x:auto;
 
   <div class="label" style="color:#ff5500;font-size:26px;">
     ON FIRE
+  </div>
+
+  <br>
+
+  <div class="repBox"
+       id="miniBox"
+       style="
+         background:#16351b;
+         border-color:#66ff99;
+       ">
+    —
+  </div>
+
+  <div class="label"
+       style="
+         color:#66ff99;
+         font-size:26px;
+       ">
+    MINI SISTEMA
   </div>
 
   <br>
@@ -684,9 +687,11 @@ overflow-x:auto;
   </div>
 
   <div style="margin-top:12px;">
+
     <button onclick="resetear()">
       REINICIAR
     </button>
+
   </div>
 
   <div id="adminPanel" class="adminPanel hidden">
@@ -705,58 +710,58 @@ overflow-x:auto;
 
     <div class="adminBtns">
 
-  <button onclick="crearUsuario(1)">
-    1 DÍA
-  </button>
+      <button onclick="crearUsuario(1)">
+        1 DÍA
+      </button>
 
-  <button onclick="crearUsuario(7)">
-    7 DÍAS
-  </button>
+      <button onclick="crearUsuario(7)">
+        7 DÍAS
+      </button>
 
-  <button onclick="crearUsuario(30)">
-    30 DÍAS
-  </button>
+      <button onclick="crearUsuario(30)">
+        30 DÍAS
+      </button>
 
-</div>
+    </div>
 
-<div class="adminBtns">
+    <div class="adminBtns">
 
-  <button onclick="mostrarUsuarios()">
-    USUARIOS
-  </button>
+      <button onclick="mostrarUsuarios()">
+        USUARIOS
+      </button>
 
-</div>
+    </div>
 
-<div class="adminBtns">
+    <div class="adminBtns">
 
-  <button id="musicBtn"
-          onclick="toggleMusic()">
-    🔊 MÚSICA ON
-  </button>
+      <button id="musicBtn"
+              onclick="toggleMusic()">
+        🔊 MÚSICA ON
+      </button>
 
-</div>
+    </div>
 
     <div id="adminOut" class="adminOut"></div>
 
     <div id="usuariosPanel"
-     style="display:none;margin-top:12px;">
+         style="display:none;margin-top:12px;">
 
-  <div id="usuariosLista"></div>
+      <div id="usuariosLista"></div>
 
-  <div style="text-align:center;margin-top:25px;">
+      <div style="text-align:center;margin-top:25px;">
 
-    <img
-      src="./banner-admin.jpg"
-      style="
-        width:100%;
-        max-width:700px;
-        border-radius:10px;
-      "
-    >
+        <img
+          src="./banner-admin.jpg"
+          style="
+            width:100%;
+            max-width:700px;
+            border-radius:10px;
+          "
+        >
 
-  </div>
+      </div>
 
-  </div>
+    </div>
     <div class="smallNote">
       Se guarda en el servidor.
     </div>
@@ -766,6 +771,7 @@ overflow-x:auto;
   <button class="logoutBtn" onclick="salir()">
     SALIR
   </button>
+  
 <div id="maiDireMai"
      style="text-align:center;margin-top:80px;">
   <img
@@ -791,6 +797,9 @@ overflow-x:auto;
   >
 
   </div>
+
+</div>
+
 <script>
 
 const API = "https://s77-backend1.onrender.com";
@@ -800,6 +809,8 @@ const ROLE_KEY  = "S77_ROLE_V1";
 
 let TOKEN = localStorage.getItem(TOKEN_KEY) || "";
 let ROLE  = localStorage.getItem(ROLE_KEY) || "";
+
+let musicPlaying = false;
 
 function fetchWithTimeout(url, options = {}, timeoutMs = 12000){
 
@@ -896,6 +907,7 @@ function renderAcierto(show, value){
     aciertoBox.textContent = "0";
   }
 }
+
 function setTotal(v){
 
   const n = Number(v);
@@ -974,6 +986,7 @@ function validarNumero(n){
     msg:""
   };
 }
+
 async function ingresar(){
 
   const u = (usuario.value || "").trim();
@@ -999,12 +1012,12 @@ async function ingresar(){
         pass:p
       })
 
-    }, 12000);
+    });
 
     const data = await r.json();
 
     if(!r.ok){
-      err.innerText = "Usuario/clave inválidos o vencidos";
+      err.innerText = data.error || "Error de login";
       return;
     }
 
@@ -1014,99 +1027,159 @@ async function ingresar(){
     localStorage.setItem(TOKEN_KEY, TOKEN);
     localStorage.setItem(ROLE_KEY, ROLE);
 
+    usuario.value = "";
+    clave.value = "";
     err.innerText = "";
 
-    mostrarSistema();
-
-    await cargarEstado();
+    boot();
 
   }catch(e){
 
-    err.innerText = "No conecta con el servidor. ¿Está prendido el backend?";
+    err.innerText = "Error de conexión";
+
+    offlineWall.style.display = "flex";
+
   }
+
 }
 
-function mostrarLogin(){
+async function boot(){
 
-  login.classList.remove("hidden");
-  login.style.display = "inline-block";
+  booted = true;
 
-  sistema.classList.add("hidden");
-  sistema.style.display = "none";
-}
-
-function mostrarSistema(){
-
-  login.classList.add("hidden");
   login.style.display = "none";
-
-  sistema.classList.remove("hidden");
   sistema.style.display = "block";
 
-  const panel = document.getElementById("adminPanel");
-
-if(panel){
-
   if(ROLE === "admin"){
-
-    document.getElementById("casilleros").style.display = "none";
-    document.getElementById("nuevo").parentElement.parentElement.style.display = "none";
-
-    document.getElementById("pauseBanner").style.display = "none";
-
-    document.getElementById("favoritosBox").style.display = "none";
-    document.getElementById("onfireBox").style.display = "none";
-
-    document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
-
-    document.querySelectorAll(".label")[1].style.display = "none";
-
-    document.querySelectorAll(".label")[2].style.display = "none";
-    document.querySelector('button[onclick="resetear()"]').style.display = "none";
-    document.getElementById("maiDireMai").style.display = "block";
-    document.getElementById("bannerUsuarios").style.display = "none";
-    const music =
-  document.getElementById("adminMusic");
-
-if(music){
-
-  music.volume = 0.4;
-
-  music.play().catch(()=>{});
+    adminPanel.classList.remove("hidden");
   }
-  
-    panel.classList.remove("hidden");
+
+  await render();
+
+}
+
+function toggleMusic(){
+
+  const audio = document.getElementById("musicAudio");
+  const btn = document.getElementById("musicBtn");
+
+  if(!audio) return;
+
+  if(musicPlaying){
+
+    audio.pause();
+    musicPlaying = false;
+    btn.textContent = "🔊 MÚSICA ON";
 
   }else{
 
-  document.getElementById("maiDireMai").style.display = "none";
-  document.getElementById("bannerUsuarios").style.display = "block";
-
-  document.getElementById("casilleros").style.display = "grid";
-
-  document.getElementById("nuevo").parentElement.parentElement.style.display = "";
-
-  document.getElementById("favoritosBox").style.display = "";
-
-  document.getElementById("onfireBox").style.display = "";
-
-  document.getElementById("totalGeneral").parentElement.parentElement.style.display = "";
-
-  document.querySelectorAll(".label")[1].style.display = "";
-
-  document.querySelectorAll(".label")[2].style.display = "";
-
-  document.querySelector('button[onclick="resetear()"]').style.display = "";
-
-  panel.classList.add("hidden");
-  }
+    audio.play().catch(e => {
+      console.log("No se pudo reproducir la música:", e);
+    });
+    musicPlaying = true;
+    btn.textContent = "🔊 MÚSICA OFF";
 
   }
+
+}
+
+async function crearUsuario(days){
+
+  const u = (newUser.value || "").trim();
+  const p = (newPass.value || "").trim();
+
+  if(!u || !p){
+    adminOut.innerText = "Usuario y clave requeridos";
+    return;
   }
+
+  try{
+
+    const r = await fetchWithTimeout(`${API}/admin/create-user`,{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${TOKEN}`
+      },
+
+      body: JSON.stringify({
+        user:u,
+        pass:p,
+        days:days
+      })
+
+    });
+
+    const data = await r.json();
+
+    if(!r.ok){
+      adminOut.innerText = "Error: " + (data.error || "desconocido");
+      return;
+    }
+
+    newUser.value = "";
+    newPass.value = "";
+
+    adminOut.innerText = `✅ Usuario ${u} creado por ${days} días`;
+
+  }catch(e){
+
+    adminOut.innerText = "Error de conexión";
+
+  }
+
+}
+
+async function mostrarUsuarios(){
+
+  try{
+
+    const r = await fetchWithTimeout(`${API}/admin/users`,{
+
+      headers:{
+        "Authorization":`Bearer ${TOKEN}`
+      }
+
+    });
+
+    const data = await r.json();
+
+    if(!r.ok){
+      adminOut.innerText = "Error al obtener usuarios";
+      return;
+    }
+
+    const users = data.users || [];
+
+    let html = "<table style='width:100%;border-collapse:collapse;'>";
+    html += "<tr style='border-bottom:1px solid #666;'>";
+    html += "<th style='padding:6px;text-align:left;'>Usuario</th>";
+    html += "<th style='padding:6px;text-align:left;'>Vencimiento</th>";
+    html += "</tr>";
+
+    for(const u of users){
+      html += "<tr style='border-bottom:1px solid #444;'>";
+      html += `<td style='padding:6px;'>${u.user}</td>`;
+      html += `<td style='padding:6px;'>${u.daysLeft}</td>`;
+      html += "</tr>";
+    }
+
+    html += "</table>";
+
+    usuariosLista.innerHTML = html;
+    usuariosPanel.style.display = "block";
+
+  }catch(e){
+
+    adminOut.innerText = "Error de conexión";
+
+  }
+
+}
 
 function salir(){
-
-  if(!confirm("¿Seguro querés salir?")) return;
 
   TOKEN = "";
   ROLE = "";
@@ -1114,153 +1187,22 @@ function salir(){
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(ROLE_KEY);
 
-  mostrarLogin();
+  booted = false;
+
+  login.style.display = "block";
+  sistema.style.display = "none";
+  adminPanel.classList.add("hidden");
+  usuariosPanel.style.display = "none";
+
+  musicPlaying = false;
+  const audio = document.getElementById("musicAudio");
+  if(audio) audio.pause();
+  const btn = document.getElementById("musicBtn");
+  if(btn) btn.textContent = "🔊 MÚSICA ON";
+
 }
 
-function renderInicial(){
-
-  casilleros.innerHTML = "";
-
-  casilleros.style.gridTemplateColumns =
-    "repeat(4,70px)";
-
-  for(let i=0;i<16;i++){
-
-    const c = document.createElement("input");
-
-    c.disabled = true;
-    c.value = "";
-
-    pintarCasilleroPorNumero(c);
-
-    casilleros.appendChild(c);
-  }
-}
-function renderCasilleros(data){
-
-  casilleros.innerHTML = "";
-
-  if(data.historialLen < 17){
-
-    casilleros.style.gridTemplateColumns =
-      "repeat(4,70px)";
-
-    data.ultimos16.forEach(v => {
-
-      const c = document.createElement("input");
-
-      c.disabled = true;
-      c.value = v;
-
-      pintarCasilleroPorNumero(c);
-
-      casilleros.appendChild(c);
-    });
-
-    if(data.historialLen === 0){
-      renderInicial();
-    }
-
-  }else{
-
-    casilleros.style.gridTemplateColumns =
-      "repeat(5,70px)";
-
-    data.ultimos5.forEach(v => {
-
-      const c = document.createElement("input");
-
-      c.disabled = true;
-      c.value = v;
-
-      pintarCasilleroPorNumero(c);
-
-      casilleros.appendChild(c);
-    });
-  }
-}
-
-function renderEstado(data){
-
-  renderCasilleros(data);
-
-  renderLista(
-    "favoritosBox",
-    data.favoritos
-  );
-
-  renderLista(
-    "onfireBox",
-    data.onfire
-  );
-
-  const banner =
-    document.getElementById("pauseBanner");
-
-  const fav =
-    document.getElementById("favoritosBox");
-
-  const fire =
-    document.getElementById("onfireBox");
-
-  if(data.suspensionActive){
-
-    banner.classList.remove("hidden");
-
-    fav.classList.add("pausedBox");
-    fire.classList.add("pausedBox");
-
-  }else{
-
-    banner.classList.add("hidden");
-
-    fav.classList.remove("pausedBox");
-    fire.classList.remove("pausedBox");
-  }
-
-  setTotal(data.totalGeneral);
-
-  setFicha(data.activeMult);
-
-  renderAcierto(false, 0);
-  }
-
-async function cargarEstado(){
-
-  try{
-
-    const r = await fetchWithTimeout(`${API}/api/state`,{
-
-      method:"GET",
-
-      headers:{
-        "Authorization": `Bearer ${TOKEN}`
-      }
-
-    }, 12000);
-
-    const data = await r.json();
-
-    if(!r.ok){
-      salir();
-      return;
-    }
-
-    renderEstado(data);
-
-  }catch(e){
-
-    alert("No conecta con el backend. ¿Está prendido?");
-  }
-}
-  async function resetear(){
-
-  if(!TOKEN){
-    alert("Tenés que estar logueado.");
-    return;
-  }
-
-  if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
+async function resetear(){
 
   try{
 
@@ -1269,62 +1211,36 @@ async function cargarEstado(){
       method:"POST",
 
       headers:{
-        "Authorization": `Bearer ${TOKEN}`
+        "Authorization":`Bearer ${TOKEN}`
       }
 
-    }, 12000);
+    });
 
-    if(!r.ok){
-      alert("No se pudo reiniciar.");
-      return;
+    const data = await r.json();
+
+    if(r.ok){
+      await render();
     }
-
-    setTotal(0);
-    setFicha(1);
-    setGanancia(0);
-
-    renderLista("favoritosBox", []);
-    renderLista("onfireBox", []);
-
-    renderAcierto(false, 0);
-
-    const fx = document.getElementById("winFx");
-
-    if(fx){
-      fx.style.display = "none";
-    }
-
-    await cargarEstado();
 
   }catch(e){
 
-    if(e && e.name === "AbortError"){
-      alert("El servidor tardó demasiado y se cortó la petición.");
-    }else{
-      alert("No conecta con el backend.");
-    }
+    console.log("Error:", e);
+
   }
+
 }
 
-nuevo.addEventListener("keydown", async (e) => {
-
-  if(e.key !== "Enter") return;
-
-  if(!TOKEN){
-    alert("Primero tenés que ingresar con usuario y clave.");
-    return;
-  }
+async function ingresoNumero(){
 
   const n = parseInt(nuevo.value, 10);
 
-  const v = validarNumero(n);
+  const validacion = validarNumero(n);
 
-  if(!v.ok){
-    alert(v.msg);
+  if(!validacion.ok){
+    alert(validacion.msg);
+    nuevo.value = "";
     return;
   }
-
-  nuevo.value = "";
 
   try{
 
@@ -1334,310 +1250,153 @@ nuevo.addEventListener("keydown", async (e) => {
 
       headers:{
         "Content-Type":"application/json",
-        "Authorization": `Bearer ${TOKEN}`
+        "Authorization":`Bearer ${TOKEN}`
       },
 
-      body: JSON.stringify({ n })
+      body: JSON.stringify({
+        n:n
+      })
 
-    }, 12000);
-
-    const data = await r.json();
-
-    if(!r.ok){
-      salir();
-      return;
-    }
-
-    renderEstado(data);
-
-    const show = !!data.aciertoShow;
-    const val  = Number(data.aciertoValue);
-
-    renderAcierto(show, val);
-
-    if(show){
-      sumarGanancia(val);
-      showWinFx(1200);
-    }
-
-  }catch(err){
-
-    if(err && err.name === "AbortError"){
-      alert("El servidor tardó demasiado y se cortó la petición.");
-    }else{
-      alert("No conecta con el backend. ¿Está prendido?");
-    }
-  }
-});
-async function boot(){
-
-  if(booted) return;
-
-  booted = true;
-
-  TOKEN = "";
-  ROLE = "";
-
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(ROLE_KEY);
-
-  mostrarLogin();
-  }
-  async function mostrarUsuarios(){
-
-  const panel =
-    document.getElementById("usuariosPanel");
-
-  const lista =
-    document.getElementById("usuariosLista");
-
-  lista.innerHTML = "Cargando...";
-
-  panel.style.display = "block";
-
-  try{
-
-    const r = await fetch(
-      `${API}/admin/users`,
-      {
-        headers:{
-          Authorization:`Bearer ${TOKEN}`
-        }
-      }
-    );
-
-    const data = await r.json();
-
-    if(!r.ok){
-      lista.innerHTML = "Error cargando usuarios";
-      return;
-    }
-
-    lista.innerHTML = "";
-
-    data.users.forEach(u => {
-
-      const fila =
-        document.createElement("div");
-
-      fila.style.marginBottom = "10px";
-fila.style.display = "grid";
-fila.style.gridTemplateColumns =
-  "120px 120px 70px 70px 70px 70px";
-
-fila.style.alignItems = "center";
-fila.style.columnGap = "10px";
-fila.style.marginBottom = "10px";
-
-fila.innerHTML = `
-  <div style="color:white;font-weight:900;">
-    ${u.user}
-  </div>
-
-  <div style="color:white;">
-    ${u.daysLeft}
-  </div>
-
-  <button onclick="extenderUsuario('${u.user}',1)">
-    +1
-  </button>
-
-  <button onclick="extenderUsuario('${u.user}',7)">
-    +7
-  </button>
-
-  <button onclick="extenderUsuario('${u.user}',30)">
-    +30
-  </button>
-
-  <button onclick="eliminarUsuario('${u.user}')">
-    🗑
-  </button>
-`;
-
-      lista.appendChild(fila);
     });
 
-  }catch(e){
-
-    lista.innerHTML =
-      "No conecta con servidor";
-  }
-}
-
-async function extenderUsuario(user,days){
-
-  try{
-
-    await fetch(
-      `${API}/admin/extend-user`,
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":"application/json",
-          Authorization:`Bearer ${TOKEN}`
-        },
-
-        body:JSON.stringify({
-          user,
-          days
-        })
-      }
-    );
-
-    mostrarUsuarios();
-
-  }catch(e){}
-}
-
-async function eliminarUsuario(user){
-
-  if(!confirm(
-    `¿Eliminar ${user}?`
-  )) return;
-
-  try{
-
-    await fetch(
-      `${API}/admin/delete-user`,
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":"application/json",
-          Authorization:`Bearer ${TOKEN}`
-        },
-
-        body:JSON.stringify({
-          user
-        })
-      }
-    );
-
-    mostrarUsuarios();
-
-  }catch(e){}
-}
-
-function toggleMusic(){
-
-  const music =
-    document.getElementById("adminMusic");
-
-  const btn =
-    document.getElementById("musicBtn");
-
-  if(!music || !btn) return;
-
-  if(music.paused){
-
-    music.play();
-
-    btn.textContent = "🔊 MÚSICA ON";
-
-  }else{
-
-    music.pause();
-
-    btn.textContent = "🔇 MÚSICA OFF";
-  }
-}
-
-async function crearUsuario(days){
-
-  const user =
-    document.getElementById("newUser").value.trim();
-
-  const pass =
-    document.getElementById("newPass").value.trim();
-
-  const out =
-    document.getElementById("adminOut");
-
-  if(!user || !pass){
-
-    out.innerText =
-      "Completa usuario y clave.";
-
-    return;
-  }
-
-  try{
-
-    const r = await fetchWithTimeout(
-
-      `${API}/admin/create-user`,
-
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":`Bearer ${TOKEN}`
-        },
-
-        body:JSON.stringify({
-          user,
-          pass,
-          days
-        })
-      },
-
-      12000
-    );
-
     const data = await r.json();
 
     if(!r.ok){
-
-      out.innerText =
-        "Error creando usuario.";
-
+      alert("Error al ingresar número");
       return;
     }
 
-    out.innerText =
-      `Usuario: ${data.user}
-Vence: ${new Date(data.exp).toLocaleString()}`;
+    nuevo.value = "";
 
-    document.getElementById("newUser").value = "";
-    document.getElementById("newPass").value = "";
+    if(data.aciertoShow){
+      sumarGanancia(data.aciertoValue);
+      renderAcierto(true, data.aciertoValue);
+      showWinFx();
+    }
+
+    await render(data);
 
   }catch(e){
 
-    out.innerText =
-      "No conecta con el servidor.";
-  }
-  }
-(async function init(){
+    alert("Error de conexión");
 
-  const splash = document.getElementById("splash");
-  const app = document.getElementById("appContent");
+  }
 
+}
+
+async function render(stateOverride){
+
+  if(!booted) return;
+
+  try{
+
+    let data = stateOverride;
+
+    if(!data){
+
+      const r = await fetchWithTimeout(`${API}/api/state`,{
+
+        headers:{
+          "Authorization":`Bearer ${TOKEN}`
+        }
+
+      });
+
+      if(!r.ok){
+        offlineWall.style.display = "flex";
+        return;
+      }
+
+      data = await r.json();
+
+    }
+
+    offlineWall.style.display = "none";
+
+    if(!data.ok) return;
+
+    renderLista("favoritosBox", data.favoritos || []);
+    renderLista("onfireBox", data.onfire || []);
+
+    setTotal(data.totalGeneral);
+    setFicha(data.fichasTotal);
+
+    const isModoMini = data.modoMini === true;
+
+    // Renderizar mini sistema
+    if(isModoMini){
+      renderLista("miniBox", data.miniSistema || []);
+      miniBox.classList.add("miniBoxActive");
+    }else{
+      renderLista("miniBox", []);
+      miniBox.classList.remove("miniBoxActive");
+    }
+
+    // Ocultar casilleros si está en modo mini
+    const casilleros = document.getElementById("casilleros");
+    if(casilleros){
+      if(isModoMini){
+        casilleros.style.display = "none";
+      }else{
+        casilleros.style.display = "grid";
+      }
+    }
+
+  }catch(e){
+
+    console.log("Error en render:", e);
+
+  }
+
+}
+
+// Crear casilleros
+function crearCasilleros(){
+
+  const contenedor = document.getElementById("casilleros");
+
+  for(let i = 0; i <= 36; i++){
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.readOnly = true;
+    input.value = String(i);
+
+    pintarCasilleroPorNumero(input);
+
+    contenedor.appendChild(input);
+
+  }
+
+}
+
+// Event listeners
+document.addEventListener("DOMContentLoaded", () => {
+
+  crearCasilleros();
+
+  const nuevoInput = document.getElementById("nuevo");
+
+  nuevoInput.addEventListener("keypress", (e) => {
+    if(e.key === "Enter"){
+      ingresoNumero();
+    }
+  });
+
+  // Cargar estado si ya estaba logueado
+  if(TOKEN){
+    boot();
+  }
+
+  // Mostrar app content
   setTimeout(() => {
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("appContent").style.display = "block";
+  }, 2000);
 
-    if(splash){
-      splash.style.display = "none";
-    }
+});
 
-    if(app){
-      app.style.display = "block";
-    }
-
-  }, 4000);
-
-  await boot();
-
-})();
 </script>
-
-<audio
-  id="adminMusic"
-  src="./loboestas.mp3"
-  loop>
-</audio>
 
 </body>
 </html>
-  
