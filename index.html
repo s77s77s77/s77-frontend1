@@ -1356,7 +1356,67 @@ nuevo.addEventListener("keydown", async (e) => {
     }
   }
 });
-  
+  async function crearUsuario(days){
+  if(!TOKEN){
+    alert("Tenés que estar logueado como admin.");
+    return;
+  }
+
+  const user = (document.getElementById("newUser").value || "").trim();
+  const pass = (document.getElementById("newPass").value || "").trim();
+  const out = document.getElementById("adminOut");
+
+  if(!user || !pass){
+    if(out) out.innerText = "Completá usuario y clave.";
+    return;
+  }
+
+  try{
+    const r = await fetchWithTimeout(`${API}/admin/create-user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${TOKEN}`
+      },
+      body: JSON.stringify({ user, pass, days })
+    }, 12000);
+
+    const data = await r.json();
+
+    if(!r.ok){
+      if(out) out.innerText = "Error creando usuario.";
+      return;
+    }
+
+    if(out){
+      out.innerText = `Usuario: ${data.user} | Vence: ${new Date(data.exp).toLocaleString()}`;
+    }
+
+    document.getElementById("newUser").value = "";
+    document.getElementById("newPass").value = "";
+
+  }catch(e){
+    if(out) out.innerText = "No conecta con el servidor.";
+  }
+}
+
+let adminMusicOn = true;
+
+function toggleMusic(){
+  const music = document.getElementById("adminMusic");
+  const btn = document.getElementById("musicBtn");
+  if(!music || !btn) return;
+
+  if(adminMusicOn){
+    music.pause();
+    adminMusicOn = false;
+    btn.innerText = "🔇 MÚSICA OFF";
+  }else{
+    music.play().catch(()=>{});
+    adminMusicOn = true;
+    btn.innerText = "🔊 MÚSICA ON";
+  }
+  }
 (async function init(){
 
 const splash = document.getElementById("splash");
