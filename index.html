@@ -1042,20 +1042,24 @@ err.innerText = "No conecta con el servidor. ¿Está prendido el backend?";
 
 function mostrarLogin(){
 
-login.classList.remove("hidden");
-login.style.display = "inline-block";
+  login.classList.remove("hidden");
+  login.style.display = "inline-block";
 
-sistema.classList.add("hidden");
-sistema.style.display = "none";
+  sistema.classList.add("hidden");
+  sistema.style.display = "none";
+
+  document.getElementById("tituloPrincipal").style.display = "none";
 }
 
 function mostrarSistema(){
 
-login.classList.add("hidden");
-login.style.display = "none";
+  login.classList.add("hidden");
+  login.style.display = "none";
 
-sistema.classList.remove("hidden");
-sistema.style.display = "block";
+  sistema.classList.remove("hidden");
+  sistema.style.display = "block";
+
+  document.getElementById("tituloPrincipal").style.display = "block";
 
 const panel = document.getElementById("adminPanel");
 
