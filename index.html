@@ -1373,6 +1373,7 @@ out.innerText =
 }
 }
 (async function init(){
+(async function init(){
 
 const splash = document.getElementById("splash");
 const app = document.getElementById("appContent");
@@ -1389,7 +1390,12 @@ app.style.display = "block";
 
 }, 4000);
 
-await boot();
+if (TOKEN) {
+  mostrarSistema();
+  await cargarEstado();
+} else {
+  mostrarLogin();
+}
 
 })();
 </script>
