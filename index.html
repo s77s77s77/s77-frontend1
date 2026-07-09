@@ -13,519 +13,530 @@
 
 <style>
 body{
-  font-family:impact;
-  background-image:url("./bg.jpg");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-  color:blue;
-  text-align:center;
-  padding:20px;
+font-family:impact;
+background-image:url("./bg.jpg");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+background-attachment:fixed;
+color:blue;
+text-align:center;
+padding:20px;
 }
 
 body::before{
-  content:"";
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background:rgba(0,0,0,0.65);
-  z-index:-1;
+content:"";
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.65);
+z-index:-1;
 }
 
 h1{
-  color:white;
-  letter-spacing:3px;
-  text-shadow:
-    0 0 6px #ffffff,
-    0 0 12px #1e90ff,
-    0 0 20px #1e90ff;
-  animation:pulsoTitulo 3s ease-in-out infinite;
+color:white;
+letter-spacing:3px;
+text-shadow:
+0 0 6px #ffffff,
+0 0 12px #1e90ff,
+0 0 20px #1e90ff;
+animation:pulsoTitulo 3s ease-in-out infinite;
 }
 
 @keyframes pulsoTitulo{
-  0%{
-    text-shadow:
-      0 0 6px #ffffff,
-      0 0 12px #1e90ff,
-      0 0 20px #1e90ff;
-  }
-  50%{
-    text-shadow:
-      0 0 10px #ffffff,
-      0 0 20px #1e90ff,
-      0 0 35px #1e90ff;
-  }
-  100%{
-    text-shadow:
-      0 0 6px #ffffff,
-      0 0 12px #1e90ff,
-      0 0 20px #1e90ff;
-  }
+0%{
+text-shadow:
+0 0 6px #ffffff,
+0 0 12px #1e90ff,
+0 0 20px #1e90ff;
+}
+50%{
+text-shadow:
+0 0 10px #ffffff,
+0 0 20px #1e90ff,
+0 0 35px #1e90ff;
+}
+100%{
+text-shadow:
+0 0 6px #ffffff,
+0 0 12px #1e90ff,
+0 0 20px #1e90ff;
+}
 }
 
 @keyframes pulsoAcierto{
-  0%{
-    text-shadow:
-      0 0 6px rgba(255,255,255,0.6),
-      0 0 10px rgba(0,229,255,0.4);
-    transform:scale(1);
-  }
-  50%{
-    text-shadow:
-      0 0 12px rgba(255,255,255,1),
-      0 0 22px rgba(0,229,255,0.9);
-    transform:scale(1.05);
-  }
-  100%{
-    text-shadow:
-      0 0 6px rgba(255,255,255,0.6),
-      0 0 10px rgba(0,229,255,0.4);
-    transform:scale(1);
-  }
+0%{
+text-shadow:
+0 0 6px rgba(255,255,255,0.6),
+0 0 10px rgba(0,229,255,0.4);
+transform:scale(1);
+}
+50%{
+text-shadow:
+0 0 12px rgba(255,255,255,1),
+0 0 22px rgba(0,229,255,0.9);
+transform:scale(1.05);
+}
+100%{
+text-shadow:
+0 0 6px rgba(255,255,255,0.6),
+0 0 10px rgba(0,229,255,0.4);
+transform:scale(1);
+}
 }
 
 .hidden{
-  display:none;
+display:none;
 }
 
 .inputs{
-  display:grid;
-  gap:10px;
-  justify-content:center;
+display:grid;
+gap:10px;
+justify-content:center;
 }
 
 .inputs input{
-  width:70px;
-  height:70px;
-  font-size:34px;
-  font-weight:bold;
-  background:#000000;
-  border:3px solid #000000;
-  color:#ffffff;
-  text-align:center;
+width:70px;
+height:70px;
+font-size:34px;
+font-weight:bold;
+background:#000000;
+border:3px solid #000000;
+color:#ffffff;
+text-align:center;
 }
 
 .ingreso{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:15px;
-  justify-content:center;
-  align-items:start;
-  width:fit-content;
-  margin:0 auto;
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:15px;
+justify-content:center;
+align-items:start;
+width:fit-content;
+margin:0 auto;
 }
 
 .ingresoCol{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
 }
 
 .ingresoInput{
-  width:80px;
-  height:80px;
-  font-size:36px;
-  font-weight:bold;
+width:80px;
+height:80px;
+font-size:36px;
+font-weight:bold;
 
-  background-image:url("./bg-casino-green.png");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+background-image:url("./bg-casino-green.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 
-  border:none;
-  border-radius:8px;
+border:none;
+border-radius:8px;
 
-  color:#00ff88;
+color:#00ff88;
 
-  text-align:center;
+text-align:center;
 
-  text-shadow:0 0 6px #00ff88;
+text-shadow:0 0 6px #00ff88;
 
-  outline:none;
+outline:none;
 }
 .label{
-  margin-top:0;
-  font-weight:bold;
+margin-top:0;
+font-weight:bold;
 }
 
 .repBox{
-  width:340px;
-  min-height:65px;
+width:340px;
+min-height:65px;
 
-  margin:10px auto;
+margin:10px auto;
 
-  border:6px solid #444;
+border:6px solid #444;
 
-  font-weight:bold;
+font-weight:bold;
 
-  padding:10px;
+padding:10px;
 
-  color:#fff;
+color:#fff;
 
-  font-size:44px;
+font-size:44px;
 }
 
 .favoritosBox{
-  background:#172742;
-  border-color:#00e5ff;
+background:#172742;
+border-color:#00e5ff;
 }
 
 .onfireBox{
-  background:#3b150e;
-  border-color:#ff5500;
-}
-
-.miniBoxActive{
-  background:#0a4d6d;
-  border-color:#00e5ff;
+background:#3b150e;
+border-color:#ff5500;
 }
 
 .totalBox{
-  width:130px;
-  height:80px;
+width:130px;
+height:80px;
 
-  font-size:30px;
-  font-weight:bold;
+font-size:30px;
+font-weight:bold;
 
-  background-image:url("./btn-neon-cian.png");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+background-image:url("./btn-neon-cian.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 
-  border:none;
+border:none;
 
-  color:#ffffff;
+color:#ffffff;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+display:flex;
+align-items:center;
+justify-content:center;
 
-  border-radius:10px;
+border-radius:10px;
 
-  text-shadow:0 2px 6px rgba(0,0,0,0.8);
+text-shadow:0 2px 6px rgba(0,0,0,0.8);
 }
 
 .totalLabel{
-  margin-top:0;
-  font-weight:bold;
-  color:#00e5ff;
-  text-shadow:0 0 6px #00e5ff;
+margin-top:0;
+font-weight:bold;
+color:#00e5ff;
+text-shadow:0 0 6px #00e5ff;
 }
 
 .fichaBox{
-  width:85px;
-  height:85px;
+width:85px;
+height:85px;
 
-  font-size:38px;
-  font-weight:bold;
+font-size:38px;
+font-weight:bold;
 
-  background-image:url("./ficha-verde.png");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+background-image:url("./ficha-verde.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 
-  border:none;
+border:none;
 
-  color:#000;
+color:#000;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+display:flex;
+align-items:center;
+justify-content:center;
 
-  border-radius:8px;
+border-radius:8px;
 
-  text-shadow:0 1px 3px rgba(0,0,0,0.5);
+text-shadow:0 1px 3px rgba(0,0,0,0.5);
 }
 
 .fichaLabel{
-  margin-top:0;
-  font-weight:bold;
-  color:#00ff88;
-  text-shadow:0 0 6px #00ff88;
+margin-top:0;
+font-weight:bold;
+color:#00ff88;
+text-shadow:0 0 6px #00ff88;
 }
 
 .gananciaBox{
-  width:130px;
-  height:80px;
+width:130px;
+height:80px;
 
-  font-size:30px;
-  font-weight:bold;
+font-size:30px;
+font-weight:bold;
 
-  background-image:url("./btn-neon-gold.png");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+background-image:url("./btn-neon-gold.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 
-  border:none;
+border:none;
 
-  color:#ffffff;
+color:#ffffff;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+display:flex;
+align-items:center;
+justify-content:center;
 
-  border-radius:10px;
+border-radius:10px;
 
-  text-shadow:0 2px 6px rgba(0,0,0,0.85);
+text-shadow:0 2px 6px rgba(0,0,0,0.85);
 }
 
 .gananciaLabel{
-  margin-top:0;
-  font-weight:bold;
-  color:#ffd700;
-  text-shadow:0 0 6px #ffd700;
+margin-top:0;
+font-weight:bold;
+color:#ffd700;
+text-shadow:0 0 6px #ffd700;
 }
 
 .aciertoWrap{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  margin-top:6px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:4px;
+margin-top:6px;
 }
 
 .aciertoBox{
-  width:90px;
-  height:90px;
+width:90px;
+height:90px;
 
-  font-size:48px;
-  font-weight:bold;
+font-size:48px;
+font-weight:bold;
 
-  background-image:url("./bg-acierto-blue.png");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+background-image:url("./bg-acierto-blue.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 
-  border:none;
+border:none;
 
-  color:#ffffff;
+color:#ffffff;
 
-  display:none;
-  align-items:center;
-  justify-content:center;
+display:none;
+align-items:center;
+justify-content:center;
 
-  border-radius:10px;
+border-radius:10px;
 
-  text-shadow:0 0 8px #00e5ff;
+text-shadow:0 0 8px #00e5ff;
 
-  animation:pulsoAcierto 4s ease-in-out infinite;
+animation:pulsoAcierto 4s ease-in-out infinite;
 }
 .aciertoLabel{
-  margin-top:0;
-  font-weight:bold;
-  color:#00e5ff;
-  text-shadow:0 0 6px #00e5ff;
-  display:none;
+margin-top:0;
+font-weight:bold;
+color:#00e5ff;
+text-shadow:0 0 6px #00e5ff;
+display:none;
 }
 
 button{
-  padding:10px;
-  background:maroon;
-  color:white;
-  font-weight:bold;
-  border:none;
-  border-radius:8px;
+padding:10px;
+background:maroon;
+color:white;
+font-weight:bold;
+border:none;
+border-radius:8px;
 }
 
 .loginBox{
-  display:inline-block;
-  padding:14px 16px;
-  border:2px solid #444;
-  border-radius:10px;
+display:inline-block;
+padding:14px 16px;
+border:2px solid #444;
+border-radius:10px;
 }
 
 .loginRow{
-  margin:8px 0;
+margin:8px 0;
 }
 
 .loginInput{
-  width:220px;
-  height:36px;
-  font-size:18px;
-  padding:6px 10px;
-  border:2px solid #444;
-  background:#111;
-  color:#fff;
-  border-radius:8px;
+width:220px;
+height:36px;
+font-size:18px;
+padding:6px 10px;
+border:2px solid #444;
+background:#111;
+color:#fff;
+border-radius:8px;
 }
 
 .adminPanel{
-  width:700px;
-  margin:18px auto 0;
-  border:2px solid #444;
-  border-radius:10px;
-  padding:12px;
-  text-align:left;
+width:700px;
+margin:18px auto 0;
+border:2px solid #444;
+border-radius:10px;
+padding:12px;
+text-align:left;
 }
 
 .adminTitle{
-  font-weight:bold;
-  margin-bottom:10px;
+font-weight:bold;
+margin-bottom:10px;
 
-  color:#66ff99;
+color:#66ff99;
 
-  text-shadow:
-    0 0 4px #66ff99,
-    0 0 8px #66ff99;
+text-shadow:
+0 0 4px #66ff99,
+0 0 8px #66ff99;
 }
 
 .adminGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
 }
 
 .adminGrid input{
-  width:100%;
-  height:34px;
-  font-size:16px;
-  padding:4px 8px;
-  border:2px solid #444;
-  background:#111;
-  color:#fff;
-  border-radius:8px;
+width:100%;
+height:34px;
+font-size:16px;
+padding:4px 8px;
+border:2px solid #444;
+background:#111;
+color:#fff;
+border-radius:8px;
 }
 
 .adminBtns{
-  display:flex;
-  gap:8px;
-  margin-top:10px;
+display:flex;
+gap:8px;
+margin-top:10px;
 }
 
 .adminBtns button{
-  flex:1;
-  padding:10px 0;
+flex:1;
+padding:10px 0;
 }
 
 .adminOut{
-  margin-top:10px;
-  font-size:14px;
-  color:#ddd;
-  word-break:normal;
+margin-top:10px;
+font-size:14px;
+color:#ddd;
+word-break:normal;
 white-space:nowrap;
 overflow-x:auto;
-  line-height:1.35;
+line-height:1.35;
 }
 
 .smallNote{
-  margin-top:6px;
-  font-size:12px;
-  color:#aaa;
+margin-top:6px;
+font-size:12px;
+color:#aaa;
 }
 
 .logoutBtn{
-  margin-top:14px;
-  padding:8px 14px;
-  background:#222;
-  color:#fff;
-  border:2px solid #444;
-  border-radius:10px;
-  font-weight:bold;
+margin-top:14px;
+padding:8px 14px;
+background:#222;
+color:#fff;
+border:2px solid #444;
+border-radius:10px;
+font-weight:bold;
 }
 
 #splash{
-  position:fixed;
-  inset:0;
-  z-index:99999;
+position:fixed;
+inset:0;
+z-index:99999;
 
-  background:#000;
+background:#000;
 
-  background-image:url("./splash.png");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+background-image:url("./splash.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 }
 
 #appContent{
-  display:none;
+display:none;
 }
 
 #offlineWall{
-  position:fixed;
-  inset:0;
-  z-index:99998;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,0.92);
-  padding:20px;
+position:fixed;
+inset:0;
+z-index:99998;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,0.92);
+padding:20px;
 }
 
 .offlineCard{
-  width:min(420px, 92vw);
-  border:2px solid #444;
-  border-radius:14px;
-  background:rgba(15,15,15,0.85);
-  padding:18px 16px;
-  color:#fff;
-  text-align:center;
+width:min(420px, 92vw);
+border:2px solid #444;
+border-radius:14px;
+background:rgba(15,15,15,0.85);
+padding:18px 16px;
+color:#fff;
+text-align:center;
 }
 
 .offlineTitle{
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:8px;
+font-size:18px;
+font-weight:bold;
+margin-bottom:8px;
 }
 
 .offlineText{
-  font-size:14px;
-  color:#ddd;
-  line-height:1.35;
-  margin-bottom:12px;
+font-size:14px;
+color:#ddd;
+line-height:1.35;
+margin-bottom:12px;
 }
 
 .offlineBtn{
-  padding:10px 14px;
-  background:#111;
-  border:2px solid #444;
-  border-radius:12px;
-  color:#fff;
-  font-weight:bold;
+padding:10px 14px;
+background:#111;
+border:2px solid #444;
+border-radius:12px;
+color:#fff;
+font-weight:bold;
 }
 
 #winFx{
-  width:100%;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  margin-top:6px;
-  margin-bottom:2px;
+width:100%;
+display:none;
+justify-content:center;
+align-items:center;
+margin-top:6px;
+margin-bottom:2px;
 }
 
 #winPlayer{
-  width:300px;
-  height:300px;
+width:300px;
+height:300px;
+}
+
+#pauseBanner{
+width:340px;
+margin:12px auto;
+padding:12px;
+
+background:#5a3900;
+border:3px solid #ff9900;
+
+color:#fff;
+
+font-size:22px;
+font-weight:bold;
+
+border-radius:10px;
+}
+
+.pausedBox{
+opacity:0.35;
 }
 
 </style>
 </head>
 <body>
 
-<audio id="musicAudio" loop style="display:none;">
-  <source src="./lobo-estas.mp3" type="audio/mpeg">
-</audio>
-
 <div id="splash"></div>
 
 <div id="offlineWall">
-  <div class="offlineCard">
-    <div class="offlineTitle">
-      REQUIERE CONEXIÓN A INTERNET
-    </div>
+<div class="offlineCard">
+<div class="offlineTitle">
+REQUIERE CONEXIÓN A INTERNET
+</div>
 
-    <div class="offlineText">
-      Para usar el sistema necesitás estar online.<br>
-      Conectate y tocá "Reintentar".
-    </div>
+<div class="offlineText">
+Para usar el sistema necesitás estar online.<br>
+Conectate y tocá “Reintentar”.
+</div>
 
-    <button class="offlineBtn" onclick="location.reload()">
-      REINTENTAR
-    </button>
-  </div>
+<button class="offlineBtn" onclick="location.reload()">
+REINTENTAR
+</button>
+</div>
 </div>
 
 <div id="appContent">
@@ -534,297 +545,275 @@ overflow-x:auto;
 
 <div id="login" class="loginBox">
 
-  <div class="loginRow">
-    <input id="usuario" class="loginInput" placeholder="Usuario">
-  </div>
+<div class="loginRow">
+<input id="usuario" class="loginInput" placeholder="Usuario">
+</div>
 
-  <div class="loginRow">
-    <input id="clave" class="loginInput" placeholder="Clave" type="password">
-  </div>
+<div class="loginRow">
+<input id="clave" class="loginInput" placeholder="Clave" type="password">
+</div>
 
-  <div class="loginRow">
-    <button onclick="ingresar()">INGRESAR</button>
-  </div>
+<div class="loginRow">
+<button onclick="ingresar()">INGRESAR</button>
+</div>
 
-  <p id="err" style="color:red;margin:6px 0 0;"></p>
+<p id="err" style="color:red;margin:6px 0 0;"></p>
 
 </div>
 
 <div id="sistema" class="hidden" style="display:none;">
-  <div class="inputs" id="casilleros"></div>
+<div class="inputs" id="casilleros"></div>
 
-  <br>
+<br>
 <div class="ingreso">
 
-  <div class="ingresoCol">
+<div class="ingresoCol">
 
-    <input id="nuevo" class="ingresoInput">
+<input id="nuevo" class="ingresoInput">
 
-    <div class="label" style="color:#00ff88;">
-      INGRESO
-    </div>
+<div class="label" style="color:#00ff88;">
+INGRESO
+</div>
 
-  </div>
+</div>
 
 </div>
 
 <br>
 
-  <!-- =========================
-       FAVORITOS / REP3
-  ========================= -->
+<div id="pauseBanner" class="hidden">
+⏸ SISTEMA EN PAUSA<br>
+Esperando acierto para reactivar
+</div>
 
-  <div class="repBox favoritosBox" id="favoritosBox">
-    —
-  </div>
+<!-- =========================
+FAVORITOS / REP3
+========================= -->
 
-  <div class="label" style="color:#00e5ff;font-size:26px;">
-    FAVORITOS
-  </div>
+<div class="repBox favoritosBox" id="favoritosBox">
+—
+</div>
 
-  <br>
+<div class="label" style="color:#00e5ff;font-size:26px;">
+FAVORITOS
+</div>
 
-  <!-- =========================
-       ON FIRE / REP4+
-  ========================= -->
+<br>
 
-  <div class="repBox onfireBox" id="onfireBox">
-    —
-  </div>
+<!-- =========================
+ON FIRE / REP4+
+========================= -->
 
-  <div class="label" style="color:#ff5500;font-size:26px;">
-    ON FIRE
-  </div>
+<div class="repBox onfireBox" id="onfireBox">
+—
+</div>
 
-  <br>
+<div class="label" style="color:#ff5500;font-size:26px;">
+ON FIRE
+</div>
 
-  <div class="repBox"
-       id="miniBox"
-       style="
-         background:#16351b;
-         border-color:#66ff99;
-       ">
-    —
-  </div>
+<br>
+<br>
+<!-- =========================
+CUENTA UNIFICADA REP3 + REP4+
+========================= -->
 
-  <div class="label"
-       style="
-         color:#66ff99;
-         font-size:26px;
-       ">
-    MINI SISTEMA
-  </div>
+<div class="ingreso">
 
-  <br>
-  <br>
-  <!-- =========================
-       CUENTA UNIFICADA REP3 + REP4+
-  ========================= -->
+<div class="ingresoCol">
 
-  <div class="ingreso">
+<div id="totalGeneral" class="totalBox">
+0
+</div>
 
-    <div class="ingresoCol">
+<div class="totalLabel">
+TOTAL
+</div>
 
-      <div id="totalGeneral" class="totalBox">
-        0
-      </div>
+</div>
 
-      <div class="totalLabel">
-        TOTAL
-      </div>
+<div class="ingresoCol">
 
-    </div>
+<div id="fichaGeneral" class="fichaBox">
+1
+</div>
 
-    <div class="ingresoCol">
+<div class="fichaLabel">
+FICHA
+</div>
 
-      <div id="fichaGeneral" class="fichaBox">
-        1
-      </div>
+</div>
 
-      <div class="fichaLabel">
-        FICHA
-      </div>
+<div class="ingresoCol">
 
-    </div>
+<div id="gananciaGeneral" class="gananciaBox">
+0
+</div>
 
-    <div class="ingresoCol">
+<div class="gananciaLabel">
+GANANCIA
+</div>
 
-      <div id="gananciaGeneral" class="gananciaBox">
-        0
-      </div>
+<div class="aciertoWrap">
 
-      <div class="gananciaLabel">
-        GANANCIA
-      </div>
+<div id="aciertoBox" class="aciertoBox">
+0
+</div>
 
-      <div class="aciertoWrap">
+<div id="aciertoLabel" class="aciertoLabel">
+ACIERTO
+</div>
 
-        <div id="aciertoBox" class="aciertoBox">
-          0
-        </div>
+</div>
 
-        <div id="aciertoLabel" class="aciertoLabel">
-          ACIERTO
-        </div>
+</div>
 
-      </div>
+</div>
 
-    </div>
+<div id="winFx">
 
-  </div>
+<dotlottie-player
+id="winPlayer"
+src="./success-cav.lottie"
+background="transparent"
+speed="1"
+loop="false"
+autoplay="false">
+</dotlottie-player>
 
-  <div id="winFx">
+</div>
 
-    <dotlottie-player
-      id="winPlayer"
-      src="./success-cav.lottie"
-      background="transparent"
-      speed="1"
-      loop="false"
-      autoplay="false">
-    </dotlottie-player>
+<div style="margin-top:12px;">
+<button onclick="resetear()">
+REINICIAR
+</button>
+</div>
 
-  </div>
+<div id="adminPanel" class="adminPanel hidden">
 
-  <div style="margin-top:12px;">
+<div class="adminTitle">
+CREAR USUARIO (CON VENCIMIENTO)
+</div>
 
-    <button onclick="resetear()">
-      REINICIAR
-    </button>
+<div class="adminGrid">
 
-  </div>
+<input id="newUser" placeholder="Usuario">
 
-  <div id="adminPanel" class="adminPanel hidden">
+<input id="newPass" placeholder="Clave">
 
-    <div class="adminTitle">
-      CREAR USUARIO (CON VENCIMIENTO)
-    </div>
+</div>
 
-    <div class="adminGrid">
+<div class="adminBtns">
 
-      <input id="newUser" placeholder="Usuario">
+<button onclick="crearUsuario(1)">
+1 DÍA
+</button>
 
-      <input id="newPass" placeholder="Clave">
+<button onclick="crearUsuario(7)">
+7 DÍAS
+</button>
 
-    </div>
+<button onclick="crearUsuario(30)">
+30 DÍAS
+</button>
 
-    <div class="adminBtns">
+</div>
 
-      <button onclick="crearUsuario(1)">
-        1 DÍA
-      </button>
+<div class="adminBtns">
 
-      <button onclick="crearUsuario(7)">
-        7 DÍAS
-      </button>
+<button onclick="mostrarUsuarios()">
+USUARIOS
+</button>
 
-      <button onclick="crearUsuario(30)">
-        30 DÍAS
-      </button>
+</div>
 
-    </div>
+<div class="adminBtns">
 
-    <div class="adminBtns">
+<button id="musicBtn"
+onclick="toggleMusic()">
+🔊 MÚSICA ON
+</button>
 
-      <button onclick="mostrarUsuarios()">
-        USUARIOS
-      </button>
+</div>
 
-    </div>
+<div id="adminOut" class="adminOut"></div>
 
-    <div class="adminBtns">
+<div id="usuariosPanel"
+style="display:none;margin-top:12px;">
 
-      <button id="musicBtn"
-              onclick="toggleMusic()">
-        🔊 MÚSICA ON
-      </button>
+<div id="usuariosLista"></div>
 
-    </div>
+<div style="text-align:center;margin-top:25px;">
 
-    <div id="adminOut" class="adminOut"></div>
+<img
+src="./banner-admin.jpg"
+style="
+width:100%;
+max-width:700px;
+border-radius:10px;
+"
+>
 
-    <div id="usuariosPanel"
-         style="display:none;margin-top:12px;">
+</div>
 
-      <div id="usuariosLista"></div>
+</div>
+<div class="smallNote">
+Se guarda en el servidor.
+</div>
 
-      <div style="text-align:center;margin-top:25px;">
+</div>
 
-        <img
-          src="./banner-admin.jpg"
-          style="
-            width:100%;
-            max-width:700px;
-            border-radius:10px;
-          "
-        >
-
-      </div>
-
-    </div>
-    <div class="smallNote">
-      Se guarda en el servidor.
-    </div>
-
-  </div>
-
-  <button class="logoutBtn" onclick="salir()">
-    SALIR
-  </button>
-  
+<button class="logoutBtn" onclick="salir()">
+SALIR
+</button>
 <div id="maiDireMai"
-     style="text-align:center;margin-top:80px;">
-  <img
-    src="./mai-dire-mai.jpg"
-    style="
-      width:320px;
-      max-width:90%;
-      border-radius:12px;
-    "
-  >
+style="text-align:center;margin-top:80px;">
+<img
+src="./mai-dire-mai.jpg"
+style="
+width:320px;
+max-width:90%;
+border-radius:12px;
+"
+>
 
 </div>
-  <div id="bannerUsuarios"
-     style="text-align:center;margin-top:80px;display:none;">
+<div id="bannerUsuarios"
+style="text-align:center;margin-top:80px;display:none;">
 
-  <img
-    src="./banner-admin.jpg"
-    style="
-      width:100%;
-      max-width:700px;
-      border-radius:10px;
-    "
-  >
-
-  </div>
+<img
+src="./banner-admin.jpg"
+style="
+width:100%;
+max-width:700px;
+border-radius:10px;
+"
+>
 
 </div>
-
 <script>
 
 const API = "https://s77-backend1.onrender.com";
 
 const TOKEN_KEY = "S77_TOKEN_V1";
-const ROLE_KEY  = "S77_ROLE_V1";
+const ROLE_KEY = "S77_ROLE_V1";
 
 let TOKEN = localStorage.getItem(TOKEN_KEY) || "";
-let ROLE  = localStorage.getItem(ROLE_KEY) || "";
-
-let musicPlaying = false;
+let ROLE = localStorage.getItem(ROLE_KEY) || "";
 
 function fetchWithTimeout(url, options = {}, timeoutMs = 12000){
 
-  const controller = new AbortController();
+const controller = new AbortController();
 
-  const id = setTimeout(
-    () => controller.abort(),
-    timeoutMs
-  );
+const id = setTimeout(
+() => controller.abort(),
+timeoutMs
+);
 
-  return fetch(url, {
-    ...options,
-    signal: controller.signal
-  }).finally(() => clearTimeout(id));
+return fetch(url, {
+...options,
+signal: controller.signal
+}).finally(() => clearTimeout(id));
 }
 
 let booted = false;
@@ -832,571 +821,585 @@ let winFxTimer = null;
 
 function showWinFx(ms = 1200){
 
-  const fx = document.getElementById("winFx");
-  const player = document.getElementById("winPlayer");
+const fx = document.getElementById("winFx");
+const player = document.getElementById("winPlayer");
 
-  if(!fx || !player) return;
+if(!fx || !player) return;
 
-  fx.style.display = "flex";
+fx.style.display = "flex";
 
-  try{
-    player.stop();
-    player.play();
-  }catch(e){}
+try{
+player.stop();
+player.play();
+}catch(e){}
 
-  clearTimeout(winFxTimer);
+clearTimeout(winFxTimer);
 
-  winFxTimer = setTimeout(() => {
-    fx.style.display = "none";
-  }, ms);
+winFxTimer = setTimeout(() => {
+fx.style.display = "none";
+}, ms);
 }
 
 /* =========================
-   GANANCIA LOCAL UNIFICADA
-   REP3 + REP4+
+GANANCIA LOCAL UNIFICADA
+REP3 + REP4+
 ========================= */
 
 const GANANCIA_KEY = "S77_GANANCIA_UNIFICADA_REP3_REP4";
 
 let gananciaAcum = Number(
-  localStorage.getItem(GANANCIA_KEY) || 0
+localStorage.getItem(GANANCIA_KEY) || 0
 );
 
 if(!Number.isFinite(gananciaAcum)){
-  gananciaAcum = 0;
+gananciaAcum = 0;
 }
 
 function setGanancia(v){
 
-  gananciaAcum = Number(v) || 0;
+gananciaAcum = Number(v) || 0;
 
-  gananciaGeneral.textContent = Math.round(gananciaAcum);
+gananciaGeneral.textContent = Math.round(gananciaAcum);
 
-  localStorage.setItem(
-    GANANCIA_KEY,
-    String(gananciaAcum)
-  );
+localStorage.setItem(
+GANANCIA_KEY,
+String(gananciaAcum)
+);
 }
 
 setGanancia(gananciaAcum);
 
 function sumarGanancia(value){
 
-  const n = Number(value);
+const n = Number(value);
 
-  if(!Number.isFinite(n)) return;
+if(!Number.isFinite(n)) return;
 
-  setGanancia(gananciaAcum + n);
+setGanancia(gananciaAcum + n);
 }
 
 function renderAcierto(show, value){
 
-  if(show){
+if(show){
 
-    aciertoBox.style.display = "flex";
-    aciertoLabel.style.display = "block";
+aciertoBox.style.display = "flex";
+aciertoLabel.style.display = "block";
 
-    aciertoBox.textContent = String(
-      Math.round(Number(value) || 0)
-    );
+aciertoBox.textContent = String(
+Math.round(Number(value) || 0)
+);
 
-  }else{
+}else{
 
-    aciertoBox.style.display = "none";
-    aciertoLabel.style.display = "none";
-    aciertoBox.textContent = "0";
-  }
+aciertoBox.style.display = "none";
+aciertoLabel.style.display = "none";
+aciertoBox.textContent = "0";
 }
-
+}
 function setTotal(v){
 
-  const n = Number(v);
+const n = Number(v);
 
-  totalGeneral.textContent = Number.isFinite(n)
-    ? String(Math.round(n))
-    : "0";
+totalGeneral.textContent = Number.isFinite(n)
+? String(Math.round(n))
+: "0";
 }
 
 function setFicha(v){
 
-  const n = Number(v);
+const n = Number(v);
 
-  fichaGeneral.textContent = Number.isFinite(n)
-    ? String(Math.round(n))
-    : "1";
+fichaGeneral.textContent = Number.isFinite(n)
+? String(Math.round(n))
+: "1";
 }
 
 function renderLista(id, arr){
 
-  const el = document.getElementById(id);
+const el = document.getElementById(id);
 
-  if(!el) return;
+if(!el) return;
 
-  const clean = Array.isArray(arr)
-    ? [...arr].sort((a,b)=>Number(a)-Number(b))
-    : [];
+const clean = Array.isArray(arr)
+? [...arr].sort((a,b)=>Number(a)-Number(b))
+: [];
 
-  el.textContent = clean.length
-    ? clean.join(" ")
-    : "—";
+el.textContent = clean.length
+? clean.join(" ")
+: "—";
 }
 
 const NUM_BG = {
-  0:"#0b7a3b",
-  1:"#ff0000", 2:"#000000", 3:"#ff0000", 4:"#000000", 5:"#ff0000",
-  6:"#000000", 7:"#ff0000", 8:"#000000", 9:"#ff0000", 10:"#000000",
-  11:"#000000", 12:"#ff0000", 13:"#000000", 14:"#ff0000", 15:"#000000",
-  16:"#ff0000", 17:"#000000", 18:"#ff0000", 19:"#ff0000", 20:"#000000",
-  21:"#ff0000", 22:"#000000", 23:"#ff0000", 24:"#000000", 25:"#ff0000",
-  26:"#000000", 27:"#ff0000", 28:"#000000", 29:"#000000", 30:"#ff0000",
-  31:"#000000", 32:"#ff0000", 33:"#000000", 34:"#ff0000", 35:"#000000",
-  36:"#ff0000"
+0:"#0b7a3b",
+1:"#ff0000", 2:"#000000", 3:"#ff0000", 4:"#000000", 5:"#ff0000",
+6:"#000000", 7:"#ff0000", 8:"#000000", 9:"#ff0000", 10:"#000000",
+11:"#000000", 12:"#ff0000", 13:"#000000", 14:"#ff0000", 15:"#000000",
+16:"#ff0000", 17:"#000000", 18:"#ff0000", 19:"#ff0000", 20:"#000000",
+21:"#ff0000", 22:"#000000", 23:"#ff0000", 24:"#000000", 25:"#ff0000",
+26:"#000000", 27:"#ff0000", 28:"#000000", 29:"#000000", 30:"#ff0000",
+31:"#000000", 32:"#ff0000", 33:"#000000", 34:"#ff0000", 35:"#000000",
+36:"#ff0000"
 };
 
 function pintarCasilleroPorNumero(inputEl){
 
-  const v = parseInt(inputEl.value, 10);
+const v = parseInt(inputEl.value, 10);
 
-  inputEl.style.background = Number.isFinite(v)
-    ? (NUM_BG[v] || "#000")
-    : "#000";
+inputEl.style.background = Number.isFinite(v)
+? (NUM_BG[v] || "#000")
+: "#000";
 
-  inputEl.style.color = "#fff";
-  inputEl.style.borderColor = "#000";
+inputEl.style.color = "#fff";
+inputEl.style.borderColor = "#000";
 }
 
 function validarNumero(n){
 
-  if(!Number.isInteger(n)){
-    return {
-      ok:false,
-      msg:"Tenés que ingresar un número entero."
-    };
-  }
-
-  if(n < 0 || n > 36){
-    return {
-      ok:false,
-      msg:"Solo se permiten números del 0 al 36."
-    };
-  }
-
-  return {
-    ok:true,
-    msg:""
-  };
+if(!Number.isInteger(n)){
+return {
+ok:false,
+msg:"Tenés que ingresar un número entero."
+};
 }
 
+if(n < 0 || n > 36){
+return {
+ok:false,
+msg:"Solo se permiten números del 0 al 36."
+};
+}
+
+return {
+ok:true,
+msg:""
+};
+}
 async function ingresar(){
 
-  const u = (usuario.value || "").trim();
-  const p = (clave.value || "").trim();
+const u = (usuario.value || "").trim();
+const p = (clave.value || "").trim();
 
-  if(!u || !p){
-    err.innerText = "Completa usuario y clave";
-    return;
-  }
-
-  try{
-
-    const r = await fetchWithTimeout(`${API}/auth/login`,{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json"
-      },
-
-      body: JSON.stringify({
-        user:u,
-        pass:p
-      })
-
-    });
-
-    const data = await r.json();
-
-    if(!r.ok){
-      err.innerText = data.error || "Error de login";
-      return;
-    }
-
-    TOKEN = data.token;
-    ROLE = data.role;
-
-    localStorage.setItem(TOKEN_KEY, TOKEN);
-    localStorage.setItem(ROLE_KEY, ROLE);
-
-    usuario.value = "";
-    clave.value = "";
-    err.innerText = "";
-
-    boot();
-
-  }catch(e){
-
-    err.innerText = "Error de conexión";
-
-    offlineWall.style.display = "flex";
-
-  }
-
+if(!u || !p){
+err.innerText = "Completa usuario y clave";
+return;
 }
 
-async function boot(){
+try{
 
-  booted = true;
+const r = await fetchWithTimeout(`${API}/auth/login`,{
 
-  login.style.display = "none";
-  sistema.style.display = "block";
+method:"POST",
 
-  if(ROLE === "admin"){
-    adminPanel.classList.remove("hidden");
-  }
+headers:{
+"Content-Type":"application/json"
+},
 
-  await render();
+body: JSON.stringify({
+user:u,
+pass:p
+})
 
+}, 12000);
+
+const data = await r.json();
+
+if(!r.ok){
+err.innerText = "Usuario/clave inválidos o vencidos";
+return;
 }
 
-function toggleMusic(){
+TOKEN = data.token;
+ROLE = data.role;
 
-  const audio = document.getElementById("musicAudio");
-  const btn = document.getElementById("musicBtn");
+localStorage.setItem(TOKEN_KEY, TOKEN);
+localStorage.setItem(ROLE_KEY, ROLE);
 
-  if(!audio) return;
+err.innerText = "";
 
-  if(musicPlaying){
+mostrarSistema();
 
-    audio.pause();
-    musicPlaying = false;
-    btn.textContent = "🔊 MÚSICA ON";
+await cargarEstado();
 
-  }else{
+}catch(e){
 
-    audio.play().catch(e => {
-      console.log("No se pudo reproducir la música:", e);
-    });
-    musicPlaying = true;
-    btn.textContent = "🔊 MÚSICA OFF";
-
-  }
-
+err.innerText = "No conecta con el servidor. ¿Está prendido el backend?";
+}
 }
 
-async function crearUsuario(days){
+function mostrarLogin(){
 
-  const u = (newUser.value || "").trim();
-  const p = (newPass.value || "").trim();
+login.classList.remove("hidden");
+login.style.display = "inline-block";
 
-  if(!u || !p){
-    adminOut.innerText = "Usuario y clave requeridos";
-    return;
-  }
-
-  try{
-
-    const r = await fetchWithTimeout(`${API}/admin/create-user`,{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":`Bearer ${TOKEN}`
-      },
-
-      body: JSON.stringify({
-        user:u,
-        pass:p,
-        days:days
-      })
-
-    });
-
-    const data = await r.json();
-
-    if(!r.ok){
-      adminOut.innerText = "Error: " + (data.error || "desconocido");
-      return;
-    }
-
-    newUser.value = "";
-    newPass.value = "";
-
-    adminOut.innerText = `✅ Usuario ${u} creado por ${days} días`;
-
-  }catch(e){
-
-    adminOut.innerText = "Error de conexión";
-
-  }
-
+sistema.classList.add("hidden");
+sistema.style.display = "none";
 }
 
-async function mostrarUsuarios(){
+function mostrarSistema(){
 
-  try{
+login.classList.add("hidden");
+login.style.display = "none";
 
-    const r = await fetchWithTimeout(`${API}/admin/users`,{
+sistema.classList.remove("hidden");
+sistema.style.display = "block";
 
-      headers:{
-        "Authorization":`Bearer ${TOKEN}`
-      }
+const panel = document.getElementById("adminPanel");
 
-    });
+if(panel){
 
-    const data = await r.json();
+if(ROLE === "admin"){
 
-    if(!r.ok){
-      adminOut.innerText = "Error al obtener usuarios";
-      return;
-    }
+document.getElementById("casilleros").style.display = "none";
+document.getElementById("nuevo").parentElement.parentElement.style.display = "none";
 
-    const users = data.users || [];
+document.getElementById("pauseBanner").style.display = "none";
 
-    let html = "<table style='width:100%;border-collapse:collapse;'>";
-    html += "<tr style='border-bottom:1px solid #666;'>";
-    html += "<th style='padding:6px;text-align:left;'>Usuario</th>";
-    html += "<th style='padding:6px;text-align:left;'>Vencimiento</th>";
-    html += "</tr>";
+document.getElementById("favoritosBox").style.display = "none";
+document.getElementById("onfireBox").style.display = "none";
 
-    for(const u of users){
-      html += "<tr style='border-bottom:1px solid #444;'>";
-      html += `<td style='padding:6px;'>${u.user}</td>`;
-      html += `<td style='padding:6px;'>${u.daysLeft}</td>`;
-      html += "</tr>";
-    }
+document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
 
-    html += "</table>";
+document.querySelectorAll(".label")[1].style.display = "none";
 
-    usuariosLista.innerHTML = html;
-    usuariosPanel.style.display = "block";
+document.querySelectorAll(".label")[2].style.display = "none";
+document.querySelector('button[onclick="resetear()"]').style.display = "none";
+document.getElementById("maiDireMai").style.display = "block";
+document.getElementById("bannerUsuarios").style.display = "none";
+const music =
+document.getElementById("adminMusic");
 
-  }catch(e){
+if(music){
 
-    adminOut.innerText = "Error de conexión";
+music.volume = 0.4;
 
-  }
+music.play().catch(()=>{});
+}
+panel.classList.remove("hidden");
 
+}else{
+
+document.getElementById("maiDireMai").style.display = "none";
+document.getElementById("bannerUsuarios").style.display = "block";
+
+document.getElementById("casilleros").style.display = "grid";
+
+document.getElementById("nuevo").parentElement.parentElement.style.display = "";
+
+document.getElementById("favoritosBox").style.display = "";
+
+document.getElementById("onfireBox").style.display = "";
+
+document.getElementById("totalGeneral").parentElement.parentElement.style.display = "";
+
+document.querySelectorAll(".label")[1].style.display = "";
+
+document.querySelectorAll(".label")[2].style.display = "";
+
+document.querySelector('button[onclick="resetear()"]').style.display = "";
+
+panel.classList.add("hidden");
+}
+
+}
 }
 
 function salir(){
 
-  TOKEN = "";
-  ROLE = "";
+if(!confirm("¿Seguro querés salir?")) return;
 
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(ROLE_KEY);
+TOKEN = "";
+ROLE = "";
 
-  booted = false;
+localStorage.removeItem(TOKEN_KEY);
+localStorage.removeItem(ROLE_KEY);
 
-  login.style.display = "block";
-  sistema.style.display = "none";
-  adminPanel.classList.add("hidden");
-  usuariosPanel.style.display = "none";
-
-  musicPlaying = false;
-  const audio = document.getElementById("musicAudio");
-  if(audio) audio.pause();
-  const btn = document.getElementById("musicBtn");
-  if(btn) btn.textContent = "🔊 MÚSICA ON";
-
+mostrarLogin();
 }
 
-async function resetear(){
+function renderInicial(){
 
-  try{
+casilleros.innerHTML = "";
 
-    const r = await fetchWithTimeout(`${API}/api/reset`,{
+casilleros.style.gridTemplateColumns =
+"repeat(4,70px)";
 
-      method:"POST",
+for(let i=0;i<16;i++){
 
-      headers:{
-        "Authorization":`Bearer ${TOKEN}`
-      }
+const c = document.createElement("input");
 
-    });
+c.disabled = true;
+c.value = "";
 
-    const data = await r.json();
+pintarCasilleroPorNumero(c);
 
-    if(r.ok){
-      await render();
-    }
-
-  }catch(e){
-
-    console.log("Error:", e);
-
-  }
-
+casilleros.appendChild(c);
 }
-
-async function ingresoNumero(){
-
-  const n = parseInt(nuevo.value, 10);
-
-  const validacion = validarNumero(n);
-
-  if(!validacion.ok){
-    alert(validacion.msg);
-    nuevo.value = "";
-    return;
-  }
-
-  try{
-
-    const r = await fetchWithTimeout(`${API}/api/enter`,{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":`Bearer ${TOKEN}`
-      },
-
-      body: JSON.stringify({
-        n:n
-      })
-
-    });
-
-    const data = await r.json();
-
-    if(!r.ok){
-      alert("Error al ingresar número");
-      return;
-    }
-
-    nuevo.value = "";
-
-    if(data.aciertoShow){
-      sumarGanancia(data.aciertoValue);
-      renderAcierto(true, data.aciertoValue);
-      showWinFx();
-    }
-
-    await render(data);
-
-  }catch(e){
-
-    alert("Error de conexión");
-
-  }
-
 }
+function renderCasilleros(data){
 
-async function render(stateOverride){
+casilleros.innerHTML = "";
 
-  if(!booted) return;
+if(data.historialLen < 17){
 
-  try{
+casilleros.style.gridTemplateColumns =
+"repeat(4,70px)";
 
-    let data = stateOverride;
+data.ultimos16.forEach(v => {
 
-    if(!data){
+const c = document.createElement("input");
 
-      const r = await fetchWithTimeout(`${API}/api/state`,{
+c.disabled = true;
+c.value = v;
 
-        headers:{
-          "Authorization":`Bearer ${TOKEN}`
-        }
+pintarCasilleroPorNumero(c);
 
-      });
-
-      if(!r.ok){
-        offlineWall.style.display = "flex";
-        return;
-      }
-
-      data = await r.json();
-
-    }
-
-    offlineWall.style.display = "none";
-
-    if(!data.ok) return;
-
-    renderLista("favoritosBox", data.favoritos || []);
-    renderLista("onfireBox", data.onfire || []);
-
-    setTotal(data.totalGeneral);
-    setFicha(data.fichasTotal);
-
-    const isModoMini = data.modoMini === true;
-
-    // Renderizar mini sistema
-    if(isModoMini){
-      renderLista("miniBox", data.miniSistema || []);
-      miniBox.classList.add("miniBoxActive");
-    }else{
-      renderLista("miniBox", []);
-      miniBox.classList.remove("miniBoxActive");
-    }
-
-    // Ocultar casilleros si está en modo mini
-    const casilleros = document.getElementById("casilleros");
-    if(casilleros){
-      if(isModoMini){
-        casilleros.style.display = "none";
-      }else{
-        casilleros.style.display = "grid";
-      }
-    }
-
-  }catch(e){
-
-    console.log("Error en render:", e);
-
-  }
-
-}
-
-// Crear casilleros
-function crearCasilleros(){
-
-  const contenedor = document.getElementById("casilleros");
-
-  for(let i = 0; i <= 36; i++){
-
-    const input = document.createElement("input");
-    input.type = "text";
-    input.readOnly = true;
-    input.value = String(i);
-
-    pintarCasilleroPorNumero(input);
-
-    contenedor.appendChild(input);
-
-  }
-
-}
-
-// Event listeners
-document.addEventListener("DOMContentLoaded", () => {
-
-  crearCasilleros();
-
-  const nuevoInput = document.getElementById("nuevo");
-
-  nuevoInput.addEventListener("keypress", (e) => {
-    if(e.key === "Enter"){
-      ingresoNumero();
-    }
-  });
-
-  // Cargar estado si ya estaba logueado
-  if(TOKEN){
-    boot();
-  }
-
-  // Mostrar app content
-  setTimeout(() => {
-    document.getElementById("splash").style.display = "none";
-    document.getElementById("appContent").style.display = "block";
-  }, 2000);
-
+casilleros.appendChild(c);
 });
 
+if(data.historialLen === 0){
+renderInicial();
+}
+
+}else{
+
+casilleros.style.gridTemplateColumns =
+"repeat(5,70px)";
+
+data.ultimos5.forEach(v => {
+
+const c = document.createElement("input");
+
+c.disabled = true;
+c.value = v;
+
+pintarCasilleroPorNumero(c);
+
+casilleros.appendChild(c);
+});
+}
+}
+
+function renderEstado(data){
+
+renderCasilleros(data);
+
+renderLista(
+"favoritosBox",
+data.favoritos
+);
+
+renderLista(
+"onfireBox",
+data.onfire
+);
+
+const banner =
+document.getElementById("pauseBanner");
+
+const fav =
+document.getElementById("favoritosBox");
+
+const fire =
+document.getElementById("onfireBox");
+
+if(data.suspensionActive){
+
+banner.classList.remove("hidden");
+
+fav.classList.add("pausedBox");
+fire.classList.add("pausedBox");
+
+}else{
+
+banner.classList.add("hidden");
+
+fav.classList.remove("pausedBox");
+fire.classList.remove("pausedBox");
+}
+
+setTotal(data.totalGeneral);
+
+setFicha(data.activeMult);
+
+renderAcierto(false, 0);
+}
+
+async function cargarEstado(){
+
+try{
+
+const r = await fetchWithTimeout(`${API}/api/state`,{
+
+method:"GET",
+
+headers:{
+"Authorization": `Bearer ${TOKEN}`
+}
+
+}, 12000);
+
+const data = await r.json();
+
+if(!r.ok){
+salir();
+return;
+}
+
+renderEstado(data);
+
+}catch(e){
+
+alert("No conecta con el backend. ¿Está prendido?");
+}
+}
+async function resetear(){
+
+if(!TOKEN){
+alert("Tenés que estar logueado.");
+return;
+}
+
+if(!confirm("¿Seguro querés reiniciar tu historial?")) return;
+
+try{
+
+const r = await fetchWithTimeout(`${API}/api/reset`,{
+
+method:"POST",
+
+headers:{
+"Authorization": `Bearer ${TOKEN}`
+}
+
+}, 12000);
+
+if(!r.ok){
+alert("No se pudo reiniciar.");
+return;
+}
+
+setTotal(0);
+setFicha(1);
+setGanancia(0);
+
+renderLista("favoritosBox", []);
+renderLista("onfireBox", []);
+
+renderAcierto(false, 0);
+
+const fx = document.getElementById("winFx");
+
+if(fx){
+fx.style.display = "none";
+}
+
+await cargarEstado();
+
+}catch(e){
+
+if(e && e.name === "AbortError"){
+alert("El servidor tardó demasiado y se cortó la petición.");
+}else{
+alert("No conecta con el backend.");
+}
+}
+}
+
+nuevo.addEventListener("keydown", async (e) => {
+
+if(e.key !== "Enter") return;
+
+if(!TOKEN){
+alert("Primero tenés que ingresar con usuario y clave.");
+return;
+}
+
+const n = parseInt(nuevo.value, 10);
+
+const v = validarNumero(n);
+
+if(!v.ok){
+alert(v.msg);
+return;
+}
+
+nuevo.value = "";
+
+try{
+
+const r = await fetchWithTimeout(
+
+`${API}/admin/create-user`,
+
+{
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":`Bearer ${TOKEN}`
+},
+
+body:JSON.stringify({
+user,
+pass,
+days
+})
+},
+
+12000
+);
+
+const data = await r.json();
+
+if(!r.ok){
+
+out.innerText =
+"Error creando usuario.";
+
+return;
+}
+
+out.innerText =
+`Usuario: ${data.user}
+Vence: ${new Date(data.exp).toLocaleString()}`;
+
+document.getElementById("newUser").value = "";
+document.getElementById("newPass").value = "";
+
+}catch(e){
+
+out.innerText =
+"No conecta con el servidor.";
+}
+}
+(async function init(){
+
+const splash = document.getElementById("splash");
+const app = document.getElementById("appContent");
+
+setTimeout(() => {
+
+if(splash){
+splash.style.display = "none";
+}
+
+if(app){
+app.style.display = "block";
+}
+
+}, 4000);
+
+await boot();
+
+})();
 </script>
+
+<audio
+id="adminMusic"
+src="./loboestas.mp3"
+loop>
+</audio>
 
 </body>
 </html>
+  
