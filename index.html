@@ -1197,12 +1197,14 @@ const banner = document.getElementById("pauseBanner");
 const fav = document.getElementById("favoritosBox");
 const fire = document.getElementById("onfireBox");
 
-if(data.suspensionActive){
+if(data.suspensionActive === true){
   banner.classList.remove("hidden");
+  banner.style.display = "block";
   fav.classList.add("pausedBox");
   fire.classList.add("pausedBox");
 }else{
   banner.classList.add("hidden");
+  banner.style.display = "none";
   fav.classList.remove("pausedBox");
   fire.classList.remove("pausedBox");
   }
