@@ -530,7 +530,25 @@ border-radius:10px;
 .pausedBox{
 opacity:0.35;
 }
+*{ box-sizing:border-box; }
 
+html, body{
+  margin:0;
+  padding:0;
+  width:100%;
+  overflow-x:hidden;
+}
+
+img, video, canvas{
+  max-width:100%;
+  height:auto;
+}
+
+#appContent, #login, .container{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  }
 </style>
 </head>
 <body>
