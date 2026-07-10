@@ -1068,31 +1068,43 @@ function mostrarSistema(){
   }
 
   const panel = document.getElementById("adminPanel");
-
-if(panel){
-
   const roleNorm = String(ROLE || "").trim().toLowerCase();
+
+  const casillerosEl = document.getElementById("casilleros");
+  const nuevoWrap = document.getElementById("nuevo")?.parentElement?.parentElement;
+  const pauseBannerEl = document.getElementById("pauseBanner");
+  const favoritosEl = document.getElementById("favoritosBox");
+  const onfireEl = document.getElementById("onfireBox");
+  const miniEl = document.getElementById("miniBox");
+  const totalWrap = document.getElementById("totalGeneral")?.parentElement?.parentElement;
+  const labels = document.querySelectorAll(".label");
+  const btnReset = document.querySelector('button[onclick="resetear()"]');
+  const mai = document.getElementById("maiDireMai");
+  const banner = document.getElementById("bannerUsuarios");
 
   if(roleNorm === "admin"){
 
-    // ===== ADMIN =====
-    document.getElementById("casilleros").style.display = "none";
-    document.getElementById("nuevo").parentElement.parentElement.style.display = "none";
-    document.getElementById("pauseBanner").style.display = "none";
-    document.getElementById("favoritosBox").style.display = "none";
-    document.getElementById("onfireBox").style.display = "none";
-    document.getElementById("miniBox").style.display = "none";
-    document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
+    if(casillerosEl) casillerosEl.style.display = "none";
+    if(nuevoWrap) nuevoWrap.style.display = "none";
+    if(pauseBannerEl) pauseBannerEl.style.display = "none";
+    if(favoritosEl) favoritosEl.style.display = "none";
+    if(onfireEl) onfireEl.style.display = "none";
+    if(miniEl) miniEl.style.display = "none";
+    if(totalWrap) totalWrap.style.display = "none";
 
-    document.querySelectorAll(".label")[1].style.display = "none";
-    document.querySelectorAll(".label")[2].style.display = "none";
-    document.querySelector('button[onclick="resetear()"]').style.display = "none";
+    if(labels[1]) labels[1].style.display = "none";
+    if(labels[2]) labels[2].style.display = "none";
+    if(btnReset) btnReset.style.display = "none";
 
-    document.getElementById("maiDireMai").style.display = "block";
-    document.getElementById("bannerUsuarios").style.display = "none";
+    if(mai) mai.style.display = "block";
+    if(banner) banner.style.display = "none";
 
-    panel.classList.remove("hidden");
-    panel.style.display = "block";   // <- clave
+    if(panel){
+      panel.classList.remove("hidden");
+      panel.style.display = "block";
+      panel.style.visibility = "visible";
+      panel.style.opacity = "1";
+    }
 
     const music = document.getElementById("adminMusic");
     if(music){
@@ -1102,25 +1114,25 @@ if(panel){
 
   }else{
 
-    // ===== USUARIO =====
-    document.getElementById("maiDireMai").style.display = "none";
-    document.getElementById("bannerUsuarios").style.display = "block";
+    if(casillerosEl) casillerosEl.style.display = "grid";
+    if(nuevoWrap) nuevoWrap.style.display = "";
+    if(favoritosEl) favoritosEl.style.display = "";
+    if(onfireEl) onfireEl.style.display = "";
+    if(miniEl) miniEl.style.display = "";
+    if(totalWrap) totalWrap.style.display = "";
 
-    document.getElementById("casilleros").style.display = "grid";
-    document.getElementById("nuevo").parentElement.parentElement.style.display = "";
-    document.getElementById("favoritosBox").style.display = "";
-    document.getElementById("onfireBox").style.display = "";
-    document.getElementById("miniBox").style.display = "";
-    document.getElementById("totalGeneral").parentElement.parentElement.style.display = "";
+    if(labels[1]) labels[1].style.display = "";
+    if(labels[2]) labels[2].style.display = "";
+    if(btnReset) btnReset.style.display = "";
 
-    document.querySelectorAll(".label")[1].style.display = "";
-    document.querySelectorAll(".label")[2].style.display = "";
-    document.querySelector('button[onclick="resetear()"]').style.display = "";
+    if(mai) mai.style.display = "none";
+    if(banner) banner.style.display = "block";
 
-    panel.classList.add("hidden");
-    panel.style.display = "none";    // <- clave
+    if(panel){
+      panel.classList.add("hidden");
+      panel.style.display = "none";
+    }
   }
-     }
      }
 
 function salir(){
