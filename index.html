@@ -1047,7 +1047,11 @@ function mostrarLogin(){
   sistema.classList.add("hidden");
   sistema.style.display = "none";
 
-  document.getElementById("tituloPrincipal").style.display = "none";
+  const t = document.getElementById("tituloPrincipal");
+  if(t){
+    t.textContent = "";
+    t.style.display = "none";
+  }
 }
 
 function mostrarSistema(){
@@ -1058,10 +1062,15 @@ function mostrarSistema(){
   sistema.classList.remove("hidden");
   sistema.style.display = "block";
 
-  document.getElementById("tituloPrincipal").style.display = "block";
+  const t = document.getElementById("tituloPrincipal");
+  if(t){
+    t.textContent = "ULTIMOS NUMEROS";
+    t.style.display = "block";
+  }
 
-const panel = document.getElementById("adminPanel");
-
+  const panel = document.getElementById("adminPanel");
+  // ...el resto de tu código igual, sin tocar
+}
 if(panel){
 
 if(ROLE === "admin"){
