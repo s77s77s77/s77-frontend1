@@ -1099,33 +1099,44 @@ err.innerText = "No conecta con el servidor. ¿Está prendido el backend?";
 }
 
 function mostrarLogin(){
+  const loginEl = document.getElementById("login");
+  const sistemaEl = document.getElementById("sistema");
 
-  login.classList.remove("hidden");
-  login.style.display = "inline-block";
-
-  sistema.classList.add("hidden");
-  sistema.style.display = "none";
+  if (loginEl){
+    loginEl.classList.remove("hidden");
+    loginEl.style.display = "inline-block";
+  }
+  if (sistemaEl){
+    sistemaEl.classList.add("hidden");
+    sistemaEl.style.display = "none";
+  }
 
   const t = document.getElementById("tituloPrincipal");
-  if(t){
-    t.textContent = "";
-    t.style.display = "none";
-  }
+  if(t){ t.textContent = ""; t.style.display = "none"; }
 
   const b = document.getElementById("bannerComenzamos");
   if (b) b.style.display = "flex";
 }
 
 function mostrarSistema(){
+  const loginEl = document.getElementById("login");
+  const sistemaEl = document.getElementById("sistema");
 
   const b = document.getElementById("bannerComenzamos");
   if (b) b.style.display = "none";
 
-  login.classList.add("hidden");
-  login.style.display = "none";
+  if (loginEl){
+    loginEl.classList.add("hidden");
+    loginEl.style.display = "none";
+  }
+  if (sistemaEl){
+    sistemaEl.classList.remove("hidden");
+    sistemaEl.style.display = "block";
+  }
 
-  sistema.classList.remove("hidden");
-  sistema.style.display = "block";
+  const t = document.getElementById("tituloPrincipal");
+  if(t){ t.textContent = "ULTIMOS NUMEROS"; t.style.display = "block"; }
+  }
 
   const t = document.getElementById("tituloPrincipal");
   if(t){
