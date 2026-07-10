@@ -573,6 +573,13 @@ opacity:0.35;
   height:auto;
   display:block;
                 }
+  /* Mostrar banner SOLO mientras existe login visible */
+#appContent:not(.logged-in) #bannerComenzamos{
+  display:flex;
+}
+#appContent.logged-in #bannerComenzamos{
+  display:none !important;
+  }
 </style>
 </head>
 <body>
