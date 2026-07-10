@@ -1117,12 +1117,13 @@ function mostrarLogin(){
   const b = document.getElementById("bannerComenzamos");
   if (b) b.style.display = "flex";
 }
-
+    
 function mostrarSistema(){
   const loginEl = document.getElementById("login");
   const sistemaEl = document.getElementById("sistema");
-
+  const t = document.getElementById("tituloPrincipal");
   const b = document.getElementById("bannerComenzamos");
+
   if (b) b.style.display = "none";
 
   if (loginEl){
@@ -1134,23 +1135,10 @@ function mostrarSistema(){
     sistemaEl.style.display = "block";
   }
 
-  const t = document.getElementById("tituloPrincipal");
-  if(t){ t.textContent = "ULTIMOS NUMEROS"; t.style.display = "block"; }
-  }
-
-  const t = document.getElementById("tituloPrincipal");
   if(t){
     t.textContent = "ULTIMOS NUMEROS";
     t.style.display = "block";
   }
-  }
-
-  const t = document.getElementById("tituloPrincipal");
-  if(t){
-    t.textContent = "ULTIMOS NUMEROS";
-    t.style.display = "block";
-  }
-}
 
   const panel = document.getElementById("adminPanel");
   const roleNorm = String(ROLE || "").trim().toLowerCase();
@@ -1168,7 +1156,6 @@ function mostrarSistema(){
   const banner = document.getElementById("bannerUsuarios");
 
   if(roleNorm === "admin"){
-
     if(casillerosEl) casillerosEl.style.display = "none";
     if(nuevoWrap) nuevoWrap.style.display = "none";
     if(pauseBannerEl) pauseBannerEl.style.display = "none";
@@ -1187,18 +1174,8 @@ function mostrarSistema(){
     if(panel){
       panel.classList.remove("hidden");
       panel.style.display = "block";
-      panel.style.visibility = "visible";
-      panel.style.opacity = "1";
     }
-
-    const music = document.getElementById("adminMusic");
-    if(music){
-      music.volume = 0.4;
-      music.play().catch(()=>{});
-    }
-
   }else{
-
     if(casillerosEl) casillerosEl.style.display = "grid";
     if(nuevoWrap) nuevoWrap.style.display = "";
     if(favoritosEl) favoritosEl.style.display = "";
@@ -1218,21 +1195,22 @@ function mostrarSistema(){
       panel.style.display = "none";
     }
   }
-     }
-
+  }
 function salir(){
 
-if(!confirm("¿Seguro querés salir?")) return;
+  if(!confirm("¿Seguro querés salir?")) return;
 
-TOKEN = "";
-ROLE = "";
+  TOKEN = "";
+  ROLE = "";
 
-localStorage.removeItem(TOKEN_KEY);
-localStorage.removeItem(ROLE_KEY);
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(ROLE_KEY);
 
-mostrarLogin();
-}
+  const b = document.getElementById("bannerComenzamos");
+  if (b) b.style.display = "flex";
 
+  mostrarLogin();
+  }
 function renderInicial(){
 
 casilleros.innerHTML = "";
