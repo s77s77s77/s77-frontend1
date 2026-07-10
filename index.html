@@ -1022,7 +1022,7 @@ return;
 }
 
 TOKEN = data.token;
-ROLE = data.role;
+ROLE = String(data.role || "").trim().toLowerCase();
 
 localStorage.setItem(TOKEN_KEY, TOKEN);
 localStorage.setItem(ROLE_KEY, ROLE);
