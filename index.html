@@ -1070,58 +1070,58 @@ function mostrarSistema(){
 
   const panel = document.getElementById("adminPanel");
 
-  if(panel){
+if(panel){
 
-if(ROLE === "admin"){
+  const roleNorm = String(ROLE || "").trim().toLowerCase();
 
-      document.getElementById("casilleros").style.display = "none";
-      document.getElementById("nuevo").parentElement.parentElement.style.display = "none";
+  if(roleNorm === "admin"){
 
-      document.getElementById("pauseBanner").style.display = "none";
+    // ===== ADMIN =====
+    document.getElementById("casilleros").style.display = "none";
+    document.getElementById("nuevo").parentElement.parentElement.style.display = "none";
+    document.getElementById("pauseBanner").style.display = "none";
+    document.getElementById("favoritosBox").style.display = "none";
+    document.getElementById("onfireBox").style.display = "none";
+    document.getElementById("miniBox").style.display = "none";
+    document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
 
-      document.getElementById("favoritosBox").style.display = "none";
-      document.getElementById("onfireBox").style.display = "none";
-      document.getElementById("miniBox").style.display = "none";
-      document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
+    document.querySelectorAll(".label")[1].style.display = "none";
+    document.querySelectorAll(".label")[2].style.display = "none";
+    document.querySelector('button[onclick="resetear()"]').style.display = "none";
 
-      document.querySelectorAll(".label")[1].style.display = "none";
-      document.querySelectorAll(".label")[2].style.display = "none";
-      document.querySelector('button[onclick="resetear()"]').style.display = "none";
+    document.getElementById("maiDireMai").style.display = "block";
+    document.getElementById("bannerUsuarios").style.display = "none";
 
-      document.getElementById("maiDireMai").style.display = "block";
-      document.getElementById("bannerUsuarios").style.display = "none";
+    panel.classList.remove("hidden");
+    panel.style.display = "block";   // <- clave
 
-const music = document.getElementById("adminMusic");
-      if(music){
-        music.volume = 0.4;
-        music.play().catch(()=>{});
-      }
-
-      panel.classList.remove("hidden");
-
-    }else{
-
-      document.getElementById("maiDireMai").style.display = "none";
-      document.getElementById("bannerUsuarios").style.display = "block";
-
-      document.getElementById("casilleros").style.display = "grid";
-      document.getElementById("nuevo").parentElement.parentElement.style.display = "";
-
-
-      document.getElementById("favoritosBox").style.display = "";
-      document.getElementById("onfireBox").style.display = "";
-      document.getElementById("miniBox").style.display = "";
-
-      document.getElementById("totalGeneral").parentElement.parentElement.style.display = "";
-
-      document.querySelectorAll(".label")[1].style.display = "";
-      document.querySelectorAll(".label")[2].style.display = "";
-
-      document.querySelector('button[onclick="resetear()"]').style.display = "";
-
-      panel.classList.add("hidden");
+    const music = document.getElementById("adminMusic");
+    if(music){
+      music.volume = 0.4;
+      music.play().catch(()=>{});
     }
+
+  }else{
+
+    // ===== USUARIO =====
+    document.getElementById("maiDireMai").style.display = "none";
+    document.getElementById("bannerUsuarios").style.display = "block";
+
+    document.getElementById("casilleros").style.display = "grid";
+    document.getElementById("nuevo").parentElement.parentElement.style.display = "";
+    document.getElementById("favoritosBox").style.display = "";
+    document.getElementById("onfireBox").style.display = "";
+    document.getElementById("miniBox").style.display = "";
+    document.getElementById("totalGeneral").parentElement.parentElement.style.display = "";
+
+    document.querySelectorAll(".label")[1].style.display = "";
+    document.querySelectorAll(".label")[2].style.display = "";
+    document.querySelector('button[onclick="resetear()"]').style.display = "";
+
+    panel.classList.add("hidden");
+    panel.style.display = "none";    // <- clave
   }
+     }
      }
 
 function salir(){
