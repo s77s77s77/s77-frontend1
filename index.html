@@ -16,7 +16,6 @@
 <meta property="og:image" content="https://www.sistemapremium77.com/og-preview.jpg?v=2">
 <meta property="og:url" content="https://www.sistemapremium77.com/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="SISTEMA UNICO PREMIUM">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SISTEMA UNICO PREMIUM">
@@ -1488,22 +1487,30 @@ function toggleMusic(){
     lista.innerHTML = "No conecta con el servidor.";
   }
   }
+async function boot(){
+  if(booted) return;
+  booted = true;
+
+  TOKEN = "";
+  ROLE = "";
+
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(ROLE_KEY);
+
+  mostrarLogin();
+}
+
 (async function init(){
 
-const splash = document.getElementById("splash");
-const app = document.getElementById("appContent");
+  const splash = document.getElementById("splash");
+  const app = document.getElementById("appContent");
 
-setTimeout(() => {
+  setTimeout(() => {
+    if(splash) splash.style.display = "none";
+    if(app) app.style.display = "block";
+  }, 4000);
 
-if(splash){
-splash.style.display = "none";
-}
-
-if(app){
-app.style.display = "block";
-}
-
-}, 4000);
+  await boot();
 
 })();
 </script>
