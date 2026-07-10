@@ -1052,7 +1052,7 @@ function mostrarLogin(){
     t.textContent = "";
     t.style.display = "none";
   }
-}
+     }
 
 function mostrarSistema(){
 
@@ -1069,65 +1069,60 @@ function mostrarSistema(){
   }
 
   const panel = document.getElementById("adminPanel");
-  // ...el resto de tu código igual, sin tocar
-}
-if(panel){
+
+  if(panel){
 
 if(ROLE === "admin"){
 
-document.getElementById("casilleros").style.display = "none";
-document.getElementById("nuevo").parentElement.parentElement.style.display = "none";
+      document.getElementById("casilleros").style.display = "none";
+      document.getElementById("nuevo").parentElement.parentElement.style.display = "none";
 
-document.getElementById("pauseBanner").style.display = "none";
+      document.getElementById("pauseBanner").style.display = "none";
 
-document.getElementById("favoritosBox").style.display = "none";
-document.getElementById("onfireBox").style.display = "none";
+      document.getElementById("favoritosBox").style.display = "none";
+      document.getElementById("onfireBox").style.display = "none";
+      document.getElementById("miniBox").style.display = "none";
+      document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
 
-document.getElementById("totalGeneral").parentElement.parentElement.style.display = "none";
+      document.querySelectorAll(".label")[1].style.display = "none";
+      document.querySelectorAll(".label")[2].style.display = "none";
+      document.querySelector('button[onclick="resetear()"]').style.display = "none";
 
-document.querySelectorAll(".label")[1].style.display = "none";
+      document.getElementById("maiDireMai").style.display = "block";
+      document.getElementById("bannerUsuarios").style.display = "none";
 
-document.querySelectorAll(".label")[2].style.display = "none";
-document.querySelector('button[onclick="resetear()"]').style.display = "none";
-document.getElementById("maiDireMai").style.display = "block";
-document.getElementById("bannerUsuarios").style.display = "none";
-const music =
-document.getElementById("adminMusic");
+const music = document.getElementById("adminMusic");
+      if(music){
+        music.volume = 0.4;
+        music.play().catch(()=>{});
+      }
 
-if(music){
+      panel.classList.remove("hidden");
 
-music.volume = 0.4;
+    }else{
 
-music.play().catch(()=>{});
-}
-panel.classList.remove("hidden");
+      document.getElementById("maiDireMai").style.display = "none";
+      document.getElementById("bannerUsuarios").style.display = "block";
 
-}else{
+      document.getElementById("casilleros").style.display = "grid";
+      document.getElementById("nuevo").parentElement.parentElement.style.display = "";
 
-document.getElementById("maiDireMai").style.display = "none";
-document.getElementById("bannerUsuarios").style.display = "block";
 
-document.getElementById("casilleros").style.display = "grid";
+      document.getElementById("favoritosBox").style.display = "";
+      document.getElementById("onfireBox").style.display = "";
+      document.getElementById("miniBox").style.display = "";
 
-document.getElementById("nuevo").parentElement.parentElement.style.display = "";
+      document.getElementById("totalGeneral").parentElement.parentElement.style.display = "";
 
-document.getElementById("favoritosBox").style.display = "";
+      document.querySelectorAll(".label")[1].style.display = "";
+      document.querySelectorAll(".label")[2].style.display = "";
 
-document.getElementById("onfireBox").style.display = "";
+      document.querySelector('button[onclick="resetear()"]').style.display = "";
 
-document.getElementById("totalGeneral").parentElement.parentElement.style.display = "";
-
-document.querySelectorAll(".label")[1].style.display = "";
-
-document.querySelectorAll(".label")[2].style.display = "";
-
-document.querySelector('button[onclick="resetear()"]').style.display = "";
-
-panel.classList.add("hidden");
-}
-
-}
-}
+      panel.classList.add("hidden");
+    }
+  }
+     }
 
 function salir(){
 
