@@ -541,6 +541,33 @@ opacity:0.35;
   display:block;
   object-fit:contain;
      }
+  /* Pantalla de login */
+#appContent{
+  min-height:100vh;
+}
+
+/* Banner arriba, centrado */
+.loginTopBanner{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin-top:20px;      /* separación del borde superior */
+  margin-bottom:180px;  /* espacio GRANDE entre imagen y login */
+}
+
+/* Tamaño banner (acá lo agrandás) */
+.loginBanner{
+  width:min(95vw, 760px);  /* subir 760 -> más grande */
+  height:auto;
+  display:block;
+  object-fit:contain;
+}
+
+/* Login centrado horizontalmente */
+#login.loginBox{
+  display:block;
+  margin:0 auto;
+  }
 </style>
 </head>
 <body>
@@ -566,21 +593,21 @@ REINTENTAR
 
 <div id="appContent">
 
-<h1 id="tituloPrincipal" style="display:none;"></h1>
-     
-<div id="login" class="loginBox">
+  <h1 id="tituloPrincipal" style="display:none;"></h1>
 
-  <div class="loginBannerWrap">
+  <div class="loginTopBanner">
     <img src="./banner-login.png" alt="COMENZAMOS" class="loginBanner">
   </div>
 
-  <div class="loginRow">
-    <input id="usuario" class="loginInput" placeholder="Usuario">
-  </div>
+  <div id="login" class="loginBox">
 
-<div class="loginRow">
-<input id="clave" class="loginInput" placeholder="Clave" type="password">
-</div>
+    <div class="loginRow">
+      <input id="usuario" class="loginInput" placeholder="Usuario">
+    </div>
+
+    <div class="loginRow">
+      <input id="clave" class="loginInput" placeholder="Clave" type="password">
+    </div>
 
 <div class="loginRow">
 <button onclick="ingresar()">INGRESAR</button>
