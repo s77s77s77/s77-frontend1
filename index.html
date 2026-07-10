@@ -561,6 +561,18 @@ opacity:0.35;
   display:block;
   margin:0 auto;
   }
+  .ingresoTitleWrap{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin-bottom:18px;
+}
+
+.ingresoTitleImg{
+  width:min(88vw, 420px); /* agrandá este 420 si querés más grande */
+  height:auto;
+  display:block;
+                }
 </style>
 </head>
 <body>
@@ -594,13 +606,17 @@ REINTENTAR
 
   <div id="login" class="loginBox">
 
-    <div class="loginRow">
-      <input id="usuario" class="loginInput" placeholder="Usuario">
-    </div>
+  <div class="ingresoTitleWrap">
+    <img src="./ingreso.png" alt="INGRESO" class="ingresoTitleImg">
+  </div>
 
-    <div class="loginRow">
-      <input id="clave" class="loginInput" placeholder="Clave" type="password">
-    </div>
+  <div class="loginRow">
+    <input id="usuario" class="loginInput" placeholder="Usuario">
+  </div>
+
+  <div class="loginRow">
+    <input id="clave" class="loginInput" placeholder="Clave" type="password">
+  </div>
 
 <div class="loginRow">
 <button onclick="ingresar()">INGRESAR</button>
