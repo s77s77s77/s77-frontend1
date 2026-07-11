@@ -448,7 +448,8 @@ font-weight:bold;
 #videoSplashEl{
   width:100%;
   height:100%;
-  object-fit:cover; /* llena toda la pantalla */
+  object-fit:contain; /* antes: cover */
+  transform: scale(0.90); /* achica un poco */
   }
 @keyframes pulseSplash2{
   0%   { transform:scale(1);    filter:brightness(1); }
