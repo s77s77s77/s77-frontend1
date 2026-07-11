@@ -1717,6 +1717,28 @@ async function boot(){
   await boot();
 
 })();
+  (function bootAppSafe(){
+  const splash = document.getElementById("videoSplash");
+  const video = document.getElementById("videoSplashEl");
+  const app = document.getElementById("appContent");
+
+  function openApp(){
+    if (splash) splash.style.display = "none";
+    if (app) app.style.display = "block";
+    try { mostrarLogin(); } catch(e) {}
+  }
+
+  // Fallback por tiempo (por si el evento ended no dispara)
+  setTimeout(openApp, 4500);
+
+  // Si termina el video, abrir app
+  if (video){
+    video.addEventListener("ended", openApp, { once:true });
+    video.addEventListener("error", openApp, { once:true });
+  } else {
+    openApp();
+  }
+})();
 </script>
 
 <audio
