@@ -195,11 +195,6 @@ gap:6px;
   background-image:url("./label-onfire.png");
 }
 
-.label{
-  margin-top:0;
-  font-weight:bold;
-}
-
 .repBox{
   width:340px;
   min-height:65px;
@@ -693,15 +688,10 @@ REINTENTAR
 <br>
 <div class="ingreso">
 
-<div class="ingresoCol">
-
-<input id="nuevo" class="ingresoInput">
-
-<div class="label" style="color:#00ff88;">
-INGRESO
-</div>
-
-</div>
+  <div class="ingresoCol">
+    <input id="nuevo" class="ingresoInput">
+    <div class="label label-ingreso">INGRESO</div>
+  </div>
 
 </div>
 
@@ -720,9 +710,7 @@ FAVORITOS / REP3
 —
 </div>
 
-<div class="label" style="color:#00e5ff;font-size:26px;">
-FAVORITOS
-</div>
+<div class="label label-favoritos">FAVORITOS</div>
 
 <br>
 
@@ -734,9 +722,7 @@ ON FIRE / REP4+
 —
 </div>
 
-<div class="label" style="color:#ff5500;font-size:26px;">
-ON FIRE
-</div>
+<div class="label label-onfire">ON FIRE</div>
 
 <br>
 <br>
@@ -746,39 +732,34 @@ CUENTA UNIFICADA REP3 + REP4+
 
 <div class="ingreso">
 
-<div class="ingresoCol">
+  <div class="ingresoCol">
+    <div id="totalGeneral" class="totalBox">
+      0
+    </div>
+    <div class="totalLabel">
+      TOTAL
+    </div>
+  </div>
 
-<div id="totalGeneral" class="totalBox">
-0
-</div>
+  <div class="ingresoCol">
+    <div id="fichaGeneral" class="fichaBox">
+      1
+    </div>
+    <div class="fichaLabel">
+      FICHA
+    </div>
+  </div>
 
-<div class="totalLabel">
-TOTAL
-</div>
+  <div class="ingresoCol">
+    <div id="gananciaGeneral" class="gananciaBox">
+      0
+    </div>
+    <div class="gananciaLabel">
+      GANANCIA
+    </div>
+  </div>
 
-</div>
-
-<div class="ingresoCol">
-
-<div id="fichaGeneral" class="fichaBox">
-1
-</div>
-
-<div class="fichaLabel">
-FICHA
-</div>
-
-</div>
-
-<div class="ingresoCol">
-
-<div id="gananciaGeneral" class="gananciaBox">
-0
-</div>
-
-<div class="gananciaLabel">
-GANANCIA
-</div>
+      </div>
 
 <div class="aciertoWrap">
 
