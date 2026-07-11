@@ -1658,7 +1658,8 @@ async function mostrarUsuarios(){
   }catch(e){
     lista.innerHTML = "No conecta con el servidor.";
   }
-  }
+}
+
 async function boot(){
   if(booted) return;
   booted = true;
@@ -1681,49 +1682,28 @@ async function boot(){
   if (app) app.style.display = "none";
   if (splashWrap) splashWrap.style.display = "flex";
 
+  const mostrarApp = () => {
+    if (splashWrap) splashWrap.style.display = "none";
+    if (app) app.style.display = "block";
+    mostrarLogin();
+  };
+
   // Intentar reproducir
   if (video){
     video.currentTime = 0;
     video.play().catch(()=>{});
-  }
-
-  // Mostrar app al terminar el video (10s)
-  const mostrarApp = () => {
-    if (splashWrap) splashWrap.style.display = "none";
-    if (app) app.style.display = "block";
-  };
-
-  if (video){
     video.onended = mostrarApp;
+    video.onerror = mostrarApp;
+  }else{
+    mostrarApp();
+    return;
   }
 
-  // Fallback por si onended no dispara
-  setTimeout(mostrarApp, 10500);
+  // Fallback por si onended no dispara (más largo para que no se corte antes)
+  setTimeout(mostrarApp, 12000);
 
   await boot();
 
-})();
-  (function bootAppSafe(){
-  const splash = document.getElementById("videoSplash");
-  const video = document.getElementById("videoSplashEl");
-  const app = document.getElementById("appContent");
-
-  function openApp(){
-    if (splash) splash.style.display = "none";
-    if (app) app.style.display = "block";
-    try { mostrarLogin(); } catch(e) {}
-  }
-
-  // Fallback por tiempo (por si el evento ended no dispara)
-  setTimeout(openApp, 4500);
-
-  // Si termina el video, abrir app
-  if (video){
-    video.addEventListener("ended", openApp, { once:true });
-    video.addEventListener("error", openApp, { once:true });
-  } else {
-    openApp();
-  }
 })();
 </script>
 
@@ -1735,4 +1715,3 @@ loop>
 
 </body>
 </html>
-  
