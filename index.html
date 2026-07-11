@@ -1233,6 +1233,8 @@ function mostrarSistema(){
   const totalWrap = document.getElementById("totalGeneral")?.parentElement?.parentElement;
   const labels = document.querySelectorAll(".label");
   const btnReset = document.getElementById("btnReset");
+  const btnSalirSistema = document.getElementById("btnSalirSistema");
+  const btnSalirAdmin = document.getElementById("btnSalirAdmin");
   const mai = document.getElementById("maiDireMai");
   const banner = document.getElementById("bannerUsuarios");
   const bottomActions = document.getElementById("bottomActions");
@@ -1252,6 +1254,8 @@ function mostrarSistema(){
     if(labels[2]) labels[2].style.display = "none";
 
     if(btnReset) btnReset.style.display = "none";
+    if(btnSalirSistema) btnSalirSistema.style.display = "none";
+    if(btnSalirAdmin) btnSalirAdmin.style.display = "";
     if(mai) mai.style.display = "block";
     if(banner) banner.style.display = "none";
 
@@ -1271,7 +1275,9 @@ function mostrarSistema(){
     if(labels[2]) labels[2].style.display = "";
 
     if(btnReset) btnReset.style.display = "";
-    if(mai) mai.style.display = "none";
+    if(btnSalirSistema) btnSalirSistema.style.display = "";
+    if(btnSalirAdmin) btnSalirAdmin.style.display = "none";
+    if(mai) mai.style.display = "block";
     if(banner) banner.style.display = "none";
 
     if(panel){
@@ -1279,7 +1285,7 @@ function mostrarSistema(){
       panel.style.display = "none";
     }
   }
-}
+  }
 
 function salir(){
 
