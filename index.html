@@ -1243,6 +1243,12 @@ function mostrarSistema(){
   const mai = document.getElementById("maiDireMai");
   const banner = document.getElementById("bannerUsuarios");
 
+  /* NUEVO: contenedor botones inferiores */
+  const bottomActions = document.getElementById("bottomActions");
+
+  /* Siempre visible en sistema (logueado) */
+  if (bottomActions) bottomActions.style.display = "flex";
+
   if(roleNorm === "admin"){
     if(casillerosEl) casillerosEl.style.display = "none";
     if(nuevoWrap) nuevoWrap.style.display = "none";
@@ -1254,9 +1260,14 @@ function mostrarSistema(){
 
     if(labels[1]) labels[1].style.display = "none";
     if(labels[2]) labels[2].style.display = "none";
+
+    /* En admin NO mostrar botón reiniciar */
     if(btnReset) btnReset.style.display = "none";
 
+    /* Mai Dire Mai solo admin */
     if(mai) mai.style.display = "block";
+
+    /* Ícono/banner oculto en admin */
     if(banner) banner.style.display = "none";
 
     if(panel){
@@ -1273,10 +1284,15 @@ function mostrarSistema(){
 
     if(labels[1]) labels[1].style.display = "";
     if(labels[2]) labels[2].style.display = "";
+
+    /* En user mostrar reiniciar */
     if(btnReset) btnReset.style.display = "";
 
+    /* Mai Dire Mai oculto en user */
     if(mai) mai.style.display = "none";
-    if(banner) banner.style.display = "block";
+
+    /* Ícono/banner también oculto para evitar que aparezca abajo */
+    if(banner) banner.style.display = "none";
 
     if(panel){
       panel.classList.add("hidden");
@@ -1284,6 +1300,7 @@ function mostrarSistema(){
     }
   }
   }
+  
 function salir(){
 
   if(!confirm("¿Seguro querés salir?")) return;
