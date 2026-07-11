@@ -1537,7 +1537,8 @@ nuevo.addEventListener("keydown", async (e) => {
     }
   }
 });
-  async function crearUsuario(days){
+
+async function crearUsuario(days){
   if(!TOKEN){
     alert("Tenés que estar logueado como admin.");
     return;
@@ -1597,8 +1598,9 @@ function toggleMusic(){
     adminMusicOn = true;
     btn.innerText = "🔊 MÚSICA ON";
   }
-  }
-  async function mostrarUsuarios(){
+}
+
+async function mostrarUsuarios(){
   const panel = document.getElementById("usuariosPanel");
   const lista = document.getElementById("usuariosLista");
   const out = document.getElementById("adminOut");
@@ -1627,7 +1629,7 @@ function toggleMusic(){
     if(!r.ok){
       lista.innerHTML = "No se pudo cargar usuarios.";
       return;
-    }
+      }
 
     const users = Array.isArray(data.users) ? data.users : [];
 
