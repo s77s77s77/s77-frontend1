@@ -1185,6 +1185,12 @@ function mostrarLogin(){
 
   const banner = document.getElementById("bannerUsuarios");
   if (banner) banner.style.display = "none";
+
+  const panel = document.getElementById("adminPanel");
+  if (panel){
+    panel.classList.add("hidden");
+    panel.style.display = "none";
+  }
 }
 
 function mostrarSistema(){
@@ -1204,13 +1210,19 @@ function mostrarSistema(){
     sistemaEl.style.display = "block";
   }
 
-  if(t){
-    t.textContent = "ULTIMOS NUMEROS";
-    t.style.display = "block";
-  }
-
   const panel = document.getElementById("adminPanel");
   const roleNorm = String(ROLE || "").trim().toLowerCase();
+  const isAdmin = roleNorm === "admin";
+
+  if(t){
+    if(isAdmin){
+      t.textContent = "";
+      t.style.display = "none";
+    }else{
+      t.textContent = "ULTIMOS NUMEROS";
+      t.style.display = "block";
+    }
+  }
 
   const casillerosEl = document.getElementById("casilleros");
   const nuevoWrap = document.getElementById("nuevo")?.parentElement?.parentElement;
@@ -1220,17 +1232,14 @@ function mostrarSistema(){
   const miniEl = document.getElementById("miniBox");
   const totalWrap = document.getElementById("totalGeneral")?.parentElement?.parentElement;
   const labels = document.querySelectorAll(".label");
-  const btnReset = document.querySelector('button[onclick="resetear()"]');
+  const btnReset = document.getElementById("btnReset");
   const mai = document.getElementById("maiDireMai");
   const banner = document.getElementById("bannerUsuarios");
-
-  /* NUEVO: contenedor botones inferiores */
   const bottomActions = document.getElementById("bottomActions");
 
-  /* Siempre visible en sistema (logueado) */
   if (bottomActions) bottomActions.style.display = "flex";
 
-  if(roleNorm === "admin"){
+  if(isAdmin){
     if(casillerosEl) casillerosEl.style.display = "none";
     if(nuevoWrap) nuevoWrap.style.display = "none";
     if(pauseBannerEl) pauseBannerEl.style.display = "none";
@@ -1242,13 +1251,8 @@ function mostrarSistema(){
     if(labels[1]) labels[1].style.display = "none";
     if(labels[2]) labels[2].style.display = "none";
 
-    /* En admin NO mostrar botón reiniciar */
     if(btnReset) btnReset.style.display = "none";
-
-    /* Mai Dire Mai solo admin */
     if(mai) mai.style.display = "block";
-
-    /* Ícono/banner oculto en admin */
     if(banner) banner.style.display = "none";
 
     if(panel){
@@ -1266,13 +1270,8 @@ function mostrarSistema(){
     if(labels[1]) labels[1].style.display = "";
     if(labels[2]) labels[2].style.display = "";
 
-    /* En user mostrar reiniciar */
     if(btnReset) btnReset.style.display = "";
-
-    /* Mai Dire Mai oculto en user */
     if(mai) mai.style.display = "none";
-
-    /* Ícono/banner también oculto para evitar que aparezca abajo */
     if(banner) banner.style.display = "none";
 
     if(panel){
@@ -1280,8 +1279,8 @@ function mostrarSistema(){
       panel.style.display = "none";
     }
   }
-  }
-  
+}
+
 function salir(){
 
   if(!confirm("¿Seguro querés salir?")) return;
@@ -1292,17 +1291,21 @@ function salir(){
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(ROLE_KEY);
 
-  const b = document.getElementById("bannerComenzamos");
-  if (b) b.style.display = "flex";
+  const ba = document.getElementById("bottomActions");
+  if (ba) ba.style.display = "none";
+
+  const mdm = document.getElementById("maiDireMai");
+  if (mdm) mdm.style.display = "none";
+
+  const panel = document.getElementById("adminPanel");
+  if (panel){
+    panel.classList.add("hidden");
+    panel.style.display = "none";
+  }
 
   mostrarLogin();
-  }
-  const ba = document.getElementById("bottomActions");
-if (ba) ba.style.display = "none";
+}
 
-const mdm = document.getElementById("maiDireMai");
-if (mdm) mdm.style.display = "none";
-  
 function renderInicial(){
 
 casilleros.innerHTML = "";
