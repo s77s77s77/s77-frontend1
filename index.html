@@ -649,8 +649,28 @@ opacity:0.35;
 }
 
 /* opcional: compactar más el sector superior */
-.ingreso{ margin-bottom:6px; }
-.repBox{ margin:8px auto; }
+.ingreso{ margin-bottom:6px; 
+}
+.repBox{ margin:8px auto; 
+}
+  
+  /* oculto por defecto SIEMPRE */
+#bottomActions{
+  display:none !important;
+}
+
+/* si el sistema está visible, se muestra */
+#sistema:not(.hidden) ~ #bottomActions{
+  display:flex !important;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+
+/* mai dire mai solo admin: se controla por JS */
+#maiDireMai{
+  display:none;
+  }
   
 </style>
 </head>
