@@ -818,9 +818,9 @@ autoplay="false">
 
 </div>
 
-<div class="bottomActions">
-<div class="bottomBtns">
-<button onclick="resetear()">REINICIAR</button>
+<div id="bottomActions" class="bottomActions hidden">
+  <div class="bottomBtns">
+    <button onclick="resetear()">REINICIAR</button>
 
 <div id="adminPanel" class="adminPanel hidden">
 
@@ -897,19 +897,19 @@ Se guarda en el servidor.
 </div>
 
 <button class="logoutBtn" onclick="salir()">SALIR</button>
-</button>
-</div>
+  </div>
 
-<div id="maiDireMai">
-<img
-src="./mai-dire-mai.jpg"
-class="premiumLogo"
-style="
-width:320px;
-max-width:90%;
-border-radius:12px;
-"
->
+<div id="maiDireMai" style="display:none;">
+  <img
+    src="./mai-dire-mai.jpg"
+    class="premiumLogo"
+    style="
+    width:320px;
+    max-width:90%;
+    border-radius:12px;
+    "
+    alt="Mai Dire Mai"
+  >
 </div>
 
 </div>
