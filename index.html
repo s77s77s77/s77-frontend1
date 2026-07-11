@@ -447,7 +447,17 @@ background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
 }
-
+#splash2{
+  position:fixed;
+  inset:0;
+  z-index:99998;
+  display:none;
+  background:#000;
+  background-image:url("./splash2.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  }
 #appContent{
 display:none;
 }
@@ -585,6 +595,8 @@ opacity:0.35;
 <body>
 
 <div id="splash"></div>
+<div id="splash2"></div>
+  
 
 <div id="offlineWall">
 <div class="offlineCard">
@@ -1577,12 +1589,26 @@ async function boot(){
 
 (async function init(){
 
-  const splash = document.getElementById("splash");
+  const splash1 = document.getElementById("splash");
+  const splash2 = document.getElementById("splash2");
   const app = document.getElementById("appContent");
 
+  // Estado inicial
+  if (app) app.style.display = "none";
+  if (splash1) splash1.style.display = "block";
+  if (splash2) splash2.style.display = "none";
+
+  // Splash 1 (ej: 10 segundos)
   setTimeout(() => {
-    if(splash) splash.style.display = "none";
-    if(app) app.style.display = "block";
+    if (splash1) splash1.style.display = "none";
+    if (splash2) splash2.style.display = "block";
+
+    // Splash 2 (3 segundos)
+    setTimeout(() => {
+      if (splash2) splash2.style.display = "none";
+      if (app) app.style.display = "block";
+    }, 3000);
+
   }, 10000);
 
   await boot();
