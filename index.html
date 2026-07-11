@@ -1195,17 +1195,24 @@ function mostrarLogin(){
   }
 
   const t = document.getElementById("tituloPrincipal");
-  if(t){ t.textContent = ""; t.style.display = "none"; }
+  if(t){
+    t.textContent = "";
+    t.style.display = "none";
+  }
 
   const b = document.getElementById("bannerComenzamos");
   if (b) b.style.display = "flex";
-}
-    const ba = document.getElementById("bottomActions");
-if (ba) ba.style.display = "none";
 
-const mdm = document.getElementById("maiDireMai");
-if (mdm) mdm.style.display = "none";
-  
+  const ba = document.getElementById("bottomActions");
+  if (ba) ba.style.display = "none";
+
+  const mdm = document.getElementById("maiDireMai");
+  if (mdm) mdm.style.display = "none";
+
+  const banner = document.getElementById("bannerUsuarios");
+  if (banner) banner.style.display = "none";
+}
+
 function mostrarSistema(){
   const loginEl = document.getElementById("login");
   const sistemaEl = document.getElementById("sistema");
