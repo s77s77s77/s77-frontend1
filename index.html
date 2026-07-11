@@ -461,7 +461,21 @@ background-repeat:no-repeat;
   animation:pulseSplash2 2s ease-in-out infinite;
   transform-origin:center center;
 }
+#videoSplash{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
+#videoSplashEl{
+  width:100%;
+  height:100%;
+  object-fit:cover; /* llena toda la pantalla */
+  }
 @keyframes pulseSplash2{
   0%   { transform:scale(1);    filter:brightness(1); }
   50%  { transform:scale(1.035); filter:brightness(1.12); }
@@ -603,8 +617,11 @@ opacity:0.35;
 </head>
 <body>
 
-<div id="splash"></div>
-<div id="splash2"></div>
+<div id="videoSplash">
+  <video id="videoSplashEl" autoplay muted playsinline preload="auto">
+    <source src="./video88.mp4" type="video/mp4">
+  </video>
+</div>
   
 
 <div id="offlineWall">
@@ -1598,27 +1615,31 @@ async function boot(){
 
 (async function init(){
 
-  const splash1 = document.getElementById("splash");
-  const splash2 = document.getElementById("splash2");
+  const splashWrap = document.getElementById("videoSplash");
+  const video = document.getElementById("videoSplashEl");
   const app = document.getElementById("appContent");
 
-  // Estado inicial
   if (app) app.style.display = "none";
-  if (splash1) splash1.style.display = "block";
-  if (splash2) splash2.style.display = "none";
+  if (splashWrap) splashWrap.style.display = "flex";
 
-  // Splash 1 (ej: 10 segundos)
-  setTimeout(() => {
-    if (splash1) splash1.style.display = "none";
-    if (splash2) splash2.style.display = "block";
+  // Intentar reproducir
+  if (video){
+    video.currentTime = 0;
+    video.play().catch(()=>{});
+  }
 
-    // Splash 2 (3 segundos)
-    setTimeout(() => {
-      if (splash2) splash2.style.display = "none";
-      if (app) app.style.display = "block";
-    }, 3000);
+  // Mostrar app al terminar el video (10s)
+  const mostrarApp = () => {
+    if (splashWrap) splashWrap.style.display = "none";
+    if (app) app.style.display = "block";
+  };
 
-  }, 10000);
+  if (video){
+    video.onended = mostrarApp;
+  }
+
+  // Fallback por si onended no dispara
+  setTimeout(mostrarApp, 10500);
 
   await boot();
 
