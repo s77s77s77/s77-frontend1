@@ -706,9 +706,9 @@ REINTENTAR
 
   <div id="bannerComenzamos" class="loginTopBanner">
   <img src="./banner-login.png" alt="COMENZAMOS" class="loginBanner">
-  </div>
+</div>
 
-  <div id="login" class="loginBox">
+<div id="login" class="loginBox">
 
   <div class="ingresoTitleWrap">
     <img src="./ingreso.png" alt="INGRESO" class="ingresoTitleImg">
@@ -722,125 +722,118 @@ REINTENTAR
     <input id="clave" class="loginInput" placeholder="Clave" type="password">
   </div>
 
-<div class="loginRow">
-<button onclick="ingresar()">INGRESAR</button>
-</div>
+  <div class="loginRow">
+    <button onclick="ingresar()">INGRESAR</button>
+  </div>
 
-<p id="err" style="color:red;margin:6px 0 0;"></p>
+  <p id="err" style="color:red;margin:6px 0 0;"></p>
 
 </div>
 
 <div id="sistema" class="hidden" style="display:none;">
-<div class="inputs" id="casilleros"></div>
+  <div class="inputs" id="casilleros"></div>
 
-<br>
-<div class="ingreso">
-
-  <div class="ingresoCol">
-    <input id="nuevo" class="ingresoInput">
-    <div class="label label-ingreso">INGRESO</div>
-  </div>
-
-</div>
-
-<br>
-
-<div id="pauseBanner" class="hidden">
-⏸ SISTEMA EN PAUSA<br>
-Esperando acierto para reactivar
-</div>
-
-<!-- =========================
-FAVORITOS / REP3
-========================= -->
-
-<div class="repBox favoritosBox" id="favoritosBox">
-—
-</div>
-
-<div class="label label-favoritos">FAVORITOS</div>
-
-<br>
-
-<!-- =========================
-ON FIRE / REP4+
-========================= -->
-
-<div class="repBox onfireBox" id="onfireBox">
-—
-</div>
-
-<div class="label label-onfire">ON FIRE</div>
-
-<br>
-<br>
-<!-- =========================
-CUENTA UNIFICADA REP3 + REP4+
-========================= -->
-
-<div class="ingreso">
-
-  <div class="ingresoCol">
-    <div id="totalGeneral" class="totalBox">
-      0
-    </div>
-    <div class="totalLabel">
-      TOTAL
+  <br>
+  <div class="ingreso">
+    <div class="ingresoCol">
+      <input id="nuevo" class="ingresoInput">
+      <div class="label label-ingreso">INGRESO</div>
     </div>
   </div>
 
-  <div class="ingresoCol">
-    <div id="fichaGeneral" class="fichaBox">
-      1
-    </div>
-    <div class="fichaLabel">
-      FICHA
-    </div>
+  <br>
+
+  <div id="pauseBanner" class="hidden">
+    ⏸ SISTEMA EN PAUSA<br>
+    Esperando acierto para reactivar
   </div>
 
-  <div class="ingresoCol">
-    <div id="gananciaGeneral" class="gananciaBox">
-      0
-    </div>
-    <div class="gananciaLabel">
-      GANANCIA
-    </div>
+  <!-- =========================
+  FAVORITOS / REP3
+  ========================= -->
+
+  <div class="repBox favoritosBox" id="favoritosBox">
+    —
   </div>
 
-      </div>
+  <div class="label label-favoritos">FAVORITOS</div>
 
-<div class="aciertoWrap">
+  <br>
 
-<div id="aciertoBox" class="aciertoBox">
-0
-</div>
+  <!-- =========================
+  ON FIRE / REP4+
+  ========================= -->
 
-<div id="aciertoLabel" class="aciertoLabel">
-ACIERTO
-</div>
+  <div class="repBox onfireBox" id="onfireBox">
+    —
+  </div>
 
-</div>
+  <div class="label label-onfire">ON FIRE</div>
 
+  <br>
+  <br>
+
+  <!-- =========================
+  CUENTA UNIFICADA REP3 + REP4+
+  ========================= -->
+
+  <div class="ingreso">
+
+    <div class="ingresoCol">
+      <div id="totalGeneral" class="totalBox">0</div>
+      <div class="totalLabel">TOTAL</div>
+    </div>
+
+    <div class="ingresoCol">
+      <div id="fichaGeneral" class="fichaBox">1</div>
+      <div class="fichaLabel">FICHA</div>
+    </div>
+
+    <div class="ingresoCol">
+      <div id="gananciaGeneral" class="gananciaBox">0</div>
+      <div class="gananciaLabel">GANANCIA</div>
+    </div>
+
+  </div>
+
+  <div class="aciertoWrap">
+    <div id="aciertoBox" class="aciertoBox">0</div>
+    <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
+  </div>
 </div>
 
 </div>
 
 <div id="winFx">
-
-<dotlottie-player
-id="winPlayer"
-src="./success-cav.lottie"
-background="transparent"
-speed="1"
-loop="false"
-autoplay="false">
-</dotlottie-player>
-
+  <dotlottie-player
+    id="winPlayer"
+    src="./success-cav.lottie"
+    background="transparent"
+    speed="1"
+    loop="false"
+    autoplay="false">
+  </dotlottie-player>
 </div>
 
 <div id="bottomActions" class="bottomActions hidden">
   <div class="bottomBtns">
-    <button onclick="resetear()">REINICIAR</button>
+    <button id="btnReset" onclick="resetear()">REINICIAR</button>
+    <button class="logoutBtn" onclick="salir()">SALIR</button>
+  </div>
+
+  <div id="maiDireMai" style="display:none;">
+    <img
+      src="./mai-dire-mai.jpg"
+      class="premiumLogo"
+      style="
+      width:320px;
+      max-width:90%;
+      border-radius:12px;
+      "
+      alt="Mai Dire Mai"
+    >
+  </div>
+</div>
 
 <div id="adminPanel" class="adminPanel hidden">
 
@@ -853,7 +846,6 @@ CREAR USUARIO (CON VENCIMIENTO)
 <input id="newUser" placeholder="Usuario">
 
 <input id="newPass" placeholder="Clave">
-
 </div>
 
 <div class="adminBtns">
@@ -916,23 +908,6 @@ Se guarda en el servidor.
 
 </div>
 
-<button class="logoutBtn" onclick="salir()">SALIR</button>
-  </div>
-
-<div id="maiDireMai" style="display:none;">
-  <img
-    src="./mai-dire-mai.jpg"
-    class="premiumLogo"
-    style="
-    width:320px;
-    max-width:90%;
-    border-radius:12px;
-    "
-    alt="Mai Dire Mai"
-  >
-</div>
-
-</div>
 <div id="bannerUsuarios"
      style="text-align:center;margin-top:80px;display:none;">
 
@@ -1015,7 +990,6 @@ function setGanancia(v){
 gananciaAcum = Number(v) || 0;
 
 gananciaGeneral.textContent = Math.round(gananciaAcum);
-
 localStorage.setItem(
 GANANCIA_KEY,
 String(gananciaAcum)
