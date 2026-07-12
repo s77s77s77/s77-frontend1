@@ -597,49 +597,40 @@ display:block;
 #maiDireMai .premiumLogo{
   display:block;
   margin:0 auto;
-  }
-  @media (max-width: 768px){
-  .bottomActions{
-  margin-top: 2px;
-  display: none;              /* SIEMPRE none por defecto */
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  position: static;
-}
-
-.bottomBtns{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  margin:0;
-}
-
-.bottomBtns button{
-  margin:0 !important;
-}
-
-.logoutBtn{
-  margin-top:0;
-}
-
-#adminPanel{
-  margin-top:10px;
 }
 
 @media (max-width: 768px){
   .bottomActions{
     margin-top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
     gap: 4px;
+    position: static;
   }
 
   .bottomBtns{
-    gap: 4px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    margin:0;
+  }
+
+  .bottomBtns button{
+    margin:0 !important;
+  }
+
+  .logoutBtn{
+    margin-top:0;
+  }
+
+  #adminPanel{
+    margin-top:0;
   }
 
   .premiumLogo{
-    margin-top: 4px;
+    margin-top:4px;
   }
 
   .totalBox,
@@ -659,7 +650,7 @@ display:block;
     height:36px;
   }
 
-  .label-ficha{
+    .label-ficha{
     width:120px;
     height:34px;
   }
@@ -806,7 +797,7 @@ REINTENTAR
 </div>
 <div id="bottomActions" class="bottomActions">
   <div class="bottomBtns">
-    <button onclick="resetear()">REINICIAR</button>
+    <button id="btnReset" onclick="resetear()">REINICIAR</button>
     <button class="logoutBtn" onclick="salir()">SALIR</button>
   </div>
 </div>
