@@ -568,16 +568,15 @@ display:flex;
 display:none !important;
 }
 
-/* BLOQUE INFERIOR: BOTONES + ICONO */
 .bottomActions{
-margin-top:6px;
-display:none;
-flex-direction:column;
-align-items:center;
-gap:8px;
-position:relative;
-top:-22px; /* ajusta aquí: -30, -40 si lo querés más arriba */
-}
+  margin-top: 2px;      /* antes 6px */
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: static;     /* quita desplazamiento artificial */
+  top: auto;
+  }
 
 .bottomBtns{
 display:flex;
