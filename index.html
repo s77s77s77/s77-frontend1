@@ -598,16 +598,28 @@ display:none;
   }
   @media (max-width: 768px){
   .bottomActions{
-    margin-top: 0;
-    gap: 4px;
-  }
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+}
 
-  .bottomBtns{
-    gap: 4px;
-  }
+.bottomBtns{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
 
-  .premiumLogo{
-    margin-top: 4px;
+.bottomBtns button{
+  margin: 0 !important;
+}
+
+.logoutBtn{
+  margin-top: 0;
+}
+
+#adminPanel{
+  margin-top: 10px; /* antes 18px */
   }
   }
 </style>
