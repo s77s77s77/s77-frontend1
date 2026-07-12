@@ -598,28 +598,47 @@ display:none;
   }
   @media (max-width: 768px){
   .bottomActions{
-  margin-top: 6px;
-  display: flex;
-  justify-content: center;
-}
-
-.bottomBtns{
-  display: flex;
+  margin-top: 2px;
+  display: none;              /* SIEMPRE none por defecto */
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  position: static;
+}
+
+.bottomBtns{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  margin:0;
 }
 
 .bottomBtns button{
-  margin: 0 !important;
+  margin:0 !important;
 }
 
 .logoutBtn{
-  margin-top: 0;
+  margin-top:0;
 }
 
 #adminPanel{
-  margin-top: 10px; /* antes 18px */
+  margin-top:10px;
+}
+
+@media (max-width: 768px){
+  .bottomActions{
+    margin-top: 0;            /* solo ajusta espacio */
+    gap: 4px;
+    /* NO poner display:flex acá */
+  }
+
+  .bottomBtns{
+    gap:4px;
+  }
+
+  .premiumLogo{
+    margin-top:4px;
   }
   }
 </style>
