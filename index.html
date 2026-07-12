@@ -890,7 +890,7 @@ Se guarda en el servidor.
 </div>
 
 <div id="bannerUsuarios"
-     style="text-align:center;margin-top:80px;display:none;">
+     style="text-align:center;margin-top:12px;display:none;">
 
   <img
     src="./logo-transparente.png"
@@ -1220,6 +1220,10 @@ function mostrarSistema(){
   const banner = document.getElementById("bannerUsuarios");
   const bottomActions = document.getElementById("bottomActions");
 
+  if(panel){
+      panel.classList.remove("hidden");
+      panel.style.display = "block";
+    
   if (bottomActions) bottomActions.style.display = "flex";
 
   if(isAdmin){
@@ -1240,9 +1244,6 @@ function mostrarSistema(){
     if(mai) mai.style.display = "block";
     if(banner) banner.style.display = "none";
 
-    if(panel){
-      panel.classList.remove("hidden");
-      panel.style.display = "block";
     }
   }else{
     if(casillerosEl) casillerosEl.style.display = "grid";
