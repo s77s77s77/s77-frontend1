@@ -1367,41 +1367,49 @@ casilleros.appendChild(c);
 
 function renderEstado(data){
 
-renderCasilleros(data);
+  renderCasilleros(data);
 
-renderLista(
-"favoritosBox",
-data.favoritos
-);
-
-renderLista(
-"onfireBox",
-data.onfire
-);
-
-const banner = document.getElementById("pauseBanner");
-const fav = document.getElementById("favoritosBox");
-const fire = document.getElementById("onfireBox");
-
-if(data.suspensionActive === true){
-  banner.classList.remove("hidden");
-  banner.style.display = "block";
-  fav.classList.add("pausedBox");
-  fire.classList.add("pausedBox");
-}else{
-  banner.classList.add("hidden");
-  banner.style.display = "none";
-  fav.classList.remove("pausedBox");
-  fire.classList.remove("pausedBox");
+  // --- CAMBIO PARA EL SISTEMA B ---
+  // Si estamos en modo B, cambiamos el título visual para que el usuario sepa
+  const labelFavoritos = document.querySelector(".label-favoritos");
+  if (data.sistemaVisible === 'B') {
+      labelFavoritos.textContent = "SISTEMA B BUSCANDO";
+      document.getElementById("favoritosBox").style.borderColor = "#ff9900"; // Borde naranja para identificar
+  } else {
+      labelFavoritos.textContent = "FAVORITOS";
+      document.getElementById("favoritosBox").style.borderColor = "transparent";
   }
 
-setTotal(data.totalGeneral);
+  renderLista(
+    "favoritosBox",
+    data.favoritos
+  );
 
-setFicha(data.activeMult);
+  renderLista(
+    "onfireBox",
+    data.onfire
+  );
 
-renderAcierto(false, 0);
-}
+  const banner = document.getElementById("pauseBanner");
+  const fav = document.getElementById("favoritosBox");
+  const fire = document.getElementById("onfireBox");
 
+  if(data.suspensionActive === true){
+    banner.classList.remove("hidden");
+    banner.style.display = "block";
+    fav.classList.add("pausedBox");
+    fire.classList.add("pausedBox");
+  }else{
+    banner.classList.add("hidden");
+    banner.style.display = "none";
+    fav.classList.remove("pausedBox");
+    fire.classList.remove("pausedBox");
+  }
+
+  setTotal(data.totalGeneral);
+  setFicha(data.activeMult);
+  renderAcierto(false, 0);
+  }
 async function cargarEstado(){
 
 try{
