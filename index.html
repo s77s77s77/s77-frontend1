@@ -1034,19 +1034,25 @@ fichaGeneral.textContent = Number.isFinite(n)
 }
 
 function renderLista(id, arr){
+  const el = document.getElementById(id);
+  if(!el) return;
 
-const el = document.getElementById(id);
+  const clean = Array.isArray(arr)
+    ? [...arr].sort((a,b)=>Number(a)-Number(b))
+    : [];
 
-if(!el) return;
+  // --- LÓGICA DE COLOR ROJO PARA SISTEMA B ---
+  // Si el contenedor es el "favoritosBox" y estamos en modo B, aplicamos rojo
+  if (id === "favoritosBox" && document.querySelector(".label-favoritos").textContent === "SISTEMA B BUSCANDO") {
+      el.style.color = "#ff0000"; // Rojo
+  } else {
+      el.style.color = "#ffffff"; // Blanco (color original)
+  }
 
-const clean = Array.isArray(arr)
-? [...arr].sort((a,b)=>Number(a)-Number(b))
-: [];
-
-el.textContent = clean.length
-? clean.join(" ")
-: "—";
-}
+  el.textContent = clean.length
+    ? clean.join(" ")
+    : "—";
+  }
 
 const NUM_BG = {
 0:"#0b7a3b",
