@@ -1402,21 +1402,16 @@ if (favBox){
     data.onfire
   );
 
-  const banner = document.getElementById("pauseBanner");
-  const fav = document.getElementById("favoritosBox");
-  const fire = document.getElementById("onfireBox");
+const banner = document.getElementById("pauseBanner");
+const fav = document.getElementById("favoritosBox");
+const fire = document.getElementById("onfireBox");
 
-  if(data.suspensionActive === true){
-    banner.classList.remove("hidden");
-    banner.style.display = "block";
-    fav.classList.add("pausedBox");
-    fire.classList.add("pausedBox");
-  }else{
-    banner.classList.add("hidden");
-    banner.style.display = "none";
-    fav.classList.remove("pausedBox");
-    fire.classList.remove("pausedBox");
-  }
+if (banner) {
+  banner.classList.add("hidden");
+  banner.style.display = "none";
+}
+if (fav) fav.classList.remove("pausedBox");
+if (fire) fire.classList.remove("pausedBox");
 
   setTotal(data.totalGeneral);
   setFicha(data.activeMult);
