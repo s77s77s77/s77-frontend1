@@ -1041,6 +1041,9 @@ function renderLista(id, arr){
     ? [...arr].sort((a,b)=>Number(a)-Number(b))
     : [];
 
+  el.textContent = clean.length ? clean.join(" ") : "—";
+  }
+
   // --- LÓGICA DE COLOR ROJO PARA SISTEMA B ---
   // Si el contenedor es el "favoritosBox" y estamos en modo B, aplicamos rojo
   if (id === "favoritosBox" && document.querySelector(".label-favoritos").textContent === "SISTEMA B BUSCANDO") {
@@ -1377,14 +1380,17 @@ function renderEstado(data){
 
   // --- CAMBIO PARA EL SISTEMA B ---
   // Si estamos en modo B, cambiamos el título visual para que el usuario sepa
-  const labelFavoritos = document.querySelector(".label-favoritos");
-  if (data.sistemaVisible === 'B') {
-      labelFavoritos.textContent = "SISTEMA B BUSCANDO";
-      document.getElementById("favoritosBox").style.borderColor = "#ff9900"; // Borde naranja para identificar
-  } else {
-      labelFavoritos.textContent = "FAVORITOS";
-      document.getElementById("favoritosBox").style.borderColor = "transparent";
+  const favBox = document.getElementById("favoritosBox");
+
+if (favBox){
+  if (data.sistemaVisible === "B"){
+    favBox.style.color = "#ff2a2a";      // números rojos en B
+    favBox.style.border = "2px solid #ff9900";
+  }else{
+    favBox.style.color = "#ffffff";      // color normal en A
+    favBox.style.border = "none";
   }
+}
 
   renderLista(
     "favoritosBox",
