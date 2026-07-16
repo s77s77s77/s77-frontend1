@@ -1504,20 +1504,46 @@ nuevo.addEventListener("keydown", async (e) => {
 
   nuevo.value = "";
 
+  // requestId único por intento (idempotencia backend)
+  const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  const payload = { n, requestId };
+
   try {
-    const r = await fetchWithTimeout(`${API}/api/enter`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${TOKEN}`
-      },
-      body: JSON.stringify({ n })
-    }, 12000);
+    let r;
+
+    // intento 1
+    try {
+      r = await fetchWithTimeout(`${API}/api/enter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${TOKEN}`
+        },
+        body: JSON.stringify(payload)
+      }, 12000);
+    } catch (_) {
+      // retry corto por corte/intermitencia
+      await new Promise(res => setTimeout(res, 500));
+
+      // intento 2
+      r = await fetchWithTimeout(`${API}/api/enter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${TOKEN}`
+        },
+        body: JSON.stringify(payload)
+      }, 12000);
+    }
 
     const data = await r.json();
 
     if (!r.ok) {
-      alert("No se pudo ingresar el número.");
+      if (data?.error === "missing_request_id") {
+        alert("Falta requestId en el envío.");
+      } else {
+        alert("No se pudo ingresar el número.");
+      }
       return;
     }
 
