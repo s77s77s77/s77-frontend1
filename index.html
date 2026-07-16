@@ -1539,13 +1539,9 @@ nuevo.addEventListener("keydown", async (e) => {
     const data = await r.json();
 
     if (!r.ok) {
-      if (data?.error === "missing_request_id") {
-        alert("Falta requestId en el envío.");
-      } else {
-        alert("No se pudo ingresar el número.");
-      }
-      return;
-    }
+  alert(`No se pudo ingresar el número. Error: ${data?.error || r.status}`);
+  return;
+  }
 
     renderEstado(data);
     renderAcierto(!!data.aciertoShow, Number(data.aciertoValue || 0));
