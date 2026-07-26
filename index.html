@@ -805,6 +805,12 @@ REINTENTAR
   </dotlottie-player>
 </div>
 <div id="bottomActions" class="bottomActions">
+  <!-- BOTONES DE MODO DE JUEGO -->
+  <div class="bottomBtns" style="flex-direction: row; margin-bottom: 12px; gap: 8px;">
+    <button id="btnModoClasico" style="background:#1e90ff;" onclick="cambiarModoJuego('clasico')">MODO CLÁSICO</button>
+    <button id="btnModoOnFire" style="background:#555;" onclick="cambiarModoJuego('solo_onfire')">SOLO ON FIRE</button>
+  </div>
+
   <div class="bottomBtns">
     <button onclick="resetear()">REINICIAR</button>
     <button class="logoutBtn" onclick="salir()">SALIR</button>
@@ -1404,7 +1410,20 @@ if (fire) fire.classList.remove("pausedBox");
   setTotal(data.totalGeneral);
   setFicha(data.activeMult);
   renderAcierto(false, 0);
+
+  // Actualizar colores de los botones de modo según el estado
+  const btnClasico = document.getElementById("btnModoClasico");
+  const btnOnFire = document.getElementById("btnModoOnFire");
+  if (btnClasico && btnOnFire) {
+    if (data.modoJuego === "solo_onfire") {
+      btnClasico.style.background = "#555";       // Apagado
+      btnOnFire.style.background = "#ff9900";     // Prendido naranja
+    } else {
+      btnClasico.style.background = "#1e90ff";    // Prendido azul
+      btnOnFire.style.background = "#555";        // Apagado
+    }
   }
+}
 async function cargarEstado(){
 
 try{
@@ -1485,7 +1504,34 @@ alert("No conecta con el backend.");
 }
 }
 }
+async function cambiarModoJuego(modoElegido) {
+  if (!TOKEN) {
+    alert("Tenés que estar logueado.");
+    return;
+  }
 
+  try {
+    const r = await fetchWithTimeout(`${API}/api/set-modo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${TOKEN}`
+      },
+      body: JSON.stringify({ modo: modoElegido })
+    }, 12000);
+
+    const data = await r.json();
+
+    if (r.ok && data.ok) {
+      // Recargar la vista inmediatamente para limpiar los favoritos
+      await cargarEstado();
+    } else {
+      alert("Error al cambiar el modo.");
+    }
+  } catch (error) {
+    alert("Error de conexión con el servidor.");
+  }
+  }
 nuevo.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
 
