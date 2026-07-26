@@ -332,6 +332,27 @@ border:none;
 border-radius:8px;
 }
 
+.btnModoCustom {
+  width: 160px;
+  height: 55px;
+  background-image: url("./box-ganancia-bg.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border-radius: 10px;
+  font-family: impact;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+  }
+
 .logoutBtn{
 margin-top:14px;
 padding:8px 14px;
@@ -805,10 +826,10 @@ REINTENTAR
   </dotlottie-player>
 </div>
 <div id="bottomActions" class="bottomActions">
-  <<!-- BOTONES DE MODO DE JUEGO -->
-  <div class="bottomBtns" style="flex-direction: row; margin-bottom: 12px; gap: 8px;">
-    <button id="btnModoClasico" style="background:#1e90ff;" onclick="cambiarModoJuego('clasico')">FIRME 2K</button>
-    <button id="btnModoOnFire" style="background:#555;" onclick="cambiarModoJuego('solo_onfire')">PRECISO 1K</button>
+<!-- BOTONES DE MODO DE JUEGO -->
+  <div class="bottomBtns" style="flex-direction: row; margin-bottom: 14px; gap: 12px;">
+    <button id="btnModoClasico" class="btnModoCustom" onclick="cambiarModoJuego('clasico')">FIRME 2K</button>
+    <button id="btnModoOnFire" class="btnModoCustom" onclick="cambiarModoJuego('solo_onfire')">PRECISO 1K</button>
   </div>
 
   <div class="bottomBtns">
@@ -1411,16 +1432,31 @@ if (fire) fire.classList.remove("pausedBox");
   setFicha(data.activeMult);
   renderAcierto(false, 0);
 
-  // Actualizar colores de los botones de modo según el estado
+// Actualizar luces de los botones de modo según el estado
   const btnClasico = document.getElementById("btnModoClasico");
   const btnOnFire = document.getElementById("btnModoOnFire");
+  
   if (btnClasico && btnOnFire) {
     if (data.modoJuego === "solo_onfire") {
-      btnClasico.style.background = "#555";       // Apagado
-      btnOnFire.style.background = "#ff9900";     // Prendido naranja
+      // FIRME 2K APAGADO
+      btnClasico.style.boxShadow = "none";
+      btnClasico.style.border = "2px solid #444";
+      btnClasico.style.color = "#777"; 
+
+      // PRECISO 1K PRENDIDO (Luz Magenta/Fucsia)
+      btnOnFire.style.boxShadow = "0 0 15px #ff00ff, inset 0 0 8px #ff00ff";
+      btnOnFire.style.border = "2px solid #ff00ff";
+      btnOnFire.style.color = "#ffffff";
     } else {
-      btnClasico.style.background = "#1e90ff";    // Prendido azul
-      btnOnFire.style.background = "#555";        // Apagado
+      // FIRME 2K PRENDIDO (Luz Verde Neón)
+      btnClasico.style.boxShadow = "0 0 15px #39ff14, inset 0 0 8px #39ff14";
+      btnClasico.style.border = "2px solid #39ff14";
+      btnClasico.style.color = "#ffffff";
+
+      // PRECISO 1K APAGADO
+      btnOnFire.style.boxShadow = "none";
+      btnOnFire.style.border = "2px solid #444";
+      btnOnFire.style.color = "#777";
     }
   }
 }
