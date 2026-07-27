@@ -702,7 +702,19 @@ display:block;
     width:180px;
     height:36px;
   }
-
+/* ESTILO BASE PARA LOS BOTONES CON IMAGEN */
+.btn-img {
+  width: 120px;          /* Ancho del botón (ajustalo si lo ves muy chico) */
+  height: 40px;          /* Alto del botón */
+  background-size: 100% 100%; /* Obliga a la imagen a ocupar todo el botón */
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none !important;    
+  background-color: transparent !important;
+  cursor: pointer;
+  border-radius: 8px;    /* Redondea apenitas las esquinas */
+  transition: all 0.2s ease-in-out;
+  }
   .label-ficha{
     width:120px;
     height:34px;
@@ -853,11 +865,18 @@ REINTENTAR
 <div id="modoCartel" class="modoCartel hidden"></div>
 
 <div id="bottomActions" class="bottomActions">
-<!-- BOTONES DE MODO DE JUEGO -->
-  <div class="bottomBtns" style="flex-direction: row; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; justify-content: center;">
-    <button id="btnModoClasico" class="btnModoCustom" onclick="cambiarModoJuego('clasico')">FAST 3K</button>
-    <button id="btnModoNormal" class="btnModoCustom" onclick="cambiarModoJuego('normal')">NORMAL 2K</button>
-    <button id="btnModoOnFire" class="btnModoCustom" onclick="cambiarModoJuego('solo_onfire')">HARD 1K</button>
+<!-- BOTONES DE MODO DE JUEGO CON IMÁGENES -->
+  <div class="bottomBtns" style="flex-direction: row; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; justify-content: center; display: flex;">
+    
+    <!-- FAST 3K (BRONCE) -->
+    <button id="btnModoClasico" class="btn-img" style="background-image: url('./btn-bronce.jpg');" onclick="cambiarModoJuego('clasico')"></button>
+    
+    <!-- NORMAL 2K (PLATA) -->
+    <button id="btnModoNormal" class="btn-img" style="background-image: url('./btn-plata.jpg');" onclick="cambiarModoJuego('normal')"></button>
+    
+    <!-- HARD 1K (ORO) -->
+    <button id="btnModoOnFire" class="btn-img" style="background-image: url('./btn-oro.jpg');" onclick="cambiarModoJuego('solo_onfire')"></button>
+    
   </div>
 
   <div class="bottomBtns">
@@ -1460,34 +1479,37 @@ if (fire) fire.classList.remove("pausedBox");
   setFicha(data.activeMult);
   renderAcierto(false, 0);
 
-// Actualizar luces de los botones de modo según el estado
+// Actualizar luces de los botones de imagen
   const btnNormal = document.getElementById("btnModoNormal");
   const btnClasico = document.getElementById("btnModoClasico");
   const btnOnFire = document.getElementById("btnModoOnFire");
   
   if (btnNormal && btnClasico && btnOnFire) {
-    // Apagar todos por defecto
+    // 1. Apagamos todos por defecto (se ven un poco más oscuros y sin sombra)
     [btnNormal, btnClasico, btnOnFire].forEach(b => {
       b.style.boxShadow = "none";
-      b.style.border = "2px solid #444";
-      b.style.color = "#777";
+      b.style.filter = "brightness(0.5)"; // Los oscurece a la mitad
+      b.style.transform = "scale(1)";     // Tamaño normal
     });
 
+    // 2. Prendemos solo el que está activo
     if (data.modoJuego === "solo_onfire") {
-      // PRENDIDO HARD 1K
-      btnOnFire.style.boxShadow = "0 0 15px #ff00ff, inset 0 0 8px #ff00ff";
-      btnOnFire.style.border = "2px solid #ff00ff";
-      btnOnFire.style.color = "#ffffff";
+      // PRENDIDO HARD 1K (ORO)
+      btnOnFire.style.boxShadow = "0 0 15px #ff00ff";
+      btnOnFire.style.filter = "brightness(1.1)"; // Brillo a tope
+      btnOnFire.style.transform = "scale(1.05)";  // Efecto pop-up (se agranda)
+      
     } else if (data.modoJuego === "normal") {
-      // PRENDIDO NORMAL 2K
-      btnNormal.style.boxShadow = "0 0 15px #00e5ff, inset 0 0 8px #00e5ff";
-      btnNormal.style.border = "2px solid #00e5ff";
-      btnNormal.style.color = "#ffffff";
+      // PRENDIDO NORMAL 2K (PLATA)
+      btnNormal.style.boxShadow = "0 0 15px #00e5ff";
+      btnNormal.style.filter = "brightness(1.1)";
+      btnNormal.style.transform = "scale(1.05)";
+      
     } else {
-      // PRENDIDO FAST 2K
-      btnClasico.style.boxShadow = "0 0 15px #39ff14, inset 0 0 8px #39ff14";
-      btnClasico.style.border = "2px solid #39ff14";
-      btnClasico.style.color = "#ffffff";
+      // PRENDIDO FAST 3K (BRONCE)
+      btnClasico.style.boxShadow = "0 0 15px #39ff14";
+      btnClasico.style.filter = "brightness(1.1)";
+      btnClasico.style.transform = "scale(1.05)";
     }
   }
 }
