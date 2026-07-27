@@ -853,8 +853,9 @@ REINTENTAR
 <div id="modoCartel" class="modoCartel hidden"></div>
 
 <div id="bottomActions" class="bottomActions">
-  <!-- BOTONES DE MODO DE JUEGO -->
-  <div class="bottomBtns" style="flex-direction: row; margin-bottom: 14px; gap: 12px;">
+<!-- BOTONES DE MODO DE JUEGO -->
+  <div class="bottomBtns" style="flex-direction: row; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; justify-content: center;">
+    <button id="btnModoNormal" class="btnModoCustom" onclick="cambiarModoJuego('normal')">NORMAL 2K</button>
     <button id="btnModoClasico" class="btnModoCustom" onclick="cambiarModoJuego('clasico')">FAST 2K</button>
     <button id="btnModoOnFire" class="btnModoCustom" onclick="cambiarModoJuego('solo_onfire')">HARD 1K</button>
   </div>
@@ -1460,30 +1461,33 @@ if (fire) fire.classList.remove("pausedBox");
   renderAcierto(false, 0);
 
 // Actualizar luces de los botones de modo según el estado
+  const btnNormal = document.getElementById("btnModoNormal");
   const btnClasico = document.getElementById("btnModoClasico");
   const btnOnFire = document.getElementById("btnModoOnFire");
   
-  if (btnClasico && btnOnFire) {
-    if (data.modoJuego === "solo_onfire") {
-      // FIRME 2K APAGADO
-      btnClasico.style.boxShadow = "none";
-      btnClasico.style.border = "2px solid #444";
-      btnClasico.style.color = "#777"; 
+  if (btnNormal && btnClasico && btnOnFire) {
+    // Apagar todos por defecto
+    [btnNormal, btnClasico, btnOnFire].forEach(b => {
+      b.style.boxShadow = "none";
+      b.style.border = "2px solid #444";
+      b.style.color = "#777";
+    });
 
-      // PRECISO 1K PRENDIDO (Luz Magenta/Fucsia)
+    if (data.modoJuego === "solo_onfire") {
+      // PRENDIDO HARD 1K
       btnOnFire.style.boxShadow = "0 0 15px #ff00ff, inset 0 0 8px #ff00ff";
       btnOnFire.style.border = "2px solid #ff00ff";
       btnOnFire.style.color = "#ffffff";
+    } else if (data.modoJuego === "normal") {
+      // PRENDIDO NORMAL 2K
+      btnNormal.style.boxShadow = "0 0 15px #00e5ff, inset 0 0 8px #00e5ff";
+      btnNormal.style.border = "2px solid #00e5ff";
+      btnNormal.style.color = "#ffffff";
     } else {
-      // FIRME 2K PRENDIDO (Luz Verde Neón)
+      // PRENDIDO FAST 2K
       btnClasico.style.boxShadow = "0 0 15px #39ff14, inset 0 0 8px #39ff14";
       btnClasico.style.border = "2px solid #39ff14";
       btnClasico.style.color = "#ffffff";
-
-      // PRECISO 1K APAGADO
-      btnOnFire.style.boxShadow = "none";
-      btnOnFire.style.border = "2px solid #444";
-      btnOnFire.style.color = "#777";
     }
   }
 }
@@ -1581,13 +1585,16 @@ async function cambiarModoJuego(modoElegido) {
     cartel.classList.remove("hidden"); // Mostrar cartel
 
     if (modoElegido === "clasico") {
-      // TEXTO Y LUZ PARA FAST 2K (Verde Neón)
-      cartel.innerHTML = "BANCA 2.000 FICHAS<br>PROMEDIO GANANCIA 5F x GIRO";
+      cartel.innerHTML = "BANCA 2.000 FICHAS<br>PROMEDIO GANANCIA 5 x GIRO";
       cartel.style.boxShadow = "0 0 15px #39ff14, inset 0 0 8px #39ff14";
       cartel.style.border = "2px solid #39ff14";
+    } else if (modoElegido === "normal") {
+      // TEXTO Y LUZ PARA NORMAL 2K (Celeste/Cian Neón)
+      cartel.innerHTML = "BANCA MAX 2.000 FICHAS<br>PROMEDIO GANANCIA 3 F x GIRO"; 
+      cartel.style.boxShadow = "0 0 15px #00e5ff, inset 0 0 8px #00e5ff";
+      cartel.style.border = "2px solid #00e5ff";
     } else {
-      // TEXTO Y LUZ PARA HARD 1K (Magenta Brillante)
-      cartel.innerHTML = "BANCA 1.000 FICHAS<br>PROMEDIO GANANCIA 1F x GIRO";
+      cartel.innerHTML = "BANCA 1.000 FICHAS<br>PROMEDIO GANANCIA 1 de GIRO";
       cartel.style.boxShadow = "0 0 15px #ff00ff, inset 0 0 8px #ff00ff";
       cartel.style.border = "2px solid #ff00ff";
     }
@@ -1595,7 +1602,7 @@ async function cambiarModoJuego(modoElegido) {
     // Reiniciar el reloj por si toca el botón varias veces seguidas
     clearTimeout(cartelTimer);
     cartelTimer = setTimeout(() => {
-      cartel.classList.add("hidden"); // Ocultar después de 10 segundos (10000 ms)
+      cartel.classList.add("hidden"); // Ocultar después de 10 segundos
     }, 10000);
   }
   // --------------------------------
@@ -1622,6 +1629,7 @@ async function cambiarModoJuego(modoElegido) {
     alert("Error de conexión con el servidor.");
   }
   }
+      
 nuevo.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
 
