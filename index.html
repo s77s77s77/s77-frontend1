@@ -1485,40 +1485,47 @@ if (fire) fire.classList.remove("pausedBox");
   setFicha(data.activeMult);
   renderAcierto(false, 0);
 
-// Actualizar luces de los botones de imagen
+// Actualizar luces y cambiar imágenes de los botones
   const btnNormal = document.getElementById("btnModoNormal");
   const btnClasico = document.getElementById("btnModoClasico");
   const btnOnFire = document.getElementById("btnModoOnFire");
   
   if (btnNormal && btnClasico && btnOnFire) {
-    // 1. Apagamos todos por defecto (se ven un poco más oscuros y sin sombra)
+    // 1. Apagamos todos por defecto y les ponemos la imagen del BOTÓN NORMAL
+    btnClasico.querySelector('img').src = "btn-bronce.jpg";
+    btnNormal.querySelector('img').src = "btn-plata.jpg";
+    btnOnFire.querySelector('img').src = "btn-oro.jpg";
+
     [btnNormal, btnClasico, btnOnFire].forEach(b => {
       b.style.boxShadow = "none";
-      b.style.filter = "brightness(0.5)"; // Los oscurece a la mitad
-      b.style.transform = "scale(1)";     // Tamaño normal
+      b.style.filter = "brightness(0.5)"; // Más oscuros cuando están inactivos
+      b.style.transform = "scale(1)";
     });
 
-    // 2. Prendemos solo el que está activo
+    // 2. Prendemos solo el activo y le cambiamos la imagen por el CARTEL DE INFO
     if (data.modoJuego === "solo_onfire") {
       // PRENDIDO HARD 1K (ORO)
+      btnOnFire.querySelector('img').src = "info-oro.jpg"; 
       btnOnFire.style.boxShadow = "0 0 15px #ff00ff";
-      btnOnFire.style.filter = "brightness(1.1)"; // Brillo a tope
-      btnOnFire.style.transform = "scale(1.05)";  // Efecto pop-up (se agranda)
+      btnOnFire.style.filter = "brightness(1.1)";
+      btnOnFire.style.transform = "scale(1.05)";
       
     } else if (data.modoJuego === "normal") {
       // PRENDIDO NORMAL 2K (PLATA)
+      btnNormal.querySelector('img').src = "info-plata.jpg";
       btnNormal.style.boxShadow = "0 0 15px #00e5ff";
       btnNormal.style.filter = "brightness(1.1)";
       btnNormal.style.transform = "scale(1.05)";
       
     } else {
       // PRENDIDO FAST 3K (BRONCE)
+      btnClasico.querySelector('img').src = "info-bronce.jpg";
       btnClasico.style.boxShadow = "0 0 15px #39ff14";
       btnClasico.style.filter = "brightness(1.1)";
       btnClasico.style.transform = "scale(1.05)";
     }
   }
-}
+  }
 async function cargarEstado(){
 
 try{
@@ -1607,31 +1614,35 @@ async function cambiarModoJuego(modoElegido) {
     return;
   }
 
-  // --- LÓGICA DEL CARTEL VISUAL ---
+  // Ocultamos el cartel flotante viejo por si quedó en el HTML
   const cartel = document.getElementById("modoCartel");
   if (cartel) {
-    cartel.classList.remove("hidden"); // Mostrar cartel
+    cartel.classList.add("hidden"); 
+    cartel.style.display = "none"; 
+  }
 
-    if (modoElegido === "clasico") {
-      cartel.innerHTML = "BANCA 2.000 FICHAS<br>PROMEDIO GANANCIA 5 x GIRO";
-      cartel.style.boxShadow = "0 0 15px #39ff14, inset 0 0 8px #39ff14";
-      cartel.style.border = "2px solid #39ff14";
-    } else if (modoElegido === "normal") {
-      // TEXTO Y LUZ PARA NORMAL 2K (Celeste/Cian Neón)
-      cartel.innerHTML = "BANCA MAX 2.000 FICHAS<br>PROMEDIO GANANCIA 3 F x GIRO"; 
-      cartel.style.boxShadow = "0 0 15px #00e5ff, inset 0 0 8px #00e5ff";
-      cartel.style.border = "2px solid #00e5ff";
+  // --- COMUNICACIÓN CON EL SERVIDOR ---
+  try {
+    const r = await fetchWithTimeout(`${API}/api/set-modo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${TOKEN}`
+      },
+      body: JSON.stringify({ modo: modoElegido })
+    }, 12000);
+
+    const data = await r.json();
+
+    if (r.ok && data.ok) {
+      // Al cargar el estado de nuevo, renderEstado hará el cambio de imagen automáticamente
+      await cargarEstado(); 
     } else {
-      cartel.innerHTML = "BANCA 1.000 FICHAS<br>PROMEDIO GANANCIA 1 de GIRO";
-      cartel.style.boxShadow = "0 0 15px #ff00ff, inset 0 0 8px #ff00ff";
-      cartel.style.border = "2px solid #ff00ff";
+      alert("Error al cambiar el modo.");
     }
-
-    // Reiniciar el reloj por si toca el botón varias veces seguidas
-    clearTimeout(cartelTimer);
-    cartelTimer = setTimeout(() => {
-      cartel.classList.add("hidden"); // Ocultar después de 10 segundos
-    }, 10000);
+  } catch (error) {
+    alert("Error de conexión con el servidor.");
+  }
   }
   // --------------------------------
 
