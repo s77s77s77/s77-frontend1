@@ -1491,41 +1491,45 @@ if (fire) fire.classList.remove("pausedBox");
   const btnOnFire = document.getElementById("btnModoOnFire");
   
   if (btnNormal && btnClasico && btnOnFire) {
+    
+    // Escudo de seguridad: Solo cambia la imagen si la encuentra
+    const cambiarImgSeguro = (btn, imgSrc) => {
+      const imgEl = btn.querySelector('img');
+      if (imgEl) imgEl.src = imgSrc;
+    };
+
     // 1. Apagamos todos por defecto y les ponemos la imagen del BOTÓN NORMAL
-    btnClasico.querySelector('img').src = "btn-bronce.jpg";
-    btnNormal.querySelector('img').src = "btn-plata.jpg";
-    btnOnFire.querySelector('img').src = "btn-oro.jpg";
+    cambiarImgSeguro(btnClasico, "btn-bronce.jpg");
+    cambiarImgSeguro(btnNormal, "btn-plata.jpg");
+    cambiarImgSeguro(btnOnFire, "btn-oro.jpg");
 
     [btnNormal, btnClasico, btnOnFire].forEach(b => {
       b.style.boxShadow = "none";
-      b.style.filter = "brightness(0.5)"; // Más oscuros cuando están inactivos
+      b.style.filter = "brightness(0.5)"; 
       b.style.transform = "scale(1)";
     });
 
     // 2. Prendemos solo el activo y le cambiamos la imagen por el CARTEL DE INFO
     if (data.modoJuego === "solo_onfire") {
-      // PRENDIDO HARD 1K (ORO)
-      btnOnFire.querySelector('img').src = "info-oro.jpg"; 
+      cambiarImgSeguro(btnOnFire, "info-oro.jpg");
       btnOnFire.style.boxShadow = "0 0 15px #ff00ff";
       btnOnFire.style.filter = "brightness(1.1)";
       btnOnFire.style.transform = "scale(1.05)";
       
     } else if (data.modoJuego === "normal") {
-      // PRENDIDO NORMAL 2K (PLATA)
-      btnNormal.querySelector('img').src = "info-plata.jpg";
+      cambiarImgSeguro(btnNormal, "info-plata.jpg");
       btnNormal.style.boxShadow = "0 0 15px #00e5ff";
       btnNormal.style.filter = "brightness(1.1)";
       btnNormal.style.transform = "scale(1.05)";
       
     } else {
-      // PRENDIDO FAST 3K (BRONCE)
-      btnClasico.querySelector('img').src = "info-bronce.jpg";
+      cambiarImgSeguro(btnClasico, "info-bronce.jpg");
       btnClasico.style.boxShadow = "0 0 15px #39ff14";
       btnClasico.style.filter = "brightness(1.1)";
       btnClasico.style.transform = "scale(1.05)";
     }
   }
-  }
+    }
 async function cargarEstado(){
 
 try{
@@ -1606,22 +1610,18 @@ alert("No conecta con el backend.");
 }
 }
 }
-let cartelTimer = null; // Reloj para contar los 10 segundos
-
 async function cambiarModoJuego(modoElegido) {
   if (!TOKEN) {
     alert("Tenés que estar logueado.");
     return;
   }
 
-  // Ocultamos el cartel flotante viejo por si quedó en el HTML
   const cartel = document.getElementById("modoCartel");
   if (cartel) {
     cartel.classList.add("hidden"); 
     cartel.style.display = "none"; 
   }
 
-  // --- COMUNICACIÓN CON EL SERVIDOR ---
   try {
     const r = await fetchWithTimeout(`${API}/api/set-modo`, {
       method: "POST",
@@ -1635,7 +1635,6 @@ async function cambiarModoJuego(modoElegido) {
     const data = await r.json();
 
     if (r.ok && data.ok) {
-      // Al cargar el estado de nuevo, renderEstado hará el cambio de imagen automáticamente
       await cargarEstado(); 
     } else {
       alert("Error al cambiar el modo.");
