@@ -832,18 +832,24 @@ REINTENTAR
   <div class="label label-total">TOTAL</div>
     </div>
 
+    <!-- BLOQUE CENTRAL: FICHAS Y VALOR -->
     <div class="ingresoCol">
-      <div style="display: flex; flex-direction: row; gap: 8px;">
+      <div style="display: flex; flex-direction: row; gap: 12px; justify-content: center;">
         
-        <!-- FICHA ORIGINAL -->
-        <div id="fichaGeneral" class="fichaBox" style="background-image: url('./ficha-1.jpg');">1</div>
+        <!-- FICHA 1 (VERDE) -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div id="fichaGeneral" class="fichaBox" style="background-image: url('./ficha-1.jpg');">1</div>
+          <div style="color: #00ff66; font-size: 18px; font-weight: bold; font-family: impact; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">FICHAS</div>
+        </div>
         
-        <!-- FICHA MULTIPLICADA (RESULTADO) -->
-        <div id="fichaMultiplicada" class="fichaBox" style="background-image: url('./ficha-2.jpg'); color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">0</div>
-        
+        <!-- FICHA 2 (DORADA) -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div id="fichaMultiplicada" class="fichaBox" style="background-image: url('./ficha-2.jpg'); color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">0</div>
+          <div style="color: #ffd700; font-size: 18px; font-weight: bold; font-family: impact; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">VALOR</div>
+        </div>
+
       </div>
-      <div class="label label-ficha">FICHA</div>
-  </div>
+      </div>
 
     <div class="ingresoCol">
   <div id="gananciaGeneral" class="gananciaBox">0</div>
