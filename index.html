@@ -1644,29 +1644,6 @@ async function cambiarModoJuego(modoElegido) {
   }
   }
 
-  // --- COMUNICACIÓN CON EL SERVIDOR ---
-  try {
-    const r = await fetchWithTimeout(`${API}/api/set-modo`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${TOKEN}`
-      },
-      body: JSON.stringify({ modo: modoElegido })
-    }, 12000);
-
-    const data = await r.json();
-
-    if (r.ok && data.ok) {
-      await cargarEstado(); // Refrescar vista
-    } else {
-      alert("Error al cambiar el modo.");
-    }
-  } catch (error) {
-    alert("Error de conexión con el servidor.");
-  }
-  }
-      
 nuevo.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
 
