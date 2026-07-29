@@ -796,9 +796,18 @@ REINTENTAR
     Esperando acierto para reactivar
   </div>
 
-  <!-- =========================
+<!-- =========================
   FAVORITOS / REP3
   ========================= -->
+
+  <!-- CARTEL DE SUSPENSIÓN -->
+  <div id="cartelSuspension" style="display: none; width: 100%; text-align: center; margin: 10px 0;">
+    <img src="cartel-suspension.png" style="width: 90%; max-width: 350px; border-radius: 8px; box-shadow: 0px 4px 15px rgba(0,0,0,0.9);">
+  </div>
+
+  <div class="repBox favoritosBox" id="favoritosBox">
+    —
+  </div>
 
   <div class="repBox favoritosBox" id="favoritosBox">
     —
@@ -1506,7 +1515,29 @@ if (favBox){
     "onfireBox",
     data.onfire
   );
+// --- LÓGICA DE SUSPENSIÓN VISUAL ---
+  const cartelSusp = document.getElementById("cartelSuspension");
+  const cajaFav = document.getElementById("favoritosBox");
+  const labelFav = document.querySelector(".label-favoritos");
+  const cajaFire = document.getElementById("onfireBox");
+  const labelFire = document.querySelector(".label-onfire");
 
+  if (data.suspensionActive) {
+    // Mostrar cartel y ocultar todo lo demás
+    if (cartelSusp) cartelSusp.style.display = "block";
+    if (cajaFav) cajaFav.style.display = "none";
+    if (labelFav) labelFav.style.display = "none";
+    if (cajaFire) cajaFire.style.display = "none";
+    if (labelFire) labelFire.style.display = "none";
+  } else {
+    // Ocultar cartel y mostrar todo normal
+    if (cartelSusp) cartelSusp.style.display = "none";
+    if (cajaFav) cajaFav.style.display = "flex";
+    if (labelFav) labelFav.style.display = "block";
+    if (cajaFire) cajaFire.style.display = "flex";
+    if (labelFire) labelFire.style.display = "block";
+  }
+  // -----------------------------------
 const banner = document.getElementById("pauseBanner");
 const fav = document.getElementById("favoritosBox");
 const fire = document.getElementById("onfireBox");
