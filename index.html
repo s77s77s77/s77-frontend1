@@ -890,12 +890,12 @@ REINTENTAR
     </button>
     
     <!-- NORMAL 2K (PLATA) -->
-    <button id="btnModoNormal" class="btn-img" style="padding: 0; width: 200px; height: 66px; border: none; background: transparent; cursor: pointer;" onclick="cambiarModoJuego('normal')">
+    <button id="btnModoNormal" class="btn-img" style="display: none; padding: 0; width: 200px; height: 66px; border: none; background: transparent; cursor: pointer;" onclick="cambiarModoJuego('normal')">
       <img src="btn-plata.jpg" style="width: 100%; height: 100%; border-radius: 4px; display: block; object-fit: fill;">
     </button>
     
     <!-- HARD 1K (ORO) -->
-    <button id="btnModoOnFire" class="btn-img" style="padding: 0; width: 200px; height: 66px; border: none; background: transparent; cursor: pointer;" onclick="cambiarModoJuego('solo_onfire')">
+    <button id="btnModoOnFire" class="btn-img" style="display: none; padding: 0; width: 200px; height: 66px; border: none; background: transparent; cursor: pointer;" onclick="cambiarModoJuego('solo_onfire')">
       <img src="btn-oro.jpg" style="width: 100%; height: 100%; border-radius: 4px; display: block; object-fit: fill;">
     </button>
   </div>
@@ -1419,68 +1419,42 @@ function salir(){
 }
 
 function renderInicial(){
+  casilleros.innerHTML = "";
+  // Forzamos a que siempre sean 5 columnas
+  casilleros.style.gridTemplateColumns = "repeat(5,70px)";
 
-casilleros.innerHTML = "";
-
-casilleros.style.gridTemplateColumns =
-"repeat(4,70px)";
-
-for(let i=0;i<16;i++){
-
-const c = document.createElement("input");
-
-c.disabled = true;
-c.value = "";
-
-pintarCasilleroPorNumero(c);
-
-casilleros.appendChild(c);
+  for(let i=0; i<5; i++){
+    const c = document.createElement("input");
+    c.disabled = true;
+    c.value = "";
+    pintarCasilleroPorNumero(c);
+    casilleros.appendChild(c);
+  }
 }
-}
+
 function renderCasilleros(data){
+  casilleros.innerHTML = "";
+  casilleros.style.gridTemplateColumns = "repeat(5,70px)";
 
-casilleros.innerHTML = "";
+  if(data.historialLen === 0){
+    renderInicial();
+    return;
+  }
 
-if(data.historialLen < 17){
+  // Rellenamos con casilleros vacíos a la izquierda si el usuario ingresó menos de 5 números
+  let items = [...data.ultimos5];
+  while(items.length < 5){
+    items.unshift("");
+  }
 
-casilleros.style.gridTemplateColumns =
-"repeat(4,70px)";
-
-data.ultimos16.forEach(v => {
-
-const c = document.createElement("input");
-
-c.disabled = true;
-c.value = v;
-
-pintarCasilleroPorNumero(c);
-
-casilleros.appendChild(c);
-});
-
-if(data.historialLen === 0){
-renderInicial();
-}
-
-}else{
-
-casilleros.style.gridTemplateColumns =
-"repeat(5,70px)";
-
-data.ultimos5.forEach(v => {
-
-const c = document.createElement("input");
-
-c.disabled = true;
-c.value = v;
-
-pintarCasilleroPorNumero(c);
-
-casilleros.appendChild(c);
-});
-}
-}
-
+  items.forEach(v => {
+    const c = document.createElement("input");
+    c.disabled = true;
+    c.value = v; // Si es vacío (""), la función de pintar lo deja en negro
+    pintarCasilleroPorNumero(c);
+    casilleros.appendChild(c);
+  });
+  }
 function renderEstado(data){
 
   renderCasilleros(data);
