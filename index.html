@@ -1081,53 +1081,41 @@ if(!Number.isFinite(gananciaAcum)){
 gananciaAcum = 0;
 }
 
+// NUEVA VARIABLE PARA GUARDAR EL TOTAL BASE SIN MULTIPLICAR
+let rawTotalGeneral = 0; 
+
 function setGanancia(v){
-
-gananciaAcum = Number(v) || 0;
-
-gananciaGeneral.textContent = Math.round(gananciaAcum);
-localStorage.setItem(
-GANANCIA_KEY,
-String(gananciaAcum)
-);
+  gananciaAcum = Number(v) || 0;
+  localStorage.setItem(GANANCIA_KEY, String(gananciaAcum));
+  // Llamamos a la calculadora para que actualice la vista al instante
+  calcularFicha(); 
 }
 
 setGanancia(gananciaAcum);
 
 function sumarGanancia(value){
-
-const n = Number(value);
-
-if(!Number.isFinite(n)) return;
-
-setGanancia(gananciaAcum + n);
+  const n = Number(value);
+  if(!Number.isFinite(n)) return;
+  setGanancia(gananciaAcum + n);
 }
 
 function renderAcierto(show, value){
-
-if(show){
-
-aciertoBox.style.display = "flex";
-aciertoLabel.style.display = "block";
-
-aciertoBox.textContent = String(
-Math.round(Number(value) || 0)
-);
-
-}else{
-
-aciertoBox.style.display = "none";
-aciertoLabel.style.display = "none";
-aciertoBox.textContent = "0";
+  if(show){
+    aciertoBox.style.display = "flex";
+    aciertoLabel.style.display = "block";
+    aciertoBox.textContent = String(Math.round(Number(value) || 0));
+  }else{
+    aciertoBox.style.display = "none";
+    aciertoLabel.style.display = "none";
+    aciertoBox.textContent = "0";
+  }
 }
-}
+
 function setTotal(v){
-
-const n = Number(v);
-
-totalGeneral.textContent = Number.isFinite(n)
-? String(Math.round(n))
-: "0";
+  const n = Number(v);
+  rawTotalGeneral = Number.isFinite(n) ? Math.round(n) : 0;
+  // Llamamos a la calculadora para que actualice la vista al instante
+  calcularFicha(); 
 }
 
 function setFicha(v){
@@ -1138,19 +1126,32 @@ function setFicha(v){
   calcularFicha();
 }
 
-// NUEVA FUNCIÓN: Multiplica el valor ingresado por el valor de la ficha
+// FUNCIÓN MAESTRA: Multiplica dinámicamente todo lo que se ve en pantalla
 function calcularFicha() {
   const inputEl = document.getElementById("inputMultiplicador");
   const multiplicador = parseFloat(inputEl.value) || 0;
   
+  // 1. MULTIPLICAR LA FICHA (El cuadrito dorado)
   const fichaVal = parseFloat(document.getElementById("fichaGeneral").textContent) || 0;
-  const resultado = Math.round(multiplicador * fichaVal);
+  const resultadoFicha = Math.round(multiplicador * fichaVal);
   
   const fichaMultEl = document.getElementById("fichaMultiplicada");
   if (fichaMultEl) {
-    fichaMultEl.textContent = String(resultado);
+    fichaMultEl.textContent = String(resultadoFicha);
   }
+  
+  // 2. MULTIPLICAR EL TOTAL
+  const totalEl = document.getElementById("totalGeneral");
+  if (totalEl) {
+    totalEl.textContent = String(Math.round(rawTotalGeneral * multiplicador));
   }
+  
+  // 3. MULTIPLICAR LA GANANCIA
+  const gananciaEl = document.getElementById("gananciaGeneral");
+  if (gananciaEl) {
+    gananciaEl.textContent = String(Math.round(gananciaAcum * multiplicador));
+  }
+}
 
 function renderLista(id, arr){
   const el = document.getElementById(id);
@@ -1161,8 +1162,7 @@ function renderLista(id, arr){
     : [];
 
   el.textContent = clean.length ? clean.join(" ") : "—";
-  }
-
+}
 
 const NUM_BG = {
 0:"#0b7a3b",
@@ -1177,17 +1177,15 @@ const NUM_BG = {
 };
 
 function pintarCasilleroPorNumero(inputEl){
+  const v = parseInt(inputEl.value, 10);
 
-const v = parseInt(inputEl.value, 10);
+  inputEl.style.background = Number.isFinite(v)
+  ? (NUM_BG[v] || "#000")
+  : "#000";
 
-inputEl.style.background = Number.isFinite(v)
-? (NUM_BG[v] || "#000")
-: "#000";
-
-inputEl.style.color = "#fff";
-inputEl.style.borderColor = "#000";
+  inputEl.style.color = "#fff";
+  inputEl.style.borderColor = "#000";
 }
-
 function validarNumero(n){
 
 if(!Number.isInteger(n)){
