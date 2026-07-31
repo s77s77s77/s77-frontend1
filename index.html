@@ -784,7 +784,7 @@ REINTENTAR
   <br>
   <div class="ingreso">
     <div class="ingresoCol">
-      <input id="nuevo" class="ingresoInput">
+      <input id="nuevo" class="ingresoInput" inputmode="numeric" type="number">
       <div class="label label-ingreso">INGRESO</div>
     </div>
   </div>
@@ -1688,78 +1688,80 @@ async function cambiarModoJuego(modoElegido) {
   }
 
 nuevo.addEventListener("keydown", async (e) => {
-  if (e.key !== "Enter") return;
+  // Capturamos el Enter o el código 13 (compatibilidad para todos los teclados móviles)
+  if (e.key === "Enter" || e.keyCode === 13) {
+    e.preventDefault(); // ¡Esta es la magia que frena el salto al multiplicador!
 
-  if (!TOKEN) {
-    alert("Primero tenés que ingresar con usuario y clave.");
-    return;
-  }
+    if (!TOKEN) {
+      alert("Primero tenés que ingresar con usuario y clave.");
+      return;
+    }
 
-  const n = parseInt(nuevo.value, 10);
-  const v = validarNumero(n);
+    const n = parseInt(nuevo.value, 10);
+    const v = validarNumero(n);
 
-  if (!v.ok) {
-    alert(v.msg);
-    return;
-  }
+    if (!v.ok) {
+      alert(v.msg);
+      return;
+    }
 
-  nuevo.value = "";
+    nuevo.value = "";
 
-  // requestId único por intento (idempotencia backend)
-  const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
-  const payload = { n, requestId };
+    // requestId único por intento (idempotencia backend)
+    const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    const payload = { n, requestId };
 
-  try {
-    let r;
-
-    // intento 1
     try {
-      r = await fetchWithTimeout(`${API}/api/enter`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${TOKEN}`
-        },
-        body: JSON.stringify(payload)
-      }, 12000);
-    } catch (_) {
-      // retry corto por corte/intermitencia
-      await new Promise(res => setTimeout(res, 500));
+      let r;
 
-      // intento 2
-      r = await fetchWithTimeout(`${API}/api/enter`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${TOKEN}`
-        },
-        body: JSON.stringify(payload)
-      }, 12000);
-    }
+      // intento 1
+      try {
+        r = await fetchWithTimeout(`${API}/api/enter`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${TOKEN}`
+          },
+          body: JSON.stringify(payload)
+        }, 12000);
+      } catch (_) {
+        // retry corto por corte/intermitencia
+        await new Promise(res => setTimeout(res, 500));
 
-    const data = await r.json();
+        // intento 2
+        r = await fetchWithTimeout(`${API}/api/enter`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${TOKEN}`
+          },
+          body: JSON.stringify(payload)
+        }, 12000);
+      }
 
-    if (!r.ok) {
-  alert(`No se pudo ingresar el número. Error: ${data?.error || r.status}`);
-  return;
-  }
+      const data = await r.json();
 
-    renderEstado(data);
-    renderAcierto(!!data.aciertoShow, Number(data.aciertoValue || 0));
+      if (!r.ok) {
+        alert(`No se pudo ingresar el número. Error: ${data?.error || r.status}`);
+        return;
+      }
 
-    if (data.aciertoShow) {
-      showWinFx(1200);
-      setGanancia(gananciaAcum + Number(data.aciertoValue || 0));
-    }
-  } catch (e) {
-    if (e && e.name === "AbortError") {
-      alert("El servidor tardó demasiado y se cortó la petición.");
-    } else {
-      alert("No conecta con el backend.");
+      renderEstado(data);
+      renderAcierto(!!data.aciertoShow, Number(data.aciertoValue || 0));
+
+      if (data.aciertoShow) {
+        showWinFx(1200);
+        setGanancia(gananciaAcum + Number(data.aciertoValue || 0));
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") {
+        alert("El servidor tardó demasiado y se cortó la petición.");
+      } else {
+        alert("No conecta con el backend.");
+      }
     }
   }
 });
-
 async function crearUsuario(days){
   if(!TOKEN){
     alert("Tenés que estar logueado como admin.");
