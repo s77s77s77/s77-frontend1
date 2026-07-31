@@ -1628,6 +1628,13 @@ if (fire) fire.classList.remove("pausedBox");
       btnClasico.style.filter = "brightness(1.1)";
       btnClasico.style.transform = "scale(1.05)";
     }
+    // Actualizar los contadores de umbrales
+  if (data.contadores) {
+    document.getElementById("c300").textContent = data.contadores.c300;
+    document.getElementById("c400").textContent = data.contadores.c400;
+    document.getElementById("c500").textContent = data.contadores.c500;
+    document.getElementById("c600").textContent = data.contadores.c600;
+  }
   }
     }
 async function cargarEstado(){
@@ -1682,14 +1689,18 @@ headers:{
 if(!r.ok){
 alert("No se pudo reiniciar.");
 return;
-}
+  }
 
-setTotal(0);
-setFicha(1);
-setGanancia(0);
+  setTotal(0);
+  document.getElementById("c300").textContent = "0";
+  document.getElementById("c400").textContent = "0";
+  document.getElementById("c500").textContent = "0";
+  document.getElementById("c600").textContent = "0";
+  setFicha(1);
+  setGanancia(0);
 
-renderLista("favoritosBox", []);
-renderLista("onfireBox", []);
+  renderLista("favoritosBox", []);
+  renderLista("onfireBox", []);
 
 renderAcierto(false, 0);
 
