@@ -902,8 +902,8 @@ REINTENTAR
     <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
   </div>
 
-  <!-- NUEVOS CONTADORES DE UMBRALES -->
-  <div class="contadoresWrap">
+  <!-- NUEVOS CONTADORES DE UMBRALES Y TIROS -->
+  <div class="contadoresWrap" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 15px; margin-bottom: 10px;">
     <div class="contadorCol">
       <div id="c300" class="contadorBox">0</div>
       <div class="contadorLabel">+300</div>
@@ -920,7 +920,13 @@ REINTENTAR
       <div id="c600" class="contadorBox">0</div>
       <div class="contadorLabel">+600</div>
     </div>
-        </div>
+    
+    <!-- NUEVO CONTADOR DE CANTIDAD DE NÚMEROS -->
+    <div class="contadorCol">
+      <div id="cTiros" class="contadorBox" style="color: #00ff66;">0</div>
+      <div class="contadorLabel" style="color: #00ff66;">TIROS</div>
+    </div>
+  </div>
 </div>
 
 <div id="winFx">
@@ -1634,6 +1640,12 @@ if (fire) fire.classList.remove("pausedBox");
     document.getElementById("c400").textContent = data.contadores.c400;
     document.getElementById("c500").textContent = data.contadores.c500;
     document.getElementById("c600").textContent = data.contadores.c600;
+  }
+  
+  // Actualizar el contador de total de números ingresados
+  const cTiros = document.getElementById("cTiros");
+  if (cTiros) {
+    cTiros.textContent = data.historialLen !== undefined ? data.historialLen : "0";
   }
   }
     }
