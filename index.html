@@ -240,16 +240,16 @@ background-image:url("./onfire-bg.png");
 }
 
 .totalBox{
-  width:160px;              /* antes 130 */
-  height:96px;              /* antes 80  */
-  font-size:36px;           /* antes 30  */
+  width:160px;
+  height:96px;
+  font-size:36px;
   font-weight:bold;
-  background-image:url("./box-total-bg.png");   /* nuevo nombre */
+  background-image:url("./box-total-bg.png");
   background-size:100% 100%;
   background-position:center;
   background-repeat:no-repeat;
   border:none;
-  color:#ffffff;
+  color:#00e5ff; /* Color Azul Brillante */
   display:flex;
   align-items:center;
   justify-content:center;
@@ -288,22 +288,22 @@ text-shadow:0 1px 3px rgba(0,0,0,0.5);
 }
 
 .gananciaBox{
-  width:160px;              /* antes 130 */
-  height:96px;              /* antes 80  */
-  font-size:36px;           /* antes 30  */
+  width:160px;
+  height:96px;
+  font-size:36px;
   font-weight:bold;
-  background-image:url("./box-ganancia-bg.png"); /* nuevo nombre */
+  background-image:url("./box-ganancia-bg.png");
   background-size:100% 100%;
   background-position:center;
   background-repeat:no-repeat;
   border:none;
-  color:#ffffff;
+  color:#ffd700; /* Color Dorado */
   display:flex;
   align-items:center;
   justify-content:center;
   border-radius:10px;
   text-shadow:0 2px 6px rgba(0,0,0,0.85);
-  }
+                           }
 
 .label-ganancia{
   width:190px;
@@ -320,30 +320,30 @@ margin-top:6px;
 }
 
 .aciertoBox{
-width:90px;
-height:90px;
-font-size:48px;
-font-weight:bold;
-background-image:url("./bg-acierto-blue.png");
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-border:none;
-color:#ffffff;
-display:none;
-align-items:center;
-justify-content:center;
-border-radius:10px;
-text-shadow:0 0 8px #00e5ff;
-animation:pulsoAcierto 4s ease-in-out infinite;
+  width:90px;
+  height:90px;
+  font-size:48px;
+  font-weight:bold;
+  background-image:url("./bg-acierto-blue.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  border:none;
+  color:#ffd700; /* Texto Dorado */
+  display:none;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  text-shadow:0 0 10px #ffaa00; /* Resplandor Dorado */
+  animation:pulsoAcierto 4s ease-in-out infinite;
 }
 
 .aciertoLabel{
-margin-top:0;
-font-weight:bold;
-color:#00e5ff;
-text-shadow:0 0 6px #00e5ff;
-display:none;
+  margin-top:0;
+  font-weight:bold;
+  color:#ffd700; /* Texto Dorado */
+  text-shadow:0 0 6px #ffaa00; /* Resplandor Dorado */
+  display:none;
 }
 
 button{
@@ -1103,13 +1103,23 @@ function renderAcierto(show, value){
   if(show){
     aciertoBox.style.display = "flex";
     aciertoLabel.style.display = "block";
-    aciertoBox.textContent = String(Math.round(Number(value) || 0));
+
+    // Atrapamos el valor de la ficha que el usuario escribió
+    const inputEl = document.getElementById("inputMultiplicador");
+    const multiplicador = parseFloat(inputEl.value) || 0;
+    
+    // Multiplicamos el premio real por el valor de la ficha
+    const premioFinal = Math.round(Number(value) * multiplicador);
+
+    // Mostramos el número ya multiplicado
+    aciertoBox.textContent = String(premioFinal);
+
   }else{
     aciertoBox.style.display = "none";
     aciertoLabel.style.display = "none";
     aciertoBox.textContent = "0";
   }
-}
+  }
 
 function setTotal(v){
   const n = Number(v);
