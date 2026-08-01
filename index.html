@@ -1662,23 +1662,32 @@ if (fire) fire.classList.remove("pausedBox");
       btnClasico.style.transform = "scale(1.05)";
     }
   }
-    // Actualizar los contadores de umbrales
+    // Bucle automático para actualizar los 23 contadores de riesgo
   if (data.contadores) {
-    document.getElementById("c300").textContent = data.contadores.c300;
-    document.getElementById("c400").textContent = data.contadores.c400;
-    document.getElementById("c500").textContent = data.contadores.c500;
-    document.getElementById("c600").textContent = data.contadores.c600;
+    for (let i = 300; i <= 2500; i += 100) {
+      let caja = document.getElementById(`c${i}`);
+      if (caja) caja.textContent = data.contadores[`c${i}`] !== undefined ? data.contadores[`c${i}`] : "0";
+    }
   }
-  // Actualizar el contador de total de números ingresados (Tiros)
+  
+  // Actualizar Tiros y Aciertos
   const cTiros = document.getElementById("cTiros");
-  if (cTiros) {
-    cTiros.textContent = data.historialLen !== undefined ? data.historialLen : "0";
-  }
+  if (cTiros) cTiros.textContent = data.historialLen !== undefined ? data.historialLen : "0";
 
-  // Actualizar el contador de Aciertos
   const cAciertos = document.getElementById("cAciertos");
-  if (cAciertos && data.contadores) {
-    cAciertos.textContent = data.contadores.cAciertos !== undefined ? data.contadores.cAciertos : "0";
+  if (cAciertos && data.contadores) cAciertos.textContent = data.contadores.cAciertos !== undefined ? data.contadores.cAciertos : "0";
+
+  // LÓGICA DE ALARMA MP3 AL SUPERAR LAS 2500 FICHAS
+  const alarmaAudio = document.getElementById("adminMusic");
+  if (alarmaAudio) {
+    if (data.totalGeneral >= 2500) {
+      // Activa la canción del lobo
+      alarmaAudio.play().catch(()=>{});
+    } else {
+      // Si baja de 2500 (por acierto o reinicio), se apaga
+      alarmaAudio.pause();
+      alarmaAudio.currentTime = 0;
+    }
   }
 } // <-- Fin de la función renderEstado
 async function cargarEstado(){
@@ -1736,15 +1745,18 @@ return;
   }
 
   setTotal(0);
-  document.getElementById("c300").textContent = "0";
-  document.getElementById("c400").textContent = "0";
-  document.getElementById("c500").textContent = "0";
-  document.getElementById("c600").textContent = "0";
+  
+  // Bucle automático para limpiar los 23 contadores visuales
+  for (let i = 300; i <= 2500; i += 100) {
+    let caja = document.getElementById(`c${i}`);
+    if (caja) caja.textContent = "0";
+  }
+  
   document.getElementById("cTiros").textContent = "0";
-  document.getElementById("cAciertos").textContent = "0"; // <-- ESTA ES LA LÍNEA NUEVA
+  document.getElementById("cAciertos").textContent = "0";
   setFicha(1);
   setGanancia(0);
-
+  
   renderLista("favoritosBox", []);
   renderLista("onfireBox", []);
 
