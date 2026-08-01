@@ -753,6 +753,17 @@ display:block;
   color: #00e5ff;
   text-shadow: 0 1px 3px #000;
   }
+  @keyframes blinkEfecto {
+  0% { box-shadow: 0 0 10px #fff, 0 0 20px #00e5ff; background-image: none; background-color: #00e5ff; color: #000; transform: scale(1); }
+  50% { box-shadow: 0 0 30px #fff, 0 0 50px #00e5ff; background-image: none; background-color: #fff; color: #00e5ff; transform: scale(1.2); }
+  100% { box-shadow: 0 0 10px #fff, 0 0 20px #00e5ff; background-image: none; background-color: #00e5ff; color: #000; transform: scale(1); }
+}
+.animacionAcierto {
+  animation: blinkEfecto 0.5s ease-in-out 6; /* Dura medio segundo y se repite 6 veces = 3 segundos */
+  z-index: 10;
+  position: relative;
+  border-radius: 8px;
+    }
 }
 </style>
 </head>
@@ -2057,11 +2068,8 @@ async function boot(){
 })();
 </script>
 
-<audio
-id="adminMusic"
-src="./loboestas.mp3"
-loop>
-</audio>
+<audio id="adminMusic" src="./loboestas.mp3" loop></audio>
+<audio id="aciertoSound" src="./acierto.mp3"></audio>
 
 </body>
 </html>
