@@ -1889,6 +1889,31 @@ formIngreso.addEventListener("submit", async (e) => {
     if (data.aciertoShow) {
       showWinFx(1200);
       setGanancia(gananciaAcum + Number(data.aciertoValue || 0));
+
+      // 1. REPRODUCIR SONIDO
+      const audioAcierto = document.getElementById("aciertoSound");
+      if (audioAcierto) {
+        audioAcierto.currentTime = 0;
+        audioAcierto.play().catch(()=>{});
+      }
+
+      // 2. EFECTO TITILEO (3 SEGUNDOS)
+      if (data.totalPrevio >= 300) {
+        // Redondea hacia abajo a la centena más cercana (ej: 754 -> 700)
+        let umbral = Math.floor(data.totalPrevio / 100) * 100;
+        
+        // Si el riesgo superaba los 2500, no ilumina nada
+        if (umbral >= 300 && umbral <= 2500) {
+          const cajaAnimar = document.getElementById(`c${umbral}`);
+          if (cajaAnimar) {
+            cajaAnimar.classList.add("animacionAcierto");
+            // Se lo quitamos a los 3 segundos
+            setTimeout(() => {
+              cajaAnimar.classList.remove("animacionAcierto");
+            }, 3000);
+          }
+        }
+      }
     }
   } catch (err) {
     if (err && err.name === "AbortError") {
