@@ -1926,6 +1926,10 @@ formIngreso.addEventListener("submit", async (e) => {
       return;
     }
 
+    // --- EL TRUCO INFALIBLE ESTÁ ACÁ ---
+    // Sacamos una "foto" del total exacto en la memoria local ANTES de que se actualice a 0
+    let totalViejoLocal = rawTotalGeneral;
+
     renderEstado(data);
     renderAcierto(!!data.aciertoShow, Number(data.aciertoValue || 0));
 
@@ -1933,9 +1937,9 @@ formIngreso.addEventListener("submit", async (e) => {
       showWinFx(1200);
       setGanancia(gananciaAcum + Number(data.aciertoValue || 0));
 
-      // ¡MAGIA! El Gemelo se clava y toma la foto del riesgo justo antes de ganar
-      if (!gemeloFrozen && data.totalPrevio !== undefined) {
-         setGemelo(true, data.totalPrevio);
+      // ¡MAGIA 100% SEGURA! Congelamos el Gemelo con la foto que sacamos arriba
+      if (!gemeloFrozen) {
+         setGemelo(true, totalViejoLocal);
       }
 
       // 1. REPRODUCIR SONIDO DEL ACIERTO
