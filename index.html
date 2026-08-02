@@ -1798,6 +1798,7 @@ return;
   }
 
   setTotal(0);
+  setGemelo(false, 0); // <--- AGREGAR ESTA LINEA
   
   // Bucle automático para limpiar los 23 contadores visuales
   for (let i = 300; i <= 2500; i += 100) {
@@ -1932,12 +1933,14 @@ formIngreso.addEventListener("submit", async (e) => {
       showWinFx(1200);
       setGanancia(gananciaAcum + Number(data.aciertoValue || 0));
 
+      // ¡MAGIA! El Gemelo se clava y toma la foto del riesgo justo antes de ganar
+      if (!gemeloFrozen && data.totalPrevio !== undefined) {
+         setGemelo(true, data.totalPrevio);
+      }
+
       // 1. REPRODUCIR SONIDO
       const audioAcierto = document.getElementById("aciertoSound");
       if (audioAcierto) {
-        audioAcierto.currentTime = 0;
-        audioAcierto.play().catch(()=>{});
-      }
 
       // 2. EFECTO TITILEO BLANCO (5 SEGUNDOS) EN EL UMBRAL CORRESPONDIENTE
       if (data.totalPrevio >= 300) {
