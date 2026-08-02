@@ -758,33 +758,21 @@ display:block;
   50% { box-shadow: 0 0 30px #fff, 0 0 50px #00e5ff; background-image: none; background-color: #fff; color: #00e5ff; transform: scale(1.2); }
   100% { box-shadow: 0 0 10px #fff, 0 0 20px #00e5ff; background-image: none; background-color: #00e5ff; color: #000; transform: scale(1); }
 }
-/* EFECTO DE ACIERTO BLANCO (5 SEGUNDOS) */
-.animacionAcierto, .animacionAcierto div {
+/* TITILEO BLANCO EXTREMO (5 SEGUNDOS) */
+.animacion-acierto-fuerte {
   background-image: none !important;
-  animation: blinkBlanco 0.5s ease-in-out 10 !important; /* 10 repeticiones de 0.5s = 5 segundos */
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  box-shadow: 0 0 25px #ffffff, 0 0 45px #ffffff !important;
+  text-shadow: none !important;
+  animation: flashBlanco 0.5s infinite !important; /* infinite porque el tiempo lo frena el Javascript */
   z-index: 9999 !important;
   border-radius: 8px !important;
 }
 
-@keyframes blinkBlanco {
-  0% { 
-    box-shadow: 0 0 10px #ffffff; 
-    background-color: #ffffff !important; 
-    color: #000000 !important; 
-    transform: scale(1); 
-  }
-  50% { 
-    box-shadow: 0 0 40px #ffffff, 0 0 70px #ffffff; 
-    background-color: #ffffff !important; 
-    color: #000000 !important; 
-    transform: scale(1.15); 
-  }
-  100% { 
-    box-shadow: 0 0 10px #ffffff; 
-    background-color: #ffffff !important; 
-    color: #000000 !important; 
-    transform: scale(1); 
-  }
+@keyframes flashBlanco {
+  0%, 100% { transform: scale(1.15); opacity: 1; }
+  50% { transform: scale(1); opacity: 0.4; } /* La opacidad crea el efecto real de "titilar" o parpadear */
 }
 </style>
 </head>
