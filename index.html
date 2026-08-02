@@ -1918,20 +1918,25 @@ formIngreso.addEventListener("submit", async (e) => {
         audioAcierto.play().catch(()=>{});
       }
 
-      // 2. EFECTO TITILEO (3 SEGUNDOS)
+      // 2. EFECTO TITILEO BLANCO (5 SEGUNDOS) EN EL UMBRAL CORRESPONDIENTE
       if (data.totalPrevio >= 300) {
-        // Redondea hacia abajo a la centena más cercana (ej: 754 -> 700)
+        // Redondea hacia abajo a la centena más cercana (ej: 450 -> 400)
         let umbral = Math.floor(data.totalPrevio / 100) * 100;
         
-        // Si el riesgo superaba los 2500, no ilumina nada
-        if (umbral >= 300 && umbral <= 2500) {
+        // Si superó los 2500, topeamos en 2500 para que ilumine el último casillero
+        if (umbral > 2500) umbral = 2500;
+
+        if (umbral >= 300) {
           const cajaAnimar = document.getElementById(`c${umbral}`);
           if (cajaAnimar) {
-            cajaAnimar.classList.add("animacionAcierto");
-            // Se lo quitamos a los 3 segundos
+            // Al seleccionar el "parentElement", iluminamos la caja y el texto azul ("+400") juntos
+            const columnaCompleta = cajaAnimar.parentElement;
+            columnaCompleta.classList.add("animacionAcierto");
+            
+            // Se lo quitamos exactamente a los 5 segundos (5000 milisegundos)
             setTimeout(() => {
-              cajaAnimar.classList.remove("animacionAcierto");
-            }, 3000);
+              columnaCompleta.classList.remove("animacionAcierto");
+            }, 5000);
           }
         }
       }
