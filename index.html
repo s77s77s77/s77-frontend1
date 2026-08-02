@@ -1255,7 +1255,13 @@ function renderAcierto(show, value){
 function setTotal(v){
   const n = Number(v);
   rawTotalGeneral = Number.isFinite(n) ? Math.round(n) : 0;
-  // Llamamos a la calculadora para que actualice la vista al instante
+  
+  // Si el Gemelo NO está congelado, camina a la par del Total
+  if (!gemeloFrozen) {
+    gemeloValor = rawTotalGeneral;
+    localStorage.setItem(GEMELO_VALOR_KEY, gemeloValor);
+  }
+  
   calcularFicha(); 
 }
 
@@ -1270,10 +1276,10 @@ function setFicha(v){
 // FUNCIÓN MAESTRA: Multiplica dinámicamente todo lo que se ve en pantalla
 function calcularFicha() {
   const inputEl = document.getElementById("inputMultiplicador");
-  const multiplicador = parseFloat(inputEl.value) || 0;
+  const multiplicador = parseFloat(inputEl?.value) || 0;
   
   // 1. MULTIPLICAR LA FICHA (El cuadrito dorado)
-  const fichaVal = parseFloat(document.getElementById("fichaGeneral").textContent) || 0;
+  const fichaVal = parseFloat(document.getElementById("fichaGeneral")?.textContent) || 0;
   const resultadoFicha = Math.round(multiplicador * fichaVal);
   
   const fichaMultEl = document.getElementById("fichaMultiplicada");
@@ -1287,12 +1293,18 @@ function calcularFicha() {
     totalEl.textContent = String(Math.round(rawTotalGeneral * multiplicador));
   }
   
+  // ACA SE CALCULA EL GEMELO EN PANTALLA
+  const gemeloEl = document.getElementById("gemeloBox");
+  if (gemeloEl) {
+    gemeloEl.textContent = String(Math.round(gemeloValor * multiplicador));
+  }
+  
   // 3. MULTIPLICAR LA GANANCIA
   const gananciaEl = document.getElementById("gananciaGeneral");
   if (gananciaEl) {
     gananciaEl.textContent = String(Math.round(gananciaAcum * multiplicador));
   }
-}
+  }
 
 function renderLista(id, arr){
   const el = document.getElementById(id);
