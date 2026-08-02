@@ -758,35 +758,34 @@ display:block;
   50% { box-shadow: 0 0 30px #fff, 0 0 50px #00e5ff; background-image: none; background-color: #fff; color: #00e5ff; transform: scale(1.2); }
   100% { box-shadow: 0 0 10px #fff, 0 0 20px #00e5ff; background-image: none; background-color: #00e5ff; color: #000; transform: scale(1); }
 }
-/* EFECTO DE ACIERTO PARA LOS UMBRALES */
-.animacionAcierto {
-  background-image: none !important; /* Esto fuerza a que se oculte la imagen negra */
-  animation: blinkEfecto 0.5s ease-in-out 6 !important; /* 6 repeticiones = 3 segundos */
+/* EFECTO DE ACIERTO BLANCO (5 SEGUNDOS) */
+.animacionAcierto, .animacionAcierto div {
+  background-image: none !important;
+  animation: blinkBlanco 0.5s ease-in-out 10 !important; /* 10 repeticiones de 0.5s = 5 segundos */
   z-index: 9999 !important;
-  position: relative !important;
   border-radius: 8px !important;
 }
 
-@keyframes blinkEfecto {
+@keyframes blinkBlanco {
   0% { 
-    box-shadow: 0 0 10px #fff, 0 0 20px #00e5ff; 
-    background-color: #00e5ff; 
-    color: #000; 
+    box-shadow: 0 0 10px #ffffff; 
+    background-color: #ffffff !important; 
+    color: #000000 !important; 
     transform: scale(1); 
   }
   50% { 
-    box-shadow: 0 0 30px #fff, 0 0 60px #00e5ff; 
-    background-color: #ffffff; 
-    color: #00e5ff; 
+    box-shadow: 0 0 40px #ffffff, 0 0 70px #ffffff; 
+    background-color: #ffffff !important; 
+    color: #000000 !important; 
     transform: scale(1.15); 
   }
   100% { 
-    box-shadow: 0 0 10px #fff, 0 0 20px #00e5ff; 
-    background-color: #00e5ff; 
-    color: #000; 
+    box-shadow: 0 0 10px #ffffff; 
+    background-color: #ffffff !important; 
+    color: #000000 !important; 
     transform: scale(1); 
   }
-  }
+}
 </style>
 </head>
 <body>
