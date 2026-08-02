@@ -1194,6 +1194,26 @@ gananciaAcum = 0;
 
 // NUEVA VARIABLE PARA GUARDAR EL TOTAL BASE SIN MULTIPLICAR
 let rawTotalGeneral = 0; 
+  // --- LÓGICA DEL GEMELO ---
+const GEMELO_FROZEN_KEY = "S77_GEMELO_FROZEN";
+const GEMELO_VALOR_KEY = "S77_GEMELO_VALOR";
+
+let gemeloFrozen = localStorage.getItem(GEMELO_FROZEN_KEY) === "true";
+let gemeloValor = Number(localStorage.getItem(GEMELO_VALOR_KEY) || 0);
+
+function setGemelo(frozen, valor) {
+  gemeloFrozen = frozen;
+  gemeloValor = valor;
+  localStorage.setItem(GEMELO_FROZEN_KEY, frozen);
+  localStorage.setItem(GEMELO_VALOR_KEY, valor);
+  calcularFicha(); // Actualiza la pantalla
+}
+
+function sincronizarGemelo() {
+  // Cuando tocás el botón, se descongela y copia el valor exacto del TOTAL
+  setGemelo(false, rawTotalGeneral);
+}
+// -------------------------
 
 function setGanancia(v){
   gananciaAcum = Number(v) || 0;
