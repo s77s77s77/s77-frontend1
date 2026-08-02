@@ -1938,31 +1938,11 @@ formIngreso.addEventListener("submit", async (e) => {
          setGemelo(true, data.totalPrevio);
       }
 
-      // 1. REPRODUCIR SONIDO
+// 1. REPRODUCIR SONIDO DEL ACIERTO
       const audioAcierto = document.getElementById("aciertoSound");
       if (audioAcierto) {
-
-      // 2. EFECTO TITILEO BLANCO (5 SEGUNDOS) EN EL UMBRAL CORRESPONDIENTE
-      if (data.totalPrevio >= 300) {
-        // Redondea hacia abajo a la centena más cercana (ej: 450 -> 400)
-        let umbral = Math.floor(data.totalPrevio / 100) * 100;
-        
-        // Si superó los 2500, topeamos en 2500 para que ilumine el último casillero
-        if (umbral > 2500) umbral = 2500;
-
-        if (umbral >= 300) {
-          const cajaAnimar = document.getElementById(`c${umbral}`);
-          if (cajaAnimar) {
-            // Al seleccionar el "parentElement", iluminamos la caja y el texto azul ("+400") juntos
-            const columnaCompleta = cajaAnimar.parentElement;
-            columnaCompleta.classList.add("animacionAcierto");
-            
-            // Se lo quitamos exactamente a los 5 segundos (5000 milisegundos)
-            setTimeout(() => {
-              columnaCompleta.classList.remove("animacionAcierto");
-            }, 5000);
-          }
-        }
+         audioAcierto.currentTime = 0;
+         audioAcierto.play().catch(()=>{});
       }
     }
   } catch (err) {
@@ -1973,7 +1953,7 @@ formIngreso.addEventListener("submit", async (e) => {
     }
   }
 });
-  
+
 async function crearUsuario(days){
   if(!TOKEN){
     alert("Tenés que estar logueado como admin.");
@@ -2019,7 +1999,7 @@ async function crearUsuario(days){
 }
 
 let adminMusicOn = true;
-
+  
 function toggleMusic(){
   const music = document.getElementById("adminMusic");
   const btn = document.getElementById("musicBtn");
