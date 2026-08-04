@@ -26,19 +26,16 @@
 
 <style>      
 /* DISEÑO DEL CARTEL INFORMATIVO DE LOS MODOS */
-/* DISEÑO DEL CARTEL INFORMATIVO DE LOS MODOS */
 .modoCartel {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 280px;
-  background-color: rgba(0, 0, 0, 0.95); /* Fondo oscuro liso */
+  background-color: rgba(0, 0, 0, 0.95);
   padding: 25px 20px;
   border-radius: 12px;
   z-index: 999999;
-  
-  /* Tipografía fina y centrada */
   font-family: Arial, Helvetica, sans-serif;
   font-weight: normal;
   text-align: center;
@@ -249,7 +246,7 @@ background-image:url("./onfire-bg.png");
   background-position:center;
   background-repeat:no-repeat;
   border:none;
-  color:#00e5ff; /* Color Azul Brillante */
+  color:#00e5ff;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -297,7 +294,7 @@ text-shadow:0 1px 3px rgba(0,0,0,0.5);
   background-position:center;
   background-repeat:no-repeat;
   border:none;
-  color:#ffd700; /* Color Dorado */
+  color:#ffd700;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -329,20 +326,20 @@ margin-top:6px;
   background-position:center;
   background-repeat:no-repeat;
   border:none;
-  color:#ffd700; /* Texto Dorado */
+  color:#ffd700;
   display:none;
   align-items:center;
   justify-content:center;
   border-radius:10px;
-  text-shadow:0 0 10px #ffaa00; /* Resplandor Dorado */
+  text-shadow:0 0 10px #ffaa00;
   animation:pulsoAcierto 4s ease-in-out infinite;
 }
 
 .aciertoLabel{
   margin-top:0;
   font-weight:bold;
-  color:#ffd700; /* Texto Dorado */
-  text-shadow:0 0 6px #ffaa00; /* Resplandor Dorado */
+  color:#ffd700;
+  text-shadow:0 0 6px #ffaa00;
   display:none;
 }
 
@@ -590,6 +587,358 @@ width:100%;
 display:flex;
 justify-content:center;
 margin-bottom:18px;
+}
+
+.ingresoTitleImg{
+width:min(88vw, 420px);
+height:auto;
+display:block;
+}
+
+#appContent:not(.logged-in) #bannerComenzamos{
+display:flex;
+}
+
+#appContent.logged-in #bannerComenzamos{
+display:none !important;
+}
+
+.bottomActions{
+  margin-top: 8px;      
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: static;     
+  top: auto;
+  }
+
+.bottomBtns{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+margin:0;
+}
+
+.premiumLogo{
+width:150px;
+height:auto;
+margin-top:10px;
+display:block;
+}
+
+#maiDireMai{
+  display:none;
+  width:100%;
+  text-align:center;
+  margin-top:12px;
+}
+
+#maiDireMai .premiumLogo{
+  display:block;
+  margin:0 auto;
+  }
+  @media (max-width: 768px){
+  .bottomActions{
+  margin-top: 2px;
+  display: none;              
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: static;
+}
+
+.bottomBtns{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  margin:0;
+}
+
+.bottomBtns button{
+  margin:0 !important;
+}
+
+.logoutBtn{
+  margin-top:0;
+}
+
+#adminPanel{
+  margin-top:10px;
+}
+}
+@media (max-width: 768px){
+  .bottomActions{
+    margin-top: 0;
+    gap: 4px;
+  }
+
+  .bottomBtns{
+    gap: 4px;
+  }
+
+  .premiumLogo{
+    margin-top: 4px;
+  }
+
+  .totalBox,
+  .gananciaBox{
+    width:150px;
+    height:90px;
+    font-size:34px;
+  }
+
+  .label-total{
+    width:160px;
+    height:36px;
+  }
+
+  .label-ganancia{
+    width:180px;
+    height:36px;
+  }
+}
+/* ESTILO BASE PARA LOS BOTONES CON IMAGEN */
+.btn-img {
+  width: 120px;          
+  height: 40px;          
+  background-size: 100% 100%; 
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none !important;    
+  background-color: transparent !important;
+  cursor: pointer;
+  border-radius: 8px;    
+  transition: all 0.2s ease-in-out;
+  }
+  .label-ficha{
+    width:120px;
+    height:34px;
+  }
+  .contadoresWrap {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+.contadorCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.contadorBox {
+  width: 60px;
+  height: 60px;
+  font-size: 26px;
+  font-weight: bold;
+  background-image: url("./box-total-bg.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+.contadorLabel {
+  font-size: 16px;
+  color: #00e5ff;
+  text-shadow: 0 1px 3px #000;
+  }
+  @keyframes blinkEfecto {
+  0% { box-shadow: 0 0 10px #fff, 0 0 20px #00e5ff; background-image: none; background-color: #00e5ff; color: #000; transform: scale(1); }
+  50% { box-shadow: 0 0 30px #fff, 0 0 50px #00e5ff; background-image: none; background-color: #fff; color: #00e5ff; transform: scale(1.2); }
+  100% { box-shadow: 0 0 10px #fff, 0 0 20px #00e5ff; background-image: none; background-color: #00e5ff; color: #000; transform: scale(1); }
+}
+/* TITILEO BLANCO EXTREMO (5 SEGUNDOS) */
+.animacion-acierto-fuerte {
+  background-image: none !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  box-shadow: 0 0 25px #ffffff, 0 0 45px #ffffff !important;
+  text-shadow: none !important;
+  animation: flashBlanco 0.5s infinite !important; 
+  z-index: 9999 !important;
+  border-radius: 8px !important;
+}
+
+@keyframes flashBlanco {
+  0%, 100% { transform: scale(1.15); opacity: 1; }
+  50% { transform: scale(1); opacity: 0.4; } 
+}
+</style>
+</head>
+<body>
+
+<div id="videoSplash">
+  <video id="videoSplashEl" autoplay muted playsinline preload="auto">
+    <source src="./video88.mp4" type="video/mp4">
+  </video>
+</div>
+  
+
+<div id="offlineWall">
+<div class="offlineCard">
+<div class="offlineTitle">
+REQUIERE CONEXIÓN A INTERNET
+</div>
+
+<div class="offlineText">
+Para usar el sistema necesitás estar online.<br>
+Conectate y tocá “Reintentar”.
+</div>
+
+<button class="offlineBtn" onclick="location.reload()">
+REINTENTAR
+</button>
+</div>
+</div>
+
+<div id="appContent">
+
+  <h1 id="tituloPrincipal" style="display:none;"></h1>
+
+<div id="bannerComenzamos" class="loginTopBanner" style="display: none !important;">
+  <img src="./banner-login.png" alt="COMENZAMOS" class="loginBanner">
+</div>
+
+<div id="login" class="loginBox">
+
+  <div class="ingresoTitleWrap">
+    <img src="./ingreso.png" alt="INGRESO" class="ingresoTitleImg">
+  </div>
+
+  <div class="loginRow">
+    <input id="usuario" class="loginInput" placeholder="Usuario">
+  </div>
+
+  <div class="loginRow">
+    <input id="clave" class="loginInput" placeholder="Clave" type="password">
+  </div>
+
+  <div class="loginRow">
+    <button onclick="ingresar()">INGRESAR</button>
+  </div>
+
+  <p id="err" style="color:red;margin:6px 0 0;"></p>
+
+</div>
+
+<div id="sistema" class="hidden" style="display:none;">
+  <div class="inputs" id="casilleros"></div>
+
+  <br>
+  <div class="ingreso">
+    <div class="ingresoCol">
+      <form id="formIngreso" style="margin:0; padding:0; display:flex; flex-direction:column; align-items:center;">
+        <input id="nuevo" class="ingresoInput" type="number" inputmode="numeric" autocomplete="off">
+      </form>
+      <div class="label label-ingreso">INGRESO</div>
+    </div>
+  </div>
+
+  <br>
+
+  <div id="pauseBanner" class="hidden">
+    ⏸ SISTEMA EN PAUSA<br>
+    Esperando acierto para reactivar
+  </div>
+
+<!-- =========================
+  FAVORITOS / REP3
+  ========================= -->
+  <div id="cartelSuspension" style="display: none; width: 100%; text-align: center; margin: 10px 0;">
+    <img src="cartel-suspension.png" style="width: 90%; max-width: 350px; border-radius: 8px; box-shadow: 0px 4px 15px rgba(0,0,0,0.9);">
+  </div>
+
+  <div class="repBox favoritosBox" id="favoritosBox">
+    —
+  </div>
+
+  <div class="label label-favoritos">FAVORITOS</div>
+  <!-- =========================
+  ON FIRE / REP4+
+  ========================= -->
+
+  <div class="repBox onfireBox" id="onfireBox">
+    —
+  </div>
+
+  <div class="label label-onfire">ON FIRE</div>
+
+  <br>
+  <br>
+
+ <!-- =========================
+  CUENTA UNIFICADA + GEMELO
+  ========================= -->
+  <div class="ingreso" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; margin-bottom: 20px;">
+
+    <div class="ingresoCol">
+      <div id="gemeloBox" class="totalBox" style="color: #ff9900;">0</div>
+      <button onclick="sincronizarGemelo()" style="margin-top: 2px; padding: 6px 14px; font-size: 16px; font-family: impact; background: #111; color: #ff9900; border: 2px solid #ff9900; border-radius: 8px; cursor: pointer; text-shadow: 0 2px 4px #000; letter-spacing: 1px;">SINCRONIZAR</button>
+    </div>
+
+    <div class="ingresoCol">
+      <div id="totalGeneral" class="totalBox">0</div>
+      <div class="label label-total">TOTAL</div>
+    </div>
+
+    <div class="ingresoCol">
+      <div style="display: flex; flex-direction: row; gap: 12px; justify-content: center;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div id="fichaGeneral" class="fichaBox" style="background-image: url('./ficha-1.jpg');">1</div>
+          <div style="color: #00ff66; font-size: 18px; font-weight: bold; font-family: impact; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">FICHAS</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div id="fichaMultiplicada" class="fichaBox" style="background-image: url('./ficha-2.jpg'); color: #ffffff; text-shadow: 2px 2px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000, 0px 4px 12px rgba(0,0,0,1);">0</div>
+          <div style="color: #ffd700; font-size: 18px; font-weight: bold; font-family: impact; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">VALOR</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ingresoCol">
+      <div id="gananciaGeneral" class="gananciaBox">0</div>
+      <div class="label label-ganancia">GANANCIA</div>
+    </div>
+          </div>
+
+  <div class="aciertoWrap">
+    <div id="aciertoBox" class="aciertoBox">0</div>
+    <div id="aciertoLabel" class="aciertoLabel">ACIERTO</div>
+  </div>
+
+  <div class="contadoresWrap" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 15px; margin-bottom: 10px; max-width: 100%;">
+    
+    <div style="display: flex; width: 100%; justify-content: center; gap: 12px; margin-bottom: 5px;">
+      <div class="contadorCol">
+        <div id="cTiros" class="contadorBox" style="color: #00ff66;">0</div>
+        <div class="contadorLabel" style="color: #00ff66;">TIROS</div>
+      </div>
+      <div class="contadorCol">
+        <div id="cAciertos" class="contadorBox" style="color: #ff00ff;">0</div>
+        <div class="contadorLabel" style="color: #ff00ff;">ACIERTOS</div>
+      </div>
+    </div>
+
+    <div class="contadorCol"><div id="c300" class="contadorBox">0</div><div class="contadorLabel">+300</div></div>
+    <div class="contadorCol"><div id="c400" class="contadorBox">0</div><div class="contadorLabel">+400</div></div>
+    <div class="contadorCol"><div id="c500" class="contadorBox">0</div><div class="contadorLabel">+500</div></div>
+    <div class="contadorCol"><div id="c600" class="contadorBox">0</div><div class="contadorLabel">+600</div></div>
+    <div class="contadorCol"><div id="c700" class="contadorBox">0</div><div class="contadorLabel">+700</div></div>
+    <div class="contadorCol"><div id="c800" class="contadorBox">0</div><div class="contadorLabel">+800</div></div>
+    <div class="contadorCol"><div id="c900" class="contadorBox">0</div><div class="contadorLabel">+900</div></div>
+    <div class="contadorCol"><div id="c1000" class="contadorBox">0</div><div class="contadorLabel">+1000</div></div>
+    <div class="contadorCol"><div id="c1100" class="contadorBox">0</div><div class="contadorLabel">+1100</div></div>
+    <div class="contadorCol"><div id="c1200" class="contadorBox">0</div><div class="contadorLabel">+1200</div></div>
+    <div class="contadorCol"><div id="c1300" class="contadorBox">0</div><div class="contadorLabel">+1300</div></div>
+    <div class="contadorCol"><div id="c1400" class="contadorBox">0</div><div class="contadorLabel">+1400</div></dgin-bottom:18px;
 }
 
 .ingresoTitleImg{
