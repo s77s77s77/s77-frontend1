@@ -722,8 +722,11 @@ display:block;
 </head>
 <body>
 
+<!-- NUEVO CÓDIGO CON intro.mp4 -->
 <div id="pantallaArranque" onclick="iniciarExperiencia()">
-  <img src="./logo-transparente.png" style="width:250px; max-width:80%; animation: pulsoAcierto 2s infinite;">
+  <video autoplay loop muted playsinline style="width:280px; max-width:85%; border-radius:12px; pointer-events:none; display:block;">
+    <source src="./intro.mp4" type="video/mp4">
+  </video>
   <img src="./texto-click.jpg" style="width:280px; max-width:80%; margin-top:20px; display:block;">
 </div>
 
