@@ -1561,13 +1561,6 @@ if(formIngreso){
     const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
     const payload = { n, requestId };
 
-    if(TOKEN === "offline_token_mode") {
-      let histLen = Number(document.getElementById("cTiros").textContent) + 1;
-      document.getElementById("cTiros").textContent = histLen;
-      setTotal(rawTotalGeneral + 1);
-      return;
-    }
-
     try {
       let r;
       try {
@@ -1602,6 +1595,16 @@ if(formIngreso){
       renderEstado(data);
       renderAcierto(!!data.aciertoShow, Number(data.aciertoValue || 0));
 
+      // Forzar actualización del contador de tiros de forma directa al enviar
+      const cTiros = document.getElementById("cTiros");
+      if (cTiros) {
+        if (data.historialLen !== undefined) {
+          cTiros.textContent = data.historialLen;
+        } else {
+          cTiros.textContent = String((parseInt(cTiros.textContent, 10) || 0) + 1);
+        }
+      }
+
       if (data.aciertoShow) {
         showWinFx(1200);
         setGanancia(gananciaAcum + Number(data.aciertoValue || 0));
@@ -1621,7 +1624,7 @@ if(formIngreso){
     }
   });
 }
-
+          
 async function crearUsuario(days){
   if(!TOKEN){ alert("Tenés que estar logueado como admin."); return; }
   const user = (document.getElementById("newUser").value || "").trim();
