@@ -724,7 +724,6 @@ display:block;
 </head>
 <body>
 
-<!-- PANTALLA INICIAL DE TOQUE PARA ACTIVAR AUDIO Y VIDEO -->
 <div id="pantallaArranque" onclick="iniciarExperiencia()" style="position:fixed; inset:0; z-index:999999; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
   <video autoplay loop muted playsinline style="width:100%; max-width:850px; height:auto; object-fit:contain; pointer-events:none; display:block;">
     <source src="./intro.mp4" type="video/mp4">
@@ -732,10 +731,15 @@ display:block;
   <img src="./texto-click.jpg" style="width:280px; max-width:80%; margin-top:20px; display:block;">
 </div>
   
-<!-- VIDEO 1: EL INTRODUCTORIO (video88) -->
 <div id="videoSplash">
   <video id="videoSplashEl" muted playsinline preload="auto">
     <source src="./video88.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div id="videoLoginExitodo" style="position:fixed; inset:0; z-index:999997; background:#000; display:none; align-items:center; justify-content:center;">
+  <video id="videoLoginExitodoEl" muted playsinline preload="auto" style="width:100%; height:100%; object-fit:contain;">
+    <source src="./logogif.mp4" type="video/mp4">
   </video>
 </div>
 
@@ -843,7 +847,6 @@ display:block;
     </div>
   </div>
 
-  <!-- ACIERTO Y LA IMAGEN OKTUBRE -->
   <div class="aciertoWrap">
     <div style="display: flex; align-items: center; gap: 12px; justify-content: center;">
       <img id="oktubreImg" src="./oktubre.jpg" style="width: 80px; height: 80px; object-fit: contain; filter: invert(1) grayscale(1) brightness(200%); mix-blend-mode: screen; display: none; animation: pulsoAcierto 4s ease-in-out infinite;">
@@ -954,11 +957,7 @@ display:block;
 <div id="bannerUsuarios" style="text-align:center; margin-top:80px; display:none;">
   <img src="./logo-transparente.png?v=3" class="premiumLogo" style="width:260px; max-width:70%; height:auto; margin: 0 auto;" alt="Ícono">
 </div>
-<div id="videoLoginExitodo" style="position:fixed; inset:0; z-index:999997; background:#000; display:none; align-items:center; justify-content:center;">
-  <video id="videoLoginExitodoEl" muted playsinline preload="auto" style="width:100%; height:100%; object-fit:contain;">
-    <source src="./logogif.mp4" type="video/mp4">
-  </video>
-</div>
+
 <script>
 const API = "https://s77-backend1.onrender.com";
 const TOKEN_KEY = "S77_TOKEN_V1";
@@ -1195,7 +1194,7 @@ async function ingresar(){
     const bannerComenzamos = document.getElementById("bannerComenzamos");
     if (bannerComenzamos) bannerComenzamos.style.display = "none";
 
-    // --- REPRODUCIR EL NUEVO VIDEO POR 8 SEGUNDOS ---
+    // --- REPRODUCIR EL NUEVO VIDEO POR 8 SEGUNDOS ANTES DE MOSTRAR EL SISTEMA ---
     const splashExitodoWrap = document.getElementById("videoLoginExitodo");
     const videoExitodoEl = document.getElementById("videoLoginExitodoEl");
 
@@ -1219,6 +1218,11 @@ async function ingresar(){
     } else {
         mostrarSistema();
         await cargarEstado();
+    }
+
+  }catch(e){
+    if(errEl) errEl.innerText = "No conecta con el servidor.";
+  }
 }
     
 function mostrarApp(){
