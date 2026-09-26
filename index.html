@@ -954,7 +954,11 @@ display:block;
 <div id="bannerUsuarios" style="text-align:center; margin-top:80px; display:none;">
   <img src="./logo-transparente.png?v=3" class="premiumLogo" style="width:260px; max-width:70%; height:auto; margin: 0 auto;" alt="Ícono">
 </div>
-
+<div id="videoLoginExitodo" style="position:fixed; inset:0; z-index:999997; background:#000; display:none; align-items:center; justify-content:center;">
+  <video id="videoLoginExitodoEl" muted playsinline preload="auto" style="width:100%; height:100%; object-fit:contain;">
+    <source src="./videogif.mp4" type="video/mp4">
+  </video>
+</div>
 <script>
 const API = "https://s77-backend1.onrender.com";
 const TOKEN_KEY = "S77_TOKEN_V1";
@@ -1173,7 +1177,6 @@ async function ingresar(){
       if(errEl) errEl.innerText = "Usuario/clave inválidos o vencidos";
       return;
     }
-
     TOKEN = data.token;
     ROLE = String(data.role || "").trim().toLowerCase();
     localStorage.setItem(TOKEN_KEY, TOKEN);
@@ -1182,18 +1185,42 @@ async function ingresar(){
 
     detenerLobo();
 
-    // AL LOGUEARSE CON ÉXITO, APAGAMOS EL VIDEO DE HUMO DE FONDO
     const humo = document.getElementById("videoHumoFondo");
     if (humo) humo.style.display = "none";
 
-    mostrarSistema();
-    await cargarEstado();
+    // Ocultar la caja de login
+    const loginEl = document.getElementById("login");
+    if (loginEl){ loginEl.classList.add("hidden"); loginEl.style.display = "none"; }
+    
+    const bannerComenzamos = document.getElementById("bannerComenzamos");
+    if (bannerComenzamos) bannerComenzamos.style.display = "none";
 
-  }catch(e){
-    if(errEl) errEl.innerText = "No conecta con el servidor. ¿Está prendido el backend?";
-  }
+    // --- REPRODUCIR EL NUEVO VIDEO POR 8 SEGUNDOS ---
+    const splashExitodoWrap = document.getElementById("videoLoginExitodo");
+    const videoExitodoEl = document.getElementById("videoLoginExitodoEl");
+
+    if (splashExitodoWrap && videoExitodoEl) {
+        splashExitodoWrap.style.display = "flex";
+        videoExitodoEl.currentTime = 0;
+        
+        try {
+            await videoExitodoEl.play();
+        } catch(e) {}
+
+        // Forzar la detención y paso al sistema exactamente a los 8 segundos (8000 ms)
+        setTimeout(async () => {
+            videoExitodoEl.pause();
+            splashExitodoWrap.style.display = "none";
+            
+            mostrarSistema();
+            await cargarEstado();
+        }, 8000);
+
+    } else {
+        mostrarSistema();
+        await cargarEstado();
 }
-
+    
 function mostrarApp(){
   const splashWrap = document.getElementById("videoSplash");
   if (splashWrap) splashWrap.style.display = "none";
