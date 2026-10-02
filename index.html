@@ -153,9 +153,9 @@ outline:none;
 box-shadow:none;
 -webkit-appearance:none;
 appearance:none;
-caret-color: #ffffff; /* ESTA LÍNEA OBLIGA A MOSTRAR LA BARRITA BLANCA */
+caret-color: #ffffff;
+line-height: 80px;
 }
-
 .label{
 display:block;
 margin:6px auto 0 auto;
@@ -838,7 +838,7 @@ display:block;
   <div class="ingreso">
     <div class="ingresoCol">
       <form id="formIngreso" style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center; gap: 10px; transform: translateX(35px);">
-        <input id="nuevo" class="ingresoInput" type="tel" inputmode="numeric" autocomplete="off">
+        <input id="nuevo" class="ingresoInput" type="text" pattern="\d*" inputmode="numeric" autocomplete="off">
         <button type="submit" class="btn-ok-3d">OK</button>
       </form>
       <div class="label label-ingreso">INGRESO</div>
